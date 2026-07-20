@@ -24,7 +24,7 @@
             android:layout_height="64dp"
             android:src="@android:drawable/star_big_on"
             android:contentDescription="Badge icon"
-            android:tint="@color/primary" />
+            app:tint="@color/primary" />
 
         <!-- Badge Name -->
         <TextView

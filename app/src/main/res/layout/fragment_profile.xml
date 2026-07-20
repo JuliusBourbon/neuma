@@ -69,7 +69,7 @@
                     android:src="@android:drawable/ic_menu_edit"
                     android:contentDescription="Edit avatar"
                     android:background="@color/text_white"
-                    android:tint="@color/primary"
+                    app:tint="@color/primary"
                     android:padding="4dp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
                     app:layout_constraintEnd_toEndOf="@id/iv_avatar" />
@@ -243,7 +243,7 @@
                             android:layout_height="20dp"
                             android:src="@android:drawable/ic_menu_myplaces"
                             android:contentDescription="Ikon nama"
-                            android:tint="@color/primary" />
+                            app:tint="@color/primary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -296,7 +296,7 @@
                             android:layout_height="20dp"
                             android:src="@android:drawable/ic_dialog_email"
                             android:contentDescription="Ikon email"
-                            android:tint="@color/primary" />
+                            app:tint="@color/primary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -349,7 +349,7 @@
                             android:layout_height="20dp"
                             android:src="@android:drawable/ic_menu_info_details"
                             android:contentDescription="Ikon tipe"
-                            android:tint="@color/primary" />
+                            app:tint="@color/primary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -415,7 +415,7 @@
                             android:layout_height="22dp"
                             android:src="@android:drawable/ic_menu_edit"
                             android:contentDescription="Kelola Akun"
-                            android:tint="@color/primary" />
+                            app:tint="@color/primary" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -431,7 +431,7 @@
                             android:layout_height="18dp"
                             android:src="@android:drawable/arrow_up_float"
                             android:contentDescription="Arrow"
-                            android:tint="@color/text_hint"
+                            app:tint="@color/text_hint"
                             android:rotation="90" />
 
                     </LinearLayout>
@@ -460,7 +460,7 @@
                             android:layout_height="22dp"
                             android:src="@android:drawable/ic_menu_gallery"
                             android:contentDescription="Ganti Avatar"
-                            android:tint="@color/primary" />
+                            app:tint="@color/primary" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -476,7 +476,7 @@
                             android:layout_height="18dp"
                             android:src="@android:drawable/arrow_up_float"
                             android:contentDescription="Arrow"
-                            android:tint="@color/text_hint"
+                            app:tint="@color/text_hint"
                             android:rotation="90" />
 
                     </LinearLayout>
@@ -505,7 +505,7 @@
                             android:layout_height="22dp"
                             android:src="@android:drawable/ic_menu_help"
                             android:contentDescription="Support"
-                            android:tint="@color/primary" />
+                            app:tint="@color/primary" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -521,7 +521,7 @@
                             android:layout_height="18dp"
                             android:src="@android:drawable/arrow_up_float"
                             android:contentDescription="Arrow"
-                            android:tint="@color/text_hint"
+                            app:tint="@color/text_hint"
                             android:rotation="90" />
 
                     </LinearLayout>
