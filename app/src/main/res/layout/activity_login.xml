@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/login_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp">
+
+        <!-- Header background dengan warna tosca -->
+        <View
+            android:id="@+id/view_header_bg"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:background="@color/primary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Logo Neumá di header -->
+        <TextView
+            android:id="@+id/tv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Neumá"
+            android:textColor="@color/text_white"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginTop="48dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Subtitle header -->
+        <TextView
+            android:id="@+id/tv_header_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selamat datang kembali!"
+            android:textColor="@color/text_white"
+            android:textSize="14sp"
+            android:alpha="0.85"
+            android:layout_marginTop="6dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Card Form Login -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_login_form"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/card_background"
+            android:layout_marginTop="160dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Judul Masuk -->
+                <TextView
+                    android:id="@+id/tv_login_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Masuk"
+                    android:textColor="@color/text_primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- Label Email -->
+                <TextView
+                    android:id="@+id/tv_email_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email / Nomor Telepon"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <!-- Input Email -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeColor="@color/input_border"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Masukkan email atau nomor telepon"
+                        android:textSize="14sp"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Label Password -->
+                <TextView
+                    android:id="@+id/tv_password_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <!-- Input Password -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeColor="@color/input_border"
+                    app:endIconMode="password_toggle"
+                    android:layout_marginBottom="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Masukkan password"
+                        android:textSize="14sp"
+                        android:inputType="textPassword"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Row: Ingat Saya & Lupa Password -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="28dp">
+
+                    <CheckBox
+                        android:id="@+id/cb_remember_me"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ingat Saya!"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_secondary"
+                        android:buttonTint="@color/primary"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tv_forgot_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lupa Password?"
+                        android:textSize="13sp"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Tombol Masuk -->
+                <Button
+                    android:id="@+id/btn_masuk"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="MASUK"
+                    android:textColor="@color/text_white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:backgroundTint="@color/primary"
+                    android:layout_marginBottom="20dp"
+                    app:cornerRadius="14dp" />
+
+                <!-- Link Daftar -->
+                <TextView
+                    android:id="@+id/tv_register_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Belum punya akun? Daftar"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

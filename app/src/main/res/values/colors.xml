@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary - Tosca/Turquoise (warna utama Neumá) -->
+    <color name="primary">#2EC4B6</color>
+    <color name="primary_dark">#21A89B</color>
+    <color name="primary_light">#E8FAF9</color>
+
+    <!-- Green (warna tombol aksi) -->
+    <color name="green_button">#4CAF50</color>
+    <color name="green_button_dark">#388E3C</color>
+
+    <!-- Background -->
+    <color name="background_white">#FFFFFFFF</color>
+    <color name="background_light">#F5F5F5</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+    <color name="text_white">#FFFFFFFF</color>
+
+    <!-- Input field -->
+    <color name="input_border">#E0E0E0</color>
+    <color name="input_background">#FAFAFA</color>
+
+    <!-- Profile header -->
+    <color name="profile_header_blue">#1565C0</color>
+    <color name="profile_header_purple">#6A1B9A</color>
+
+    <!-- Card & surface -->
+    <color name="card_background">#FFFFFFFF</color>
+    <color name="divider">#EEEEEE</color>
+
+    <!-- Status bar -->
+    <color name="status_bar">#2EC4B6</color>
+</resources>

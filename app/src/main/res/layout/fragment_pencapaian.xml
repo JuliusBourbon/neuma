@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pencapaian_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white">
+
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_pencapaian"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header Area -->
+            <LinearLayout
+                android:id="@+id/layout_pencapaian_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/background_white"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="20dp">
+
+                <!-- Judul Halaman -->
+                <TextView
+                    android:id="@+id/tv_pencapaian_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pencapaian"
+                    android:textColor="@color/primary"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/tv_pencapaian_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kumpulkan semua lencana kehebatanmu!"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Card Progress Keseluruhan -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_progress_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@color/primary">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_badge_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="3 / 12"
+                                    android:textColor="@color/text_white"
+                                    android:textSize="28sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Lencana Terkumpul"
+                                    android:textColor="@color/text_white"
+                                    android:textSize="13sp"
+                                    android:alpha="0.85" />
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/iv_trophy"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:src="@android:drawable/star_big_on"
+                                android:contentDescription="Trofi"
+                                android:tint="@color/text_white" />
+
+                        </LinearLayout>
+
+                        <!-- Progress Bar Total -->
+                        <ProgressBar
+                            android:id="@+id/pb_pencapaian_total"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp"
+                            android:progress="25"
+                            android:progressTint="@color/text_white"
+                            android:progressBackgroundTint="#60FFFFFF"
+                            android:layout_marginBottom="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="25% dari semua pencapaian"
+                            android:textColor="@color/text_white"
+                            android:textSize="12sp"
+                            android:alpha="0.85" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <!-- ======================== -->
+            <!-- SECTION: LENCANA         -->
+            <!-- ======================== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
+
+                <!-- Tab Filter -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_pencapaian"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:tabSelectedTextColor="@color/primary"
+                    app:tabTextColor="@color/text_secondary"
+                    app:tabIndicatorColor="@color/primary"
+                    app:tabBackground="@android:color/transparent"
+                    app:tabMode="fixed"
+                    app:tabGravity="fill">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Semua" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Diraih" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Terkunci" />
+
+                </com.google.android.material.tabs.TabLayout>
+
+                <!-- Grid Lencana 2 Kolom -->
+                <!-- Row 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Lencana 1 - DIRAIH -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_badge_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="3dp"
+                        app:cardBackgroundColor="@color/card_background">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_badge_1"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@android:drawable/star_big_on"
+                                android:contentDescription="Lencana 1"
+                                android:tint="@color/primary" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_1_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pemula Isyarat"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_1_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Selesaikan 1 misi"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp"
+                                android:gravity="center"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Lencana 2 - DIRAIH -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_badge_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="3dp"
+                        app:cardBackgroundColor="@color/card_background">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_badge_2"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@android:drawable/star_big_on"
+                                android:contentDescription="Lencana 2"
+                                android:tint="@color/primary" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_2_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rajin Berlatih"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_2_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Belajar 3 hari berturut"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp"
+                                android:gravity="center"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <!-- Row 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Lencana 3 - DIRAIH -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_badge_3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="3dp"
+                        app:cardBackgroundColor="@color/card_background">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_badge_3"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@android:drawable/star_big_on"
+                                android:contentDescription="Lencana 3"
+                                android:tint="@color/primary" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_3_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sang Juara"
+                                android:textColor="@color/text_primary"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_3_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Raih 50 poin"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp"
+                                android:gravity="center"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Lencana 4 - TERKUNCI -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_badge_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/background_light">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_badge_4"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@android:drawable/ic_lock_lock"
+                                android:contentDescription="Terkunci"
+                                android:tint="@color/text_hint" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_4_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ahli BISINDO"
+                                android:textColor="@color/text_hint"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_4_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Selesaikan 10 misi"
+                                android:textColor="@color/text_hint"
+                                android:textSize="11sp"
+                                android:gravity="center"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <!-- Row 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Lencana 5 - TERKUNCI -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_badge_5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/background_light">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_badge_5"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@android:drawable/ic_lock_lock"
+                                android:contentDescription="Terkunci"
+                                android:tint="@color/text_hint" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_5_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Konsisten 7 Hari"
+                                android:textColor="@color/text_hint"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_5_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Belajar 7 hari berturut"
+                                android:textColor="@color/text_hint"
+                                android:textSize="11sp"
+                                android:gravity="center"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Lencana 6 - TERKUNCI -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_badge_6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/background_light">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_badge_6"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:src="@android:drawable/ic_lock_lock"
+                                android:contentDescription="Terkunci"
+                                android:tint="@color/text_hint" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_6_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Bintang 100 Poin"
+                                android:textColor="@color/text_hint"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp" />
+
+                            <TextView
+                                android:id="@+id/tv_badge_6_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kumpulkan 100 poin"
+                                android:textColor="@color/text_hint"
+                                android:textSize="11sp"
+                                android:gravity="center"
+                                android:layout_marginTop="4dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/card_background"
+        app:elevation="12dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/primary"
+        app:itemTextColor="@color/primary"
+        app:labelVisibilityMode="labeled"
+        app:selectedItemId="@id/nav_pencapaian"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

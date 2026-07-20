@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/signup_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp">
+
+        <!-- Header background tosca -->
+        <View
+            android:id="@+id/view_header_bg"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:background="@color/primary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Tombol back -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Kembali"
+            android:tint="@color/text_white"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Judul header -->
+        <TextView
+            android:id="@+id/tv_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buat Akun"
+            android:textColor="@color/text_white"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginTop="56dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Subtitle header -->
+        <TextView
+            android:id="@+id/tv_header_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mulai perjalanan belajarmu!"
+            android:textColor="@color/text_white"
+            android:textSize="13sp"
+            android:alpha="0.85"
+            android:layout_marginTop="6dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_header_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Card Form Daftar -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_signup_form"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/card_background"
+            android:layout_marginTop="148dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Nama -->
+                <TextView
+                    android:id="@+id/tv_nama_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeColor="@color/input_border"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nama"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Masukkan nama lengkap"
+                        android:textSize="14sp"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Tanggal Lahir -->
+                <TextView
+                    android:id="@+id/tv_tgl_lahir_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Lahir"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_tgl_lahir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeColor="@color/input_border"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@android:drawable/ic_menu_my_calendar"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_tgl_lahir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="DD / MM / YYYY"
+                        android:textSize="14sp"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Alamat -->
+                <TextView
+                    android:id="@+id/tv_alamat_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alamat"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_alamat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeColor="@color/input_border"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_alamat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Masukkan alamat"
+                        android:textSize="14sp"
+                        android:inputType="textPostalAddress|textMultiLine"
+                        android:minLines="2"
+                        android:gravity="top"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Email -->
+                <TextView
+                    android:id="@+id/tv_email_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeColor="@color/input_border"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Masukkan email"
+                        android:textSize="14sp"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Password -->
+                <TextView
+                    android:id="@+id/tv_password_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeColor="@color/input_border"
+                    app:endIconMode="password_toggle"
+                    android:layout_marginBottom="24dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Masukkan password"
+                        android:textSize="14sp"
+                        android:inputType="textPassword"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_hint" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Label Radio Group -->
+                <TextView
+                    android:id="@+id/tv_tipe_tuli_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kamu Yang Mana?"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_tipe_tuli_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih sesuai kondisi pendengaranmu"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Radio Group: Tipe Tuli -->
+                <RadioGroup
+                    android:id="@+id/rg_tipe_tuli"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="28dp">
+
+                    <!-- Opsi 1: Tuli Total -->
+                    <RadioButton
+                        android:id="@+id/rb_tuli_total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tuli Total"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:buttonTint="@color/primary"
+                        android:paddingStart="8dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+                    <!-- Opsi 2: Tuli Wicara -->
+                    <RadioButton
+                        android:id="@+id/rb_tuli_wicara"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tuli Wicara"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:buttonTint="@color/primary"
+                        android:paddingStart="8dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+                    <!-- Opsi 3: Tuli Sebagian -->
+                    <RadioButton
+                        android:id="@+id/rb_tuli_sebagian"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tuli Sebagian"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary"
+                        android:buttonTint="@color/primary"
+                        android:paddingStart="8dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+                </RadioGroup>
+
+                <!-- Tombol Daftar -->
+                <Button
+                    android:id="@+id/btn_daftar"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="DAFTAR"
+                    android:textColor="@color/text_white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:backgroundTint="@color/primary"
+                    android:layout_marginBottom="20dp"
+                    app:cornerRadius="14dp" />
+
+                <!-- Link Masuk -->
+                <TextView
+                    android:id="@+id/tv_login_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sudah punya akun? Masuk!"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
