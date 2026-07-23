@@ -49,6 +49,11 @@
             android:name=".LevelActivity"
             android:exported="false"
             android:theme="@style/Theme.Neuma" />
+            
+        <activity
+            android:name=".LearnActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Neuma" />
     </application>
 
 </manifest>
