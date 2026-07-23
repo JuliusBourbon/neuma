@@ -374,7 +374,12 @@ public class LearnActivity extends AppCompatActivity {
                     
                     Intent intent = new Intent(LearnActivity.this, ScoreActivity.class);
                     intent.putExtra("TOTAL_SCORE", res.getTotalScore());
-                    // Untuk saat ini kita oper score, achievement bisa diparsing dari JSON atau ditangani di Tahap G
+                    
+                    if (res.getNewAchievements() != null && !res.getNewAchievements().isEmpty()) {
+                        String achievementsJson = new com.google.gson.Gson().toJson(res.getNewAchievements());
+                        intent.putExtra("NEW_ACHIEVEMENTS", achievementsJson);
+                    }
+                    
                     startActivity(intent);
                     finish();
                 } else {
