@@ -560,7 +560,6 @@
         app:itemIconTint="@color/primary"
         app:itemTextColor="@color/primary"
         app:labelVisibilityMode="labeled"
-        app:selectedItemId="@id/nav_profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
