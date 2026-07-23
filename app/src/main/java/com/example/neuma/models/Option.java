@@ -4,8 +4,10 @@ public class Option {
     private String id;
     private String questionId;
     private String text;
+    private String mediaUrl;
 
     public String getId() { return id; }
     public String getQuestionId() { return questionId; }
     public String getText() { return text; }
+    public String getMediaUrl() { return mediaUrl; }
 }

@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,13 +56,16 @@ public class LearnActivity extends AppCompatActivity {
     // Quiz Views
     private TextView tvQuizHeader, tvQuestionText;
     private ImageView ivQuestionMedia;
-    private RadioGroup radioGroupOptions;
+    private LinearLayout layoutOptionsContainer, layoutTrueFalse;
+    private Button btnTrue, btnFalse;
     private Button btnSimulateCamera, btnSubmitAnswer, btnSkipQuestion;
 
     private LevelApi levelApi;
     private AttemptApi attemptApi;
     
     private String simulatedAnswer = null;
+    private String selectedAnswer = null;
+    private java.util.List<View> optionViews = new java.util.ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +89,10 @@ public class LearnActivity extends AppCompatActivity {
         tvQuizHeader = findViewById(R.id.tv_quiz_header);
         tvQuestionText = findViewById(R.id.tv_question_text);
         ivQuestionMedia = findViewById(R.id.iv_question_media);
-        radioGroupOptions = findViewById(R.id.radio_group_options);
+        layoutOptionsContainer = findViewById(R.id.layout_options_container);
+        layoutTrueFalse = findViewById(R.id.layout_true_false);
+        btnTrue = findViewById(R.id.btn_true);
+        btnFalse = findViewById(R.id.btn_false);
         btnSimulateCamera = findViewById(R.id.btn_simulate_camera);
         btnSubmitAnswer = findViewById(R.id.btn_submit_answer);
         btnSkipQuestion = findViewById(R.id.btn_skip_question);
@@ -216,8 +222,16 @@ public class LearnActivity extends AppCompatActivity {
         layoutMaterial.setVisibility(View.GONE);
         layoutQuiz.setVisibility(View.VISIBLE);
         simulatedAnswer = null;
-        radioGroupOptions.clearCheck();
-        radioGroupOptions.removeAllViews();
+        selectedAnswer = null;
+        
+        layoutOptionsContainer.setVisibility(View.GONE);
+        layoutTrueFalse.setVisibility(View.GONE);
+        btnSimulateCamera.setVisibility(View.GONE);
+        
+        layoutOptionsContainer.removeAllViews();
+        optionViews.clear();
+        btnTrue.setAlpha(1.0f);
+        btnFalse.setAlpha(1.0f);
 
         Question q = questions.get(currentQuestionIndex);
         tvQuizHeader.setText("SOAL " + (currentQuestionIndex + 1) + " DARI " + questions.size());
@@ -231,21 +245,47 @@ public class LearnActivity extends AppCompatActivity {
         }
 
         if ("MULTIPLE_CHOICE".equals(q.getType())) {
-            radioGroupOptions.setVisibility(View.VISIBLE);
-            btnSimulateCamera.setVisibility(View.GONE);
-            
+            layoutOptionsContainer.setVisibility(View.VISIBLE);
             if (q.getOptions() != null) {
                 for (Option opt : q.getOptions()) {
-                    RadioButton rb = new RadioButton(this);
-                    rb.setText(opt.getText());
-                    rb.setTag(opt.getText());
-                    rb.setTextSize(16f);
-                    rb.setPadding(0, 16, 0, 16);
-                    radioGroupOptions.addView(rb);
+                    View optionView = android.view.LayoutInflater.from(this).inflate(R.layout.item_quiz_option, layoutOptionsContainer, false);
+                    RadioButton radioIndicator = optionView.findViewById(R.id.radio_option_indicator);
+                    TextView tvText = optionView.findViewById(R.id.tv_option_text);
+                    ImageView ivMedia = optionView.findViewById(R.id.iv_option_media);
+
+                    tvText.setText(opt.getText());
+                    if (opt.getMediaUrl() != null && !opt.getMediaUrl().isEmpty()) {
+                        ivMedia.setVisibility(View.VISIBLE);
+                        Glide.with(this).load(opt.getMediaUrl()).into(ivMedia);
+                    } else {
+                        ivMedia.setVisibility(View.GONE);
+                    }
+
+                    optionView.setOnClickListener(v -> {
+                        selectedAnswer = opt.getText(); // Using label/text as answer
+                        for (View ov : optionViews) {
+                            RadioButton rb = ov.findViewById(R.id.radio_option_indicator);
+                            rb.setChecked(ov == optionView);
+                        }
+                    });
+
+                    optionViews.add(optionView);
+                    layoutOptionsContainer.addView(optionView);
                 }
             }
+        } else if ("TRUE_FALSE_VISUAL".equals(q.getType())) {
+            layoutTrueFalse.setVisibility(View.VISIBLE);
+            btnTrue.setOnClickListener(v -> {
+                selectedAnswer = "TRUE";
+                btnTrue.setAlpha(1.0f);
+                btnFalse.setAlpha(0.5f);
+            });
+            btnFalse.setOnClickListener(v -> {
+                selectedAnswer = "FALSE";
+                btnTrue.setAlpha(0.5f);
+                btnFalse.setAlpha(1.0f);
+            });
         } else if ("SIGN_PRACTICE".equals(q.getType())) {
-            radioGroupOptions.setVisibility(View.GONE);
             btnSimulateCamera.setVisibility(View.VISIBLE);
             btnSimulateCamera.setText("SIMULASIKAN DETEKSI KAMERA");
         }
@@ -275,14 +315,12 @@ public class LearnActivity extends AppCompatActivity {
         Question q = questions.get(currentQuestionIndex);
         String answer = null;
 
-        if ("MULTIPLE_CHOICE".equals(q.getType())) {
-            int selectedId = radioGroupOptions.getCheckedRadioButtonId();
-            if (selectedId == -1) {
+        if ("MULTIPLE_CHOICE".equals(q.getType()) || "TRUE_FALSE_VISUAL".equals(q.getType())) {
+            if (selectedAnswer == null) {
                 Toast.makeText(this, "Pilih jawaban terlebih dahulu", Toast.LENGTH_SHORT).show();
                 return;
             }
-            RadioButton rb = findViewById(selectedId);
-            answer = rb.getTag().toString();
+            answer = selectedAnswer;
         } else if ("SIGN_PRACTICE".equals(q.getType())) {
             if (simulatedAnswer == null) {
                 Toast.makeText(this, "Lakukan simulasi deteksi kamera terlebih dahulu", Toast.LENGTH_SHORT).show();
@@ -400,8 +438,11 @@ public class LearnActivity extends AppCompatActivity {
         btnSubmitAnswer.setEnabled(!isLoading);
         btnSkipQuestion.setEnabled(!isLoading);
         btnSimulateCamera.setEnabled(!isLoading);
-        for(int i = 0; i < radioGroupOptions.getChildCount(); i++){
-            radioGroupOptions.getChildAt(i).setEnabled(!isLoading);
+        btnTrue.setEnabled(!isLoading);
+        btnFalse.setEnabled(!isLoading);
+        for(View v : optionViews) {
+            v.setEnabled(!isLoading);
+            v.findViewById(R.id.radio_option_indicator).setEnabled(!isLoading);
         }
     }
 

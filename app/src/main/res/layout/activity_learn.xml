@@ -128,15 +128,55 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- For MULTIPLE_CHOICE -->
-        <RadioGroup
-            android:id="@+id/radio_group_options"
+        <LinearLayout
+            android:id="@+id/layout_options_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/iv_question_media"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- For TRUE_FALSE_VISUAL -->
+        <LinearLayout
+            android:id="@+id/layout_true_false"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/iv_question_media"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
-        </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_true"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="✅ BENAR"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_white"
+                android:backgroundTint="#4CAF50"
+                app:cornerRadius="14dp" />
+
+            <Button
+                android:id="@+id/btn_false"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="❌ SALAH"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_white"
+                android:backgroundTint="#F44336"
+                app:cornerRadius="14dp" />
+        </LinearLayout>
 
         <!-- For SIGN_PRACTICE Placeholder -->
         <Button
@@ -149,7 +189,7 @@
             app:cornerRadius="14dp"
             android:layout_marginTop="24dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/radio_group_options"
+            app:layout_constraintTop_toBottomOf="@id/layout_true_false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
