@@ -6,12 +6,12 @@ public class LevelDetailResponse {
     private Level level;
     private UserProgress userProgress;
     private List<LeaderboardEntry> leaderboard;
-    private Integer userRank;
+    private UserRank userRank;
 
     public Level getLevel() { return level; }
     public UserProgress getUserProgress() { return userProgress; }
     public List<LeaderboardEntry> getLeaderboard() { return leaderboard; }
-    public Integer getUserRank() { return userRank; }
+    public UserRank getUserRank() { return userRank; }
 
     public static class UserProgress {
         private String status;
@@ -19,5 +19,13 @@ public class LevelDetailResponse {
 
         public String getStatus() { return status; }
         public int getBestScore() { return bestScore; }
+    }
+
+    public static class UserRank {
+        private int rank;
+        private int score;
+
+        public int getRank() { return rank; }
+        public int getScore() { return score; }
     }
 }
