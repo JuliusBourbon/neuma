@@ -39,6 +39,12 @@ public class TokenManager {
         }
     }
 
+    public void saveUsername(String username) {
+        if (sharedPreferences != null) {
+            sharedPreferences.edit().putString("username", username).apply();
+        }
+    }
+
     public String getToken() {
         if (sharedPreferences != null) {
             return sharedPreferences.getString(KEY_TOKEN, null);
@@ -46,9 +52,16 @@ public class TokenManager {
         return null;
     }
 
+    public String getUsername() {
+        if (sharedPreferences != null) {
+            return sharedPreferences.getString("username", null);
+        }
+        return null;
+    }
+
     public void clearToken() {
         if (sharedPreferences != null) {
-            sharedPreferences.edit().remove(KEY_TOKEN).apply();
+            sharedPreferences.edit().remove(KEY_TOKEN).remove("username").apply();
         }
     }
 

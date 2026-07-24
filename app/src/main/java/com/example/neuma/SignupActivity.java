@@ -78,6 +78,9 @@ public class SignupActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse authResponse = response.body();
                     tokenManager.saveToken(authResponse.getToken());
+                    if(authResponse.getUser() != null) {
+                        tokenManager.saveUsername(authResponse.getUser().getName());
+                    }
                     
                     Toast.makeText(SignupActivity.this, "Registrasi berhasil!", Toast.LENGTH_SHORT).show();
                     

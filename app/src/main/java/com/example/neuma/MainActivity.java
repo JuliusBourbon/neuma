@@ -24,9 +24,11 @@ import com.example.neuma.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import com.example.neuma.utils.TokenManager;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int ACTION_ADMIN_ID = 1001;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
@@ -68,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        
+        TokenManager tokenManager = new TokenManager(this);
+        if ("neumaadmin".equals(tokenManager.getUsername())) {
+            menu.add(Menu.NONE, ACTION_ADMIN_ID, 90, "Admin Panel")
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        }
         return true;
     }
 
@@ -81,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == ACTION_ADMIN_ID) {
+            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
             startActivity(intent);
             return true;
         }

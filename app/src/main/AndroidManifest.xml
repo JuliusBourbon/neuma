@@ -69,6 +69,16 @@
             android:name=".SettingActivity"
             android:exported="false"
             android:theme="@style/Theme.Neuma" />
+            
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Neuma" />
+            
+        <activity
+            android:name=".AdminLevelDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Neuma" />
     </application>
 
 </manifest>
