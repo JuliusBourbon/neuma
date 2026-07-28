@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Tambahan item Home untuk ikon rumah -->
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/FirstFragment"
         android:icon="@drawable/ic_home_nav"
         android:title="Home" />
-
     <item
-        android:id="@+id/nav_misi"
+        android:id="@+id/MisiFragment"
         android:icon="@drawable/ic_target_nav"
         android:title="Misi" />
-
     <item
-        android:id="@+id/nav_pencapaian"
+        android:id="@+id/PencapaianFragment"
         android:icon="@drawable/ic_medal_nav"
         android:title="Pencapaian" />
-
     <item
-        android:id="@+id/nav_profile"
+        android:id="@+id/ProfileFragment"
         android:icon="@drawable/ic_more_nav"
         android:title="Profile" />
-
 </menu>

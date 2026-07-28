@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.example.neuma.utils.TokenManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -49,8 +50,13 @@ public class FirstFragment extends Fragment {
     }
 
     private void loadLevels() {
-        progressBar.setVisibility(View.VISIBLE);
-        rvLevels.setVisibility(View.GONE);
+        TokenManager tokenManager = new TokenManager(requireContext());
+        String currentToken = tokenManager.getToken();
+
+        // Print Token ke Logcat
+        android.util.Log.d("DEBUG_NEUMA", "TOKEN SAAT INI: " + currentToken);
+
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
         LevelApi levelApi = ApiClient.getAuthClient(requireContext()).create(LevelApi.class);
         Call<List<Level>> call = levelApi.getLevels();
@@ -59,30 +65,29 @@ public class FirstFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Level>> call, Response<List<Level>> response) {
                 if (!isAdded()) return;
-                progressBar.setVisibility(View.GONE);
-                rvLevels.setVisibility(View.VISIBLE);
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
+
+                // Print Status Code dari Server
+                android.util.Log.d("DEBUG_NEUMA", "RESPONSE CODE: " + response.code());
 
                 if (response.isSuccessful() && response.body() != null) {
                     List<Level> levels = response.body();
-
                     adapter = new LevelAdapter(levels, level -> {
-                        // Ke Level View
                         Intent intent = new Intent(requireActivity(), LevelActivity.class);
                         intent.putExtra("LEVEL_ID", level.getId());
-                        intent.putExtra("LEVEL_LETTER", level.getLetter());
                         startActivity(intent);
                     });
                     rvLevels.setAdapter(adapter);
                 } else {
-                    Toast.makeText(requireContext(), "Gagal memuat level: " + response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Gagal memuat level: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Level>> call, Throwable t) {
                 if (!isAdded()) return;
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(requireContext(), "Error koneksi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
+                Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

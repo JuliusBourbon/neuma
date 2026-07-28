@@ -12,8 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     private static final String BASE_URL = "http://192.168.1.3:3000/api/";
     private static Retrofit retrofit = null;
-    
-    // AuthApi (login/register) tidak butuh interceptor
+
+    // Client Publik (Login / Register)
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -24,25 +24,25 @@ public class ApiClient {
         return retrofit;
     }
 
-    // Untuk endpoint yang butuh Auth (seperti onboarding, level, dll)
+    // Client Terautentikasi (Daftar Level, Profil, dll)
     public static Retrofit getAuthClient(Context context) {
-        TokenManager tokenManager = new TokenManager(context);
-        
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request original = chain.request();
-                String token = tokenManager.getToken();
-                
-                if (token != null && !token.isEmpty()) {
-                    Request.Builder requestBuilder = original.newBuilder()
-                            .header("Authorization", "Bearer " + token);
-                    Request request = requestBuilder.build();
-                    return chain.proceed(request);
-                }
-                return chain.proceed(original);
-            }
-        }).build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request original = chain.request();
+
+                    // Panggil TokenManager di dalam Interceptor agar selalu mengambil token terbaru dari SharedPreferences
+                    TokenManager tokenManager = new TokenManager(context.getApplicationContext());
+                    String token = tokenManager.getToken();
+
+                    if (token != null && !token.isEmpty()) {
+                        Request request = original.newBuilder()
+                                .header("Authorization", "Bearer " + token)
+                                .build();
+                        return chain.proceed(request);
+                    }
+                    return chain.proceed(original);
+                })
+                .build();
 
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)

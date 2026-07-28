@@ -16,32 +16,18 @@ public class TokenManager {
     private SharedPreferences sharedPreferences;
 
     public TokenManager(Context context) {
-        try {
-            MasterKey masterKey = new MasterKey.Builder(context)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .build();
-
-            sharedPreferences = EncryptedSharedPreferences.create(
-                    context,
-                    PREFS_NAME,
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (GeneralSecurityException | IOException e) {
-            Log.e("TokenManager", "Error creating EncryptedSharedPreferences", e);
-        }
+        sharedPreferences = context.getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     public void saveToken(String token) {
         if (sharedPreferences != null) {
-            sharedPreferences.edit().putString(KEY_TOKEN, token).apply();
+            sharedPreferences.edit().putString(KEY_TOKEN, token).commit();
         }
     }
 
     public void saveUsername(String username) {
         if (sharedPreferences != null) {
-            sharedPreferences.edit().putString("username", username).apply();
+            sharedPreferences.edit().putString("username", username).commit();
         }
     }
 
@@ -61,7 +47,7 @@ public class TokenManager {
 
     public void clearToken() {
         if (sharedPreferences != null) {
-            sharedPreferences.edit().remove(KEY_TOKEN).remove("username").apply();
+            sharedPreferences.edit().remove(KEY_TOKEN).remove("username").commit();
         }
     }
 
