@@ -9,7 +9,7 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
-    <!-- Fragment Container Langsung (Dipaksa Berhenti Tepat Di Atas Bottom Bar) -->
+    <!-- Fragment Container -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_content_main"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -20,22 +20,120 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation" />
+        app:layout_constraintBottom_toTopOf="@id/custom_bottom_nav" />
 
-    <!-- Bottom Navigation Bar Paling Bawah -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <!-- Navbar Kustom 100% Sesuai Figma -->
+    <LinearLayout
+        android:id="@+id/custom_bottom_nav"
         android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:background="@color/white"
-        android:elevation="24dp"
-        android:translationZ="24dp"
-        app:itemIconSize="28dp"
-        app:itemIconTint="@null"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/bottom_nav_menu"
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:background="@color/card_background"
+        android:elevation="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Menu 1: Home -->
+        <LinearLayout
+            android:id="@+id/menu_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_home_nav"
+                android:contentDescription="Home" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:textSize="11sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Menu 2: Misi -->
+        <LinearLayout
+            android:id="@+id/menu_misi"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_target_nav"
+                android:contentDescription="Misi" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Misi"
+                android:textSize="11sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Menu 3: Pencapaian -->
+        <LinearLayout
+            android:id="@+id/menu_pencapaian"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_medal_nav"
+                android:contentDescription="Pencapaian" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pencapaian"
+                android:textSize="11sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Menu 4: Profile -->
+        <LinearLayout
+            android:id="@+id/menu_profile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_more_nav"
+                android:contentDescription="Profile" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textSize="11sp"
+                android:textColor="@color/text_primary"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
