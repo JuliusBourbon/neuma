@@ -1,111 +1,68 @@
 package com.example.neuma;
 
 import android.os.Bundle;
-import android.content.Intent;
-
-import androidx.activity.EdgeToEdge;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.navigation.fragment.NavHostFragment;
-
-import com.example.neuma.databinding.ActivityMainBinding;
-
-import android.view.Menu;
 import android.view.MenuItem;
-import com.example.neuma.utils.TokenManager;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int ACTION_ADMIN_ID = 1001;
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+    private BottomNavigationView bottomNavigationView;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        setSupportActionBar(binding.toolbar);
-
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment_content_main);
-
-        if (navHostFragment != null) {
-            NavController navController = navHostFragment.getNavController();
-
-            appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        // Sembunyikan ActionBar/TopBar jika ada
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
         }
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_main);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        fragmentManager = getSupportFragmentManager();
+
+        // Tampilkan halaman utama (FirstFragment) saat aplikasi dibuka
+        loadFragment(new FirstFragment());
+
+        // Navigasi Bottom Bar
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AchievementActivity.class);
-                startActivity(intent);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+                int id = item.getItemId();
+
+                if (id == R.id.nav_home) {
+                    selectedFragment = new FirstFragment(); // Halaman Level
+                } else if (id == R.id.nav_misi) {
+                    // selectedFragment = new MisiFragment();
+                } else if (id == R.id.nav_pencapaian) {
+                    // selectedFragment = new PencapaianFragment();
+                } else if (id == R.id.nav_profile) {
+                    // selectedFragment = new ProfileFragment();
+                }
+
+                if (selectedFragment != null) {
+                    loadFragment(selectedFragment);
+                    return true;
+                }
+                return false;
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        
-        TokenManager tokenManager = new TokenManager(this);
-        if ("neumaadmin".equals(tokenManager.getUsername())) {
-            menu.add(Menu.NONE, ACTION_ADMIN_ID, 90, "Admin Panel")
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (id == ACTION_ADMIN_ID) {
-            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment_content_main);
-        NavController navController = navHostFragment.getNavController();
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    // Fungsi pengganti NavHostFragment secara manual
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_main, fragment);
+        transaction.commit();
     }
 }

@@ -3,9 +3,7 @@ package com.example.neuma.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,15 +15,17 @@ import java.util.List;
 
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> {
 
-    private List<Level> levels;
-    private OnLevelClickListener listener;
+    private List<Level> levelList;
+    private OnItemClickListener listener; // Menambahkan variabel untuk listener
 
-    public interface OnLevelClickListener {
-        void onLevelClick(Level level);
+    // Membuat Interface untuk menangkap aksi klik
+    public interface OnItemClickListener {
+        void onItemClick(Level level);
     }
 
-    public LevelAdapter(List<Level> levels, OnLevelClickListener listener) {
-        this.levels = levels;
+    // Constructor sekarang menerima 2 parameter (sesuai dengan yang dikirim AdminActivity)
+    public LevelAdapter(List<Level> levelList, OnItemClickListener listener) {
+        this.levelList = levelList;
         this.listener = listener;
     }
 
@@ -38,41 +38,63 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
 
     @Override
     public void onBindViewHolder(@NonNull LevelViewHolder holder, int position) {
-        Level level = levels.get(position);
-        holder.tvLetter.setText(level.getLetter());
+        Level currentLevel = levelList.get(position);
+        boolean isTrophyLevel = (position == 4);
 
-        if ("LOCKED".equalsIgnoreCase(level.getStatus())) {
-            holder.circleContainer.setBackgroundResource(R.drawable.circle_bg_disabled);
-            holder.ivLock.setVisibility(View.VISIBLE);
-            holder.itemView.setOnClickListener(null);
-            holder.itemView.setAlpha(0.6f);
+        if (position % 2 == 0) {
+            // Jika urutan genap geser sedikit ke kanan
+            holder.itemView.setTranslationX(60f);
         } else {
-            holder.circleContainer.setBackgroundResource(R.drawable.circle_bg_primary);
-            holder.ivLock.setVisibility(View.GONE);
-            holder.itemView.setAlpha(1.0f);
-            holder.itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onLevelClick(level);
-                }
-            });
+            // Jika urutan ganjil geser sedikit ke kiri
+            holder.itemView.setTranslationX(-60f);
         }
+
+        if (currentLevel.getStatus().equals("ACTIVE")) {
+            holder.ivTooltipStart.setVisibility(View.VISIBLE);
+            if (isTrophyLevel) {
+                holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_active);
+            } else {
+                holder.ivLevelIcon.setImageResource(R.drawable.ic_level_active);
+            }
+        }
+        else if (currentLevel.getStatus().equals("LOCKED")) {
+            holder.ivTooltipStart.setVisibility(View.GONE);
+            if (isTrophyLevel) {
+                holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_locked);
+            } else {
+                holder.ivLevelIcon.setImageResource(R.drawable.ic_level_locked);
+            }
+        }
+        else {
+            holder.ivTooltipStart.setVisibility(View.GONE);
+            if (isTrophyLevel) {
+                holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_active);
+            } else {
+                holder.ivLevelIcon.setImageResource(R.drawable.ic_level_active);
+            }
+        }
+
+        // Menambahkan aksi klik yang dihubungkan dengan listener
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                // Mengirimkan data level yang di-klik ke Activity/Fragment yang memanggilnya
+                listener.onItemClick(currentLevel);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return levels != null ? levels.size() : 0;
+        return levelList.size();
     }
 
-    static class LevelViewHolder extends RecyclerView.ViewHolder {
-        FrameLayout circleContainer;
-        TextView tvLetter;
-        ImageView ivLock;
+    public static class LevelViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivLevelIcon, ivTooltipStart;
 
         public LevelViewHolder(@NonNull View itemView) {
             super(itemView);
-            circleContainer = itemView.findViewById(R.id.circle_container);
-            tvLetter = itemView.findViewById(R.id.tv_letter);
-            ivLock = itemView.findViewById(R.id.iv_lock);
+            ivLevelIcon = itemView.findViewById(R.id.ivLevelIcon);
+            ivTooltipStart = itemView.findViewById(R.id.ivTooltipStart);
         }
     }
 }

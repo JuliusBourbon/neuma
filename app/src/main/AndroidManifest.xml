@@ -79,6 +79,10 @@
             android:name=".AdminLevelDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.Neuma" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

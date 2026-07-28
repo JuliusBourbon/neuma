@@ -12,30 +12,31 @@
         android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:letterSpacing="0.02"
         android:text="Neumá"
         android:textColor="@color/primary"
         android:textSize="48sp"
         android:textStyle="bold"
-        android:fontFamily="sans-serif-medium"
-        android:letterSpacing="0.02"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Tagline di bawah logo -->
     <TextView
         android:id="@+id/tv_tagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins"
+        android:letterSpacing="0.05"
         android:text="Belajar Bahasa Isyarat"
         android:textColor="@color/text_secondary"
         android:textSize="14sp"
-        android:letterSpacing="0.05"
-        app:layout_constraintTop_toBottomOf="@id/tv_app_name"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
 
     <!-- Loading indicator (opsional, bisa disembunyikan jika tidak perlu) -->
     <ProgressBar

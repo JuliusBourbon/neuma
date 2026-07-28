@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager; // Pastikan import ini benar
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.neuma.adapters.LevelAdapter;
@@ -36,14 +36,15 @@ public class FirstFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
-        
+
         rvLevels = view.findViewById(R.id.rv_levels);
         progressBar = view.findViewById(R.id.progress_bar);
-        
-        rvLevels.setLayoutManager(new GridLayoutManager(getContext(), 4)); // 4 kolom (bulatan)
-        
+
+        // UBAH: Menggunakan LinearLayoutManager agar tersusun vertikal dari atas ke bawah
+        rvLevels.setLayoutManager(new LinearLayoutManager(getContext()));
+
         loadLevels();
-        
+
         return view;
     }
 
@@ -53,7 +54,7 @@ public class FirstFragment extends Fragment {
 
         LevelApi levelApi = ApiClient.getAuthClient(requireContext()).create(LevelApi.class);
         Call<List<Level>> call = levelApi.getLevels();
-        
+
         call.enqueue(new Callback<List<Level>>() {
             @Override
             public void onResponse(Call<List<Level>> call, Response<List<Level>> response) {
@@ -63,9 +64,9 @@ public class FirstFragment extends Fragment {
 
                 if (response.isSuccessful() && response.body() != null) {
                     List<Level> levels = response.body();
-                    
+
                     adapter = new LevelAdapter(levels, level -> {
-                        // Ke Level View (Tahap E)
+                        // Ke Level View
                         Intent intent = new Intent(requireActivity(), LevelActivity.class);
                         intent.putExtra("LEVEL_ID", level.getId());
                         intent.putExtra("LEVEL_LETTER", level.getLetter());
@@ -85,5 +86,4 @@ public class FirstFragment extends Fragment {
             }
         });
     }
-
 }
