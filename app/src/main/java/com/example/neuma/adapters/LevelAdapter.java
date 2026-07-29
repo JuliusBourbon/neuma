@@ -49,35 +49,34 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
             holder.itemView.setTranslationX(-60f);
         }
 
-        if (currentLevel.getStatus().equals("ACTIVE")) {
+        // Tooltip START HANYA muncul di item pertama (position 0)
+        if (position == 0) {
             holder.ivTooltipStart.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivTooltipStart.setVisibility(View.GONE);
+        }
+
+        boolean isActive = "ACTIVE".equalsIgnoreCase(currentLevel.getStatus())
+                || "UNLOCKED".equalsIgnoreCase(currentLevel.getStatus())
+                || "COMPLETED".equalsIgnoreCase(currentLevel.getStatus());
+
+        // Pengaturan Icon Level / Trophy
+        if (isActive) {
             if (isTrophyLevel) {
                 holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_active);
             } else {
                 holder.ivLevelIcon.setImageResource(R.drawable.ic_level_active);
             }
-        }
-        else if (currentLevel.getStatus().equals("LOCKED")) {
-            holder.ivTooltipStart.setVisibility(View.GONE);
+        } else {
             if (isTrophyLevel) {
                 holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_locked);
             } else {
                 holder.ivLevelIcon.setImageResource(R.drawable.ic_level_locked);
             }
         }
-        else {
-            holder.ivTooltipStart.setVisibility(View.GONE);
-            if (isTrophyLevel) {
-                holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_active);
-            } else {
-                holder.ivLevelIcon.setImageResource(R.drawable.ic_level_active);
-            }
-        }
 
-        // Menambahkan aksi klik yang dihubungkan dengan listener
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                // Mengirimkan data level yang di-klik ke Activity/Fragment yang memanggilnya
                 listener.onItemClick(currentLevel);
             }
         });

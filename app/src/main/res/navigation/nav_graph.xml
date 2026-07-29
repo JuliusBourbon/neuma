@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/MisiFragment"
-        android:name="com.example.neuma.SecondFragment"
+        android:name="com.example.neuma.MisiFragment"
         android:label="Misi"
-        tools:layout="@layout/fragment_second" />
+        tools:layout="@layout/fragment_misi" />
 
     <fragment
         android:id="@+id/PencapaianFragment"

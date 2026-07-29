@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:id="@+id/custom_bottom_nav"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:orientation="horizontal"
+    android:background="@color/card_background"
+    android:elevation="16dp">
+
+    <!-- Menu 1: Home -->
+    <LinearLayout
+        android:id="@+id/menu_home"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_home_nav"
+            android:contentDescription="Home" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textSize="11sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- Menu 2: Misi -->
+    <LinearLayout
+        android:id="@+id/menu_misi"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_target_nav"
+            android:contentDescription="Misi" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Misi"
+            android:textSize="11sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- Menu 3: Pencapaian -->
+    <LinearLayout
+        android:id="@+id/menu_pencapaian"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_medal_nav"
+            android:contentDescription="Pencapaian" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pencapaian"
+            android:textSize="11sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- Menu 4: Profile -->
+    <LinearLayout
+        android:id="@+id/menu_profile"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_more_nav"
+            android:contentDescription="Profile" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="11sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+</LinearLayout>

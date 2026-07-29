@@ -2,22 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="16dp">
+    android:paddingVertical="12dp">
 
-    <ImageView
-        android:id="@+id/ivLevelIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_level_locked"
-        tools:src="@drawable/ic_level_active"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+    <!-- Tooltip START -->
     <ImageView
         android:id="@+id/ivTooltipStart"
         android:layout_width="wrap_content"
@@ -25,9 +14,20 @@
         android:layout_marginBottom="4dp"
         android:src="@drawable/ic_tooltip_start"
         android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/ivLevelIcon"
         app:layout_constraintEnd_toEndOf="@id/ivLevelIcon"
-        app:layout_constraintStart_toStartOf="@id/ivLevelIcon"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="@id/ivLevelIcon" />
+
+    <!-- Icon Level -->
+    <ImageView
+        android:id="@+id/ivLevelIcon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_level_locked"
+        app:layout_constraintTop_toBottomOf="@id/ivTooltipStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
