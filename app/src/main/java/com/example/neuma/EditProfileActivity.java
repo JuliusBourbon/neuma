@@ -109,7 +109,13 @@ public class EditProfileActivity extends AppCompatActivity {
                     tvValueNama.setText(response.body().getName());
                     Toast.makeText(EditProfileActivity.this, "Nama berhasil diubah!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "Gagal mengubah nama", Toast.LENGTH_SHORT).show();
+                    String errorMsg = "Gagal mengubah nama";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg = response.errorBody().string();
+                        }
+                    } catch (Exception e) {}
+                    Toast.makeText(EditProfileActivity.this, "Gagal: " + errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -160,7 +166,13 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(EditProfileActivity.this, "Password berhasil diperbarui!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "Gagal! Password lama salah?", Toast.LENGTH_SHORT).show();
+                    String errorMsg = "Gagal! Password lama salah?";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg = response.errorBody().string();
+                        }
+                    } catch (Exception e) {}
+                    Toast.makeText(EditProfileActivity.this, "Gagal: " + errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 
