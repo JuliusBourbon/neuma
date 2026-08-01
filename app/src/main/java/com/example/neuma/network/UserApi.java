@@ -13,9 +13,9 @@ public interface UserApi {
     @GET("users/me")
     Call<User> getProfile();
 
-    @PUT("users/profile")
+    @retrofit2.http.PATCH("users/me")
     Call<User> updateProfile(@Body UpdateProfileRequest request);
 
-    @PUT("users/password")
+    @retrofit2.http.PATCH("users/me/password")
     Call<Void> updatePassword(@Body UpdatePasswordRequest request);
 }

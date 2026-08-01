@@ -101,7 +101,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void performUpdateName(String newName) {
         setLoading(true);
-        userApi.updateProfile(new UpdateProfileRequest(newName)).enqueue(new Callback<User>() {
+        userApi.updateProfile(new UpdateProfileRequest(newName, null, null)).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 setLoading(false);
