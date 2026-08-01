@@ -34,7 +34,19 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         // Peringkat dimulai dari angka 4
         holder.tvRank.setText(String.valueOf(position + 4));
         holder.tvName.setText(entry.getName());
-        holder.tvScore.setText(String.valueOf(entry.getScore()));
+        
+        if (entry.getName().equals("-")) {
+            holder.tvScore.setText("-");
+            holder.ivAvatar.setImageResource(R.drawable.ic_launcher_foreground);
+        } else {
+            holder.tvScore.setText(String.valueOf(entry.getScore()));
+            String style = entry.getAvatarStyle() != null ? entry.getAvatarStyle() : "adventurer";
+            String seed = entry.getAvatarSeed() != null ? entry.getAvatarSeed() : "Felix";
+            String url = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+            com.bumptech.glide.Glide.with(holder.itemView.getContext())
+                .load(url)
+                .into(holder.ivAvatar);
+        }
     }
 
     @Override
@@ -44,12 +56,14 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     static class LeaderboardViewHolder extends RecyclerView.ViewHolder {
         TextView tvRank, tvName, tvScore;
+        de.hdodenhof.circleimageview.CircleImageView ivAvatar;
 
         public LeaderboardViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRank = itemView.findViewById(R.id.tv_rank);
             tvName = itemView.findViewById(R.id.tv_name);
             tvScore = itemView.findViewById(R.id.tv_score);
+            ivAvatar = itemView.findViewById(R.id.iv_avatar);
         }
     }
 }

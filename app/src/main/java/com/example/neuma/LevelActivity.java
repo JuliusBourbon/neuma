@@ -100,52 +100,49 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     private void setupLeaderboardData(List<LeaderboardEntry> list) {
-        //Top 3 jika data tersedia
-        if (list.size() > 0) {
-            tvRank1Name.setText(list.get(0).getName());
-            tvRank1Score.setText(list.get(0).getScore() + " Points");
-        }
-        if (list.size() > 1) {
-            tvRank2Name.setText(list.get(1).getName());
-            tvRank2Score.setText(list.get(1).getScore() + " Points");
-        }
-        if (list.size() > 2) {
-            tvRank3Name.setText(list.get(2).getName());
-            tvRank3Score.setText(list.get(2).getScore() + " Points");
+        // Pad the list to ensure it has at least 10 elements
+        List<LeaderboardEntry> paddedList = new ArrayList<>(list);
+        while (paddedList.size() < 10) {
+            LeaderboardEntry dummy = new LeaderboardEntry();
+            dummy.setName("-");
+            dummy.setScore(0);
+            dummy.setAvatarStyle("adventurer");
+            dummy.setAvatarSeed("Felix");
+            paddedList.add(dummy);
         }
 
+        // Top 1
+        tvRank1Name.setText(paddedList.get(0).getName());
+        tvRank1Score.setText(paddedList.get(0).getScore() + " Points");
+        loadAvatar(findViewById(R.id.iv_rank1_avatar), paddedList.get(0));
+
+        // Top 2
+        tvRank2Name.setText(paddedList.get(1).getName());
+        tvRank2Score.setText(paddedList.get(1).getScore() + " Points");
+        loadAvatar(findViewById(R.id.iv_rank2_avatar), paddedList.get(1));
+
+        // Top 3
+        tvRank3Name.setText(paddedList.get(2).getName());
+        tvRank3Score.setText(paddedList.get(2).getScore() + " Points");
+        loadAvatar(findViewById(R.id.iv_rank3_avatar), paddedList.get(2));
+
         // Sisanya (peringkat 4 - 10) dimasukkan ke RecyclerView
-        if (list.size() > 3) {
-            List<LeaderboardEntry> restList = list.subList(3, list.size());
-            rvLeaderboard.setAdapter(new LeaderboardAdapter(restList));
+        List<LeaderboardEntry> restList = paddedList.subList(3, 10);
+        rvLeaderboard.setAdapter(new LeaderboardAdapter(restList));
+    }
+
+    private void loadAvatar(android.widget.ImageView imageView, LeaderboardEntry entry) {
+        if (entry.getName().equals("-")) {
+            imageView.setImageResource(R.drawable.ic_launcher_foreground);
+            return;
         }
+        String style = entry.getAvatarStyle() != null ? entry.getAvatarStyle() : "adventurer";
+        String seed = entry.getAvatarSeed() != null ? entry.getAvatarSeed() : "Felix";
+        String url = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+        com.bumptech.glide.Glide.with(this).load(url).into(imageView);
     }
 
     private void setupDummyLeaderboard() {
-        tvRank1Name.setText("Hasan Sajjad");
-        tvRank1Score.setText("100 Points");
-
-        tvRank2Name.setText("Masuma");
-        tvRank2Score.setText("100 Points");
-
-        tvRank3Name.setText("Tanim");
-        tvRank3Score.setText("100 Points");
-
-        List<LeaderboardEntry> dummyRest = new ArrayList<>();
-        // Mengisi data dummy persis seperti gambar figma
-        dummyRest.add(createDummyEntry("Rina Wati", 100));
-        dummyRest.add(createDummyEntry("Arif Rahman", 100));
-        dummyRest.add(createDummyEntry("Fitri Yani", 100));
-        dummyRest.add(createDummyEntry("Hendra Setiawan", 100));
-        dummyRest.add(createDummyEntry("Rian Ardianto", 100));
-        dummyRest.add(createDummyEntry("Dian Sastro", 100));
-        dummyRest.add(createDummyEntry("Tika", 100));
-
-        rvLeaderboard.setAdapter(new LeaderboardAdapter(dummyRest));
-    }
-
-    private LeaderboardEntry createDummyEntry(String name, int score) {
-        // Asumsi model LeaderboardEntry kamu memiliki setter/constructor yang sesuai
-        return new LeaderboardEntry();
+        setupLeaderboardData(new ArrayList<>());
     }
 }
