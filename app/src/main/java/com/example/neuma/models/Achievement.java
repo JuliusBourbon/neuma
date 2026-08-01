@@ -1,15 +1,25 @@
 package com.example.neuma.models;
 
 public class Achievement {
+    @com.google.gson.annotations.SerializedName("id")
     private String id;
+    @com.google.gson.annotations.SerializedName("code")
     private String code;
+    @com.google.gson.annotations.SerializedName("title")
     private String title;
+    @com.google.gson.annotations.SerializedName("description")
     private String description;
+    @com.google.gson.annotations.SerializedName("isUnlocked")
     private boolean isUnlocked;
+    @com.google.gson.annotations.SerializedName("progress")
     private int progress;
+    @com.google.gson.annotations.SerializedName("target")
     private int target;
+    @com.google.gson.annotations.SerializedName("rewardAvatarId")
     private String rewardAvatarId;
+    @com.google.gson.annotations.SerializedName("rewardAvatarSeed")
     private String rewardAvatarSeed;
+    @com.google.gson.annotations.SerializedName("rewardAvatarStyle")
     private String rewardAvatarStyle;
 
     public Achievement() {}
