@@ -1,9 +1,15 @@
 package com.example.neuma;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -11,8 +17,17 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.ImageProxy;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.neuma.models.AnswerRequest;
@@ -27,15 +42,26 @@ import com.example.neuma.models.StartAttemptRequest;
 import com.example.neuma.network.AttemptApi;
 import com.example.neuma.network.LevelApi;
 import com.example.neuma.utils.ApiClient;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.mediapipe.framework.image.BitmapImageBuilder;
+import com.google.mediapipe.framework.image.MPImage;
+import com.google.mediapipe.tasks.components.containers.Category;
+import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
+import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult;
 
+import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LearnActivity extends AppCompatActivity {
+public class LearnActivity extends AppCompatActivity implements HandLandmarkerHelper.LandmarkerListener {
+
+    private static final String TAG = "LearnActivity";
+    private static final int CAMERA_PERMISSION_CODE = 101;
 
     private String levelId;
     private String attemptId;
@@ -58,12 +84,25 @@ public class LearnActivity extends AppCompatActivity {
     private ImageView ivQuestionMedia;
     private LinearLayout layoutOptionsContainer, layoutTrueFalse;
     private Button btnTrue, btnFalse;
-    private Button btnSimulateCamera, btnSubmitAnswer, btnSkipQuestion;
+    private Button btnSubmitAnswer, btnSkipQuestion;
+
+    // Camera / SIGN_PRACTICE Views
+    private FrameLayout layoutCameraContainer;
+    private PreviewView cameraPreview;
+    private OverlayView overlayView;
+    private TextView tvDetectionResult;
+
+    // Camera / Detection components
+    private HandLandmarkerHelper handLandmarkerHelper;
+    private OnnxHelper onnxHelper;
+    private ExecutorService cameraExecutor;
+    private int lastImageWidth = 1;
+    private int lastImageHeight = 1;
+    private boolean isCameraRunning = false;
 
     private LevelApi levelApi;
     private AttemptApi attemptApi;
-    
-    private String simulatedAnswer = null;
+
     private String selectedAnswer = null;
     private java.util.List<View> optionViews = new java.util.ArrayList<>();
 
@@ -93,9 +132,14 @@ public class LearnActivity extends AppCompatActivity {
         layoutTrueFalse = findViewById(R.id.layout_true_false);
         btnTrue = findViewById(R.id.btn_true);
         btnFalse = findViewById(R.id.btn_false);
-        btnSimulateCamera = findViewById(R.id.btn_simulate_camera);
         btnSubmitAnswer = findViewById(R.id.btn_submit_answer);
         btnSkipQuestion = findViewById(R.id.btn_skip_question);
+
+        // Camera
+        layoutCameraContainer = findViewById(R.id.layout_camera_container);
+        cameraPreview = findViewById(R.id.camera_preview);
+        overlayView = findViewById(R.id.overlay_view);
+        tvDetectionResult = findViewById(R.id.tv_detection_result);
 
         levelApi = ApiClient.getAuthClient(this).create(LevelApi.class);
         attemptApi = ApiClient.getAuthClient(this).create(AttemptApi.class);
@@ -103,25 +147,220 @@ public class LearnActivity extends AppCompatActivity {
         btnNextMaterial.setOnClickListener(v -> handleNextMaterial());
         btnSubmitAnswer.setOnClickListener(v -> submitAnswer());
         btnSkipQuestion.setOnClickListener(v -> skipQuestion());
-        
-        btnSimulateCamera.setOnClickListener(v -> showSimulateCameraDialog());
 
         fetchData();
     }
+
+    // ─── Camera / Detection Lifecycle ───────────────────────────────────────
+
+    private void initCameraComponents() {
+        if (onnxHelper == null) {
+            onnxHelper = new OnnxHelper(this);
+        }
+        if (handLandmarkerHelper == null) {
+            handLandmarkerHelper = new HandLandmarkerHelper(this, this);
+        }
+        if (cameraExecutor == null) {
+            cameraExecutor = Executors.newSingleThreadExecutor();
+        }
+    }
+
+    private void startCameraForSignPractice() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        } else {
+            bindCamera();
+        }
+    }
+
+    private void bindCamera() {
+        ListenableFuture<ProcessCameraProvider> future = ProcessCameraProvider.getInstance(this);
+        future.addListener(() -> {
+            try {
+                ProcessCameraProvider cameraProvider = future.get();
+
+                Preview preview = new Preview.Builder().build();
+                preview.setSurfaceProvider(cameraPreview.getSurfaceProvider());
+
+                ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .build();
+                imageAnalysis.setAnalyzer(cameraExecutor, this::analyzeFrame);
+
+                CameraSelector cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA;
+                cameraProvider.unbindAll();
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
+                isCameraRunning = true;
+
+            } catch (Exception e) {
+                Log.e(TAG, "bindCamera error: " + e.getMessage());
+            }
+        }, ContextCompat.getMainExecutor(this));
+    }
+
+    private void stopCamera() {
+        if (!isCameraRunning) return;
+        try {
+            ListenableFuture<ProcessCameraProvider> future = ProcessCameraProvider.getInstance(this);
+            future.addListener(() -> {
+                try {
+                    ProcessCameraProvider provider = future.get();
+                    provider.unbindAll();
+                    isCameraRunning = false;
+                } catch (Exception e) {
+                    Log.e(TAG, "stopCamera error: " + e.getMessage());
+                }
+            }, ContextCompat.getMainExecutor(this));
+        } catch (Exception e) {
+            Log.e(TAG, "stopCamera outer error: " + e.getMessage());
+        }
+    }
+
+    private void analyzeFrame(ImageProxy imageProxy) {
+        Bitmap bitmap = yuv420ToBitmap(imageProxy);
+        if (bitmap != null) {
+            int rotation = imageProxy.getImageInfo().getRotationDegrees();
+            Bitmap rotatedBitmap = rotateBitmap(bitmap, rotation);
+            MPImage mpImage = new BitmapImageBuilder(rotatedBitmap).build();
+            long frameTime = System.currentTimeMillis();
+            lastImageWidth = rotatedBitmap.getWidth();
+            lastImageHeight = rotatedBitmap.getHeight();
+            if (handLandmarkerHelper != null) {
+                handLandmarkerHelper.detectAsync(mpImage, frameTime);
+            }
+        }
+        imageProxy.close();
+    }
+
+    private Bitmap yuv420ToBitmap(ImageProxy image) {
+        ImageProxy.PlaneProxy yPlane = image.getPlanes()[0];
+        ImageProxy.PlaneProxy uPlane = image.getPlanes()[1];
+        ImageProxy.PlaneProxy vPlane = image.getPlanes()[2];
+
+        ByteBuffer yBuffer = yPlane.getBuffer();
+        ByteBuffer uBuffer = uPlane.getBuffer();
+        ByteBuffer vBuffer = vPlane.getBuffer();
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+        byte[] nv21 = new byte[width * height * 3 / 2];
+
+        int yRowStride = yPlane.getRowStride();
+        int yPixelStride = yPlane.getPixelStride();
+        int pos = 0;
+
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                nv21[pos++] = yBuffer.get(row * yRowStride + col * yPixelStride);
+            }
+        }
+
+        int uvRowStride = uPlane.getRowStride();
+        int uvPixelStride = uPlane.getPixelStride();
+        int uvHeight = height / 2;
+        int uvWidth = width / 2;
+
+        for (int row = 0; row < uvHeight; row++) {
+            for (int col = 0; col < uvWidth; col++) {
+                int vuIndex = row * uvRowStride + col * uvPixelStride;
+                nv21[pos++] = vBuffer.get(vuIndex);
+                nv21[pos++] = uBuffer.get(vuIndex);
+            }
+        }
+
+        android.graphics.YuvImage yuvImage = new android.graphics.YuvImage(
+                nv21, android.graphics.ImageFormat.NV21, width, height, null);
+        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+        yuvImage.compressToJpeg(new android.graphics.Rect(0, 0, width, height), 90, out);
+        byte[] imageBytes = out.toByteArray();
+        return android.graphics.BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int rotationDegrees) {
+        if (rotationDegrees == 0) return bitmap;
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotationDegrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    // ─── HandLandmarkerHelper.LandmarkerListener ────────────────────────────
+
+    @Override
+    public void onResults(HandLandmarkerResult result) {
+        runOnUiThread(() -> {
+            overlayView.setResults(result, lastImageWidth, lastImageHeight);
+
+            float[] leftHand = new float[63];
+            float[] rightHand = new float[63];
+
+            List<List<NormalizedLandmark>> allLandmarks = result.landmarks();
+            List<List<Category>> allHandedness = result.handednesses();
+
+            for (int i = 0; i < allLandmarks.size(); i++) {
+                List<NormalizedLandmark> handLandmarks = allLandmarks.get(i);
+                String handLabel = allHandedness.get(i).get(0).categoryName();
+
+                float[] coords = new float[63];
+                for (int j = 0; j < handLandmarks.size(); j++) {
+                    NormalizedLandmark lm = handLandmarks.get(j);
+                    coords[j * 3]     = lm.x();
+                    coords[j * 3 + 1] = lm.y();
+                    coords[j * 3 + 2] = lm.z();
+                }
+
+                if (handLabel.equals("Left")) {
+                    leftHand = coords;
+                } else {
+                    rightHand = coords;
+                }
+            }
+
+            float[] features156 = FeatureExtractor.extractFullFeatures(leftHand, rightHand);
+
+            if (onnxHelper != null) {
+                OnnxHelper.PredictionResult prediction = onnxHelper.predict(features156);
+                if (prediction != null) {
+                    overlayView.setPrediction(prediction.label, prediction.confidence);
+                    selectedAnswer = prediction.label;
+                    tvDetectionResult.setText("Terdeteksi: " + prediction.label
+                            + " (" + String.format("%.1f", prediction.confidence) + "%)");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onError(String error) {
+        Log.e(TAG, "HandLandmarker error: " + error);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_CODE
+                && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            bindCamera();
+        } else {
+            Toast.makeText(this, "Izin kamera diperlukan untuk fitur ini", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // ─── Learn Flow ─────────────────────────────────────────────────────────
 
     private void fetchData() {
         progressBar.setVisibility(View.VISIBLE);
         layoutMaterial.setVisibility(View.GONE);
         layoutQuiz.setVisibility(View.GONE);
 
-        // Fetch Materials
         levelApi.getMaterials(levelId).enqueue(new Callback<List<Material>>() {
             @Override
             public void onResponse(Call<List<Material>> call, Response<List<Material>> response) {
                 if (response.isSuccessful()) {
                     materials = response.body();
-                    
-                    // Fetch Questions
                     levelApi.getQuestions(levelId).enqueue(new Callback<List<Question>>() {
                         @Override
                         public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
@@ -163,6 +402,7 @@ public class LearnActivity extends AppCompatActivity {
     }
 
     private void showMaterial() {
+        stopCamera();
         layoutQuiz.setVisibility(View.GONE);
         layoutMaterial.setVisibility(View.VISIBLE);
 
@@ -221,17 +461,19 @@ public class LearnActivity extends AppCompatActivity {
     private void showQuestion() {
         layoutMaterial.setVisibility(View.GONE);
         layoutQuiz.setVisibility(View.VISIBLE);
-        simulatedAnswer = null;
         selectedAnswer = null;
-        
+
+        // Reset semua section
         layoutOptionsContainer.setVisibility(View.GONE);
         layoutTrueFalse.setVisibility(View.GONE);
-        btnSimulateCamera.setVisibility(View.GONE);
-        
+        layoutCameraContainer.setVisibility(View.GONE);
         layoutOptionsContainer.removeAllViews();
         optionViews.clear();
         btnTrue.setAlpha(1.0f);
         btnFalse.setAlpha(1.0f);
+
+        // Hentikan kamera jika soal sebelumnya SIGN_PRACTICE
+        stopCamera();
 
         Question q = questions.get(currentQuestionIndex);
         tvQuizHeader.setText("SOAL " + (currentQuestionIndex + 1) + " DARI " + questions.size());
@@ -248,7 +490,8 @@ public class LearnActivity extends AppCompatActivity {
             layoutOptionsContainer.setVisibility(View.VISIBLE);
             if (q.getOptions() != null) {
                 for (Option opt : q.getOptions()) {
-                    View optionView = android.view.LayoutInflater.from(this).inflate(R.layout.item_quiz_option, layoutOptionsContainer, false);
+                    View optionView = android.view.LayoutInflater.from(this)
+                            .inflate(R.layout.item_quiz_option, layoutOptionsContainer, false);
                     RadioButton radioIndicator = optionView.findViewById(R.id.radio_option_indicator);
                     TextView tvText = optionView.findViewById(R.id.tv_option_text);
                     ImageView ivMedia = optionView.findViewById(R.id.iv_option_media);
@@ -262,7 +505,7 @@ public class LearnActivity extends AppCompatActivity {
                     }
 
                     optionView.setOnClickListener(v -> {
-                        selectedAnswer = opt.getLabel() != null ? opt.getLabel() : opt.getId(); // Use label as answer, fallback to id
+                        selectedAnswer = opt.getLabel() != null ? opt.getLabel() : opt.getId();
                         for (View ov : optionViews) {
                             RadioButton rb = ov.findViewById(R.id.radio_option_indicator);
                             rb.setChecked(ov == optionView);
@@ -286,49 +529,29 @@ public class LearnActivity extends AppCompatActivity {
                 btnFalse.setAlpha(1.0f);
             });
         } else if ("SIGN_PRACTICE".equals(q.getType())) {
-            btnSimulateCamera.setVisibility(View.VISIBLE);
-            btnSimulateCamera.setText("SIMULASIKAN DETEKSI KAMERA");
+            layoutCameraContainer.setVisibility(View.VISIBLE);
+            tvDetectionResult.setText("Arahkan kamera ke tangan Anda");
+            initCameraComponents();
+            startCameraForSignPractice();
         }
-    }
-    
-    private void showSimulateCameraDialog() {
-        TextInputEditText input = new TextInputEditText(this);
-        input.setHint("Masukkan jawaban deteksi (misal: A)");
-        input.setPadding(32, 32, 32, 32);
-        
-        new AlertDialog.Builder(this)
-            .setTitle("Simulasi ONNX (Kamera)")
-            .setMessage("Seolah-olah model mendeteksi gerakan tangan Anda:")
-            .setView(input)
-            .setPositiveButton("Kirim Deteksi", (dialog, which) -> {
-                String val = input.getText() != null ? input.getText().toString().trim() : "";
-                if (!val.isEmpty()) {
-                    simulatedAnswer = val;
-                    btnSimulateCamera.setText("TERDETEKSI: " + val);
-                }
-            })
-            .setNegativeButton("Batal", null)
-            .show();
     }
 
     private void submitAnswer() {
         Question q = questions.get(currentQuestionIndex);
-        String answer = null;
 
-        if ("MULTIPLE_CHOICE".equals(q.getType()) || "TRUE_FALSE_VISUAL".equals(q.getType())) {
+        if ("SIGN_PRACTICE".equals(q.getType())) {
+            if (selectedAnswer == null) {
+                Toast.makeText(this, "Belum ada tangan yang terdeteksi, arahkan tangan ke kamera", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else if ("MULTIPLE_CHOICE".equals(q.getType()) || "TRUE_FALSE_VISUAL".equals(q.getType())) {
             if (selectedAnswer == null) {
                 Toast.makeText(this, "Pilih jawaban terlebih dahulu", Toast.LENGTH_SHORT).show();
                 return;
             }
-            answer = selectedAnswer;
-        } else if ("SIGN_PRACTICE".equals(q.getType())) {
-            if (simulatedAnswer == null) {
-                Toast.makeText(this, "Lakukan simulasi deteksi kamera terlebih dahulu", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            answer = simulatedAnswer;
         }
 
+        String answer = selectedAnswer;
         setLoadingState(true);
         attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
             @Override
@@ -400,6 +623,7 @@ public class LearnActivity extends AppCompatActivity {
     }
 
     private void finishAttempt() {
+        stopCamera();
         progressBar.setVisibility(View.VISIBLE);
         layoutQuiz.setVisibility(View.GONE);
 
@@ -409,15 +633,15 @@ public class LearnActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     FinishAttemptResponse res = response.body();
-                    
+
                     Intent intent = new Intent(LearnActivity.this, ScoreActivity.class);
                     intent.putExtra("TOTAL_SCORE", res.getTotalScore());
-                    
+
                     if (res.getNewAchievements() != null && !res.getNewAchievements().isEmpty()) {
                         String achievementsJson = new com.google.gson.Gson().toJson(res.getNewAchievements());
                         intent.putExtra("NEW_ACHIEVEMENTS", achievementsJson);
                     }
-                    
+
                     startActivity(intent);
                     finish();
                 } else {
@@ -437,16 +661,34 @@ public class LearnActivity extends AppCompatActivity {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         btnSubmitAnswer.setEnabled(!isLoading);
         btnSkipQuestion.setEnabled(!isLoading);
-        btnSimulateCamera.setEnabled(!isLoading);
         btnTrue.setEnabled(!isLoading);
         btnFalse.setEnabled(!isLoading);
-        for(View v : optionViews) {
+        for (View v : optionViews) {
             v.setEnabled(!isLoading);
-            v.findViewById(R.id.radio_option_indicator).setEnabled(!isLoading);
+            View rb = v.findViewById(R.id.radio_option_indicator);
+            if (rb != null) rb.setEnabled(!isLoading);
         }
     }
 
     private void showError(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopCamera();
+        if (handLandmarkerHelper != null) {
+            handLandmarkerHelper.close();
+            handLandmarkerHelper = null;
+        }
+        if (onnxHelper != null) {
+            onnxHelper.close();
+            onnxHelper = null;
+        }
+        if (cameraExecutor != null) {
+            cameraExecutor.shutdown();
+            cameraExecutor = null;
+        }
     }
 }
