@@ -6,6 +6,7 @@ public class Question {
     private String id;
     private String levelId;
     private String type; // MULTIPLE_CHOICE, SIGN_PRACTICE
+    @com.google.gson.annotations.SerializedName("prompt")
     private String text;
     private String mediaUrl;
     private int order;

@@ -262,7 +262,7 @@ public class LearnActivity extends AppCompatActivity {
                     }
 
                     optionView.setOnClickListener(v -> {
-                        selectedAnswer = opt.getText(); // Using label/text as answer
+                        selectedAnswer = opt.getLabel() != null ? opt.getLabel() : opt.getId(); // Use label as answer, fallback to id
                         for (View ov : optionViews) {
                             RadioButton rb = ov.findViewById(R.id.radio_option_indicator);
                             rb.setChecked(ov == optionView);

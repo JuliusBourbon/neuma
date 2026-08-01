@@ -5,6 +5,7 @@ public class Material {
     private String levelId;
     private String type; // GENERAL_INTRO, BISINDO_INTRO, WORD_EXAMPLE
     private String title;
+    @com.google.gson.annotations.SerializedName("content")
     private String textContent;
     private String mediaUrl;
     private int order;

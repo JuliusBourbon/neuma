@@ -25,6 +25,7 @@ public class ProfileFragment extends Fragment {
 
     private TextView tvProfileName;
     private ImageButton btnSetting;
+    private ImageButton btnAdmin;
 
     @Nullable
     @Override
@@ -45,6 +46,18 @@ public class ProfileFragment extends Fragment {
                 Intent intent = new Intent(requireActivity(), SettingActivity.class);
                 startActivity(intent);
             });
+        }
+
+        btnAdmin = view.findViewById(R.id.btn_admin);
+        if (btnAdmin != null) {
+            com.example.neuma.utils.TokenManager tokenManager = new com.example.neuma.utils.TokenManager(requireContext());
+            if ("neumaadmin".equals(tokenManager.getUsername())) {
+                btnAdmin.setVisibility(View.VISIBLE);
+                btnAdmin.setOnClickListener(v -> {
+                    Intent intent = new Intent(requireActivity(), AdminActivity.class);
+                    startActivity(intent);
+                });
+            }
         }
 
         setupBottomNavigation(view);

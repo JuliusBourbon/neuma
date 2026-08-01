@@ -161,11 +161,50 @@ public class AdminLevelDetailActivity extends AppCompatActivity {
         TextInputEditText etPrompt = view.findViewById(R.id.et_prompt);
         TextInputEditText etMediaUrl = view.findViewById(R.id.et_media_url);
         TextInputEditText etCorrectAnswer = view.findViewById(R.id.et_correct_answer);
+        View layoutCorrectAnswer = view.findViewById(R.id.layout_correct_answer);
+        View layoutOptionsContainer = view.findViewById(R.id.layout_options_container);
+        LinearLayout layoutOptionsList = view.findViewById(R.id.layout_options_list);
 
         etPrompt.setText(q.getText());
         etMediaUrl.setText(q.getMediaUrl());
-        // Correct answer is hidden from client by default, leave it empty.
-        // etCorrectAnswer.setText(""); 
+        
+        // Correct answer hidden for multiple choice, shown for others
+        List<View> optionViews = new java.util.ArrayList<>();
+        List<android.widget.RadioButton> radioButtons = new java.util.ArrayList<>();
+        
+        if ("MULTIPLE_CHOICE".equals(q.getType()) || "TRUE_FALSE_VISUAL".equals(q.getType())) {
+            layoutCorrectAnswer.setVisibility(View.GONE);
+            layoutOptionsContainer.setVisibility(View.VISIBLE);
+            
+            if (q.getOptions() != null) {
+                for (Option opt : q.getOptions()) {
+                    View optView = LayoutInflater.from(this).inflate(R.layout.item_admin_option, layoutOptionsList, false);
+                    android.widget.RadioButton rbCorrect = optView.findViewById(R.id.radio_is_correct);
+                    TextInputEditText etContent = optView.findViewById(R.id.et_option_content);
+                    TextInputEditText etOptMedia = optView.findViewById(R.id.et_option_media_url);
+                    
+                    String label = opt.getLabel() != null ? opt.getLabel() : "X";
+                    rbCorrect.setText("Opsi " + label + " (Jawaban Benar)");
+                    etContent.setText(opt.getText());
+                    etOptMedia.setText(opt.getMediaUrl());
+                    
+                    rbCorrect.setOnClickListener(v -> {
+                        for (android.widget.RadioButton rb : radioButtons) {
+                            rb.setChecked(rb == rbCorrect);
+                        }
+                    });
+                    
+                    // We store the Option object as tag for later retrieval
+                    optView.setTag(opt);
+                    radioButtons.add(rbCorrect);
+                    optionViews.add(optView);
+                    layoutOptionsList.addView(optView);
+                }
+            }
+        } else {
+            layoutCorrectAnswer.setVisibility(View.VISIBLE);
+            layoutOptionsContainer.setVisibility(View.GONE);
+        }
 
         new AlertDialog.Builder(this)
                 .setTitle("Edit Question")
@@ -174,8 +213,37 @@ public class AdminLevelDetailActivity extends AppCompatActivity {
                     Map<String, Object> body = new HashMap<>();
                     body.put("prompt", etPrompt.getText().toString());
                     body.put("mediaUrl", etMediaUrl.getText().toString());
-                    if (!etCorrectAnswer.getText().toString().isEmpty()) {
-                        body.put("correctAnswer", etCorrectAnswer.getText().toString());
+                    
+                    if ("MULTIPLE_CHOICE".equals(q.getType()) || "TRUE_FALSE_VISUAL".equals(q.getType())) {
+                        List<Map<String, Object>> optionsData = new java.util.ArrayList<>();
+                        String selectedCorrectAnswer = null;
+                        
+                        for (int i = 0; i < optionViews.size(); i++) {
+                            View optView = optionViews.get(i);
+                            Option opt = (Option) optView.getTag();
+                            android.widget.RadioButton rb = radioButtons.get(i);
+                            TextInputEditText etContent = optView.findViewById(R.id.et_option_content);
+                            TextInputEditText etOptMedia = optView.findViewById(R.id.et_option_media_url);
+                            
+                            Map<String, Object> optMap = new HashMap<>();
+                            optMap.put("id", opt.getId());
+                            optMap.put("label", opt.getLabel() != null ? opt.getLabel() : "X");
+                            optMap.put("content", etContent.getText().toString());
+                            optMap.put("mediaUrl", etOptMedia.getText().toString());
+                            optionsData.add(optMap);
+                            
+                            if (rb.isChecked()) {
+                                selectedCorrectAnswer = opt.getLabel() != null ? opt.getLabel() : opt.getId();
+                            }
+                        }
+                        body.put("options", optionsData);
+                        if (selectedCorrectAnswer != null) {
+                            body.put("correctAnswer", selectedCorrectAnswer);
+                        }
+                    } else {
+                        if (!etCorrectAnswer.getText().toString().isEmpty()) {
+                            body.put("correctAnswer", etCorrectAnswer.getText().toString());
+                        }
                     }
                     
                     progressBar.setVisibility(View.VISIBLE);
