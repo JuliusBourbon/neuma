@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -71,7 +72,19 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (isAdded() && response.isSuccessful() && response.body() != null) {
-                    tvProfileName.setText(response.body().getName());
+                    com.example.neuma.models.User user = response.body();
+                    tvProfileName.setText(user.getName());
+                    
+                    String style = user.getAvatarStyle() != null ? user.getAvatarStyle() : "adventurer";
+                    String seed = user.getAvatarSeed() != null ? user.getAvatarSeed() : "Felix";
+                    String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+                    
+                    ImageView ivAvatar = getView().findViewById(R.id.iv_avatar);
+                    if (ivAvatar != null) {
+                        com.bumptech.glide.Glide.with(requireContext())
+                            .load(avatarUrl)
+                            .into(ivAvatar);
+                    }
                 }
             }
 
