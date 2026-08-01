@@ -184,11 +184,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:visibility="gone"
             android:clipToOutline="true"
             app:layout_constraintTop_toBottomOf="@id/layout_true_false"
-            app:layout_constraintBottom_toTopOf="@id/btn_submit_answer"
+            app:layout_constraintBottom_toTopOf="@id/tv_hold_status"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -202,6 +202,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <!-- Detection Label -->
             <TextView
                 android:id="@+id/tv_detection_result"
                 android:layout_width="wrap_content"
@@ -216,7 +217,36 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
+            <!-- Hold Progress Bar overlay at bottom of camera -->
+            <ProgressBar
+                android:id="@+id/progress_hold"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_gravity="bottom"
+                android:max="100"
+                android:progress="0"
+                android:progressTint="#4ADE80"
+                android:progressBackgroundTint="#44FFFFFF"
+                android:visibility="gone" />
+
         </FrameLayout>
+
+        <!-- Hold Status Label -->
+        <TextView
+            android:id="@+id/tv_hold_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/layout_camera_container"
+            app:layout_constraintBottom_toTopOf="@id/btn_submit_answer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/btn_submit_answer"

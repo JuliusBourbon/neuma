@@ -5,12 +5,12 @@ import java.util.List;
 public class Question {
     private String id;
     private String levelId;
-    private String type; // MULTIPLE_CHOICE, SIGN_PRACTICE
+    private String type; // MULTIPLE_CHOICE, TRUE_FALSE_VISUAL, SIGN_PRACTICE
     @com.google.gson.annotations.SerializedName("prompt")
     private String text;
     private String mediaUrl;
     private int order;
-    // NOTE: correctAnswer is hidden from client intentionally based on backend modification
+    private String correctAnswer; // Only populated for SIGN_PRACTICE
     private List<Option> options;
 
     public String getId() { return id; }
@@ -19,5 +19,6 @@ public class Question {
     public String getText() { return text; }
     public String getMediaUrl() { return mediaUrl; }
     public int getOrder() { return order; }
+    public String getCorrectAnswer() { return correctAnswer; }
     public List<Option> getOptions() { return options; }
 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,6 +63,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
     private static final String TAG = "LearnActivity";
     private static final int CAMERA_PERMISSION_CODE = 101;
+    private static final long HOLD_DURATION_MS = 5000L; // 5 detik
 
     private String levelId;
     private String attemptId;
@@ -91,6 +93,8 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private PreviewView cameraPreview;
     private OverlayView overlayView;
     private TextView tvDetectionResult;
+    private ProgressBar progressHold;
+    private TextView tvHoldStatus;
 
     // Camera / Detection components
     private HandLandmarkerHelper handLandmarkerHelper;
@@ -99,6 +103,11 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private int lastImageWidth = 1;
     private int lastImageHeight = 1;
     private boolean isCameraRunning = false;
+
+    // Hold-to-confirm state
+    private CountDownTimer holdTimer = null;
+    private boolean isHolding = false;
+    private boolean autoSubmitted = false;
 
     private LevelApi levelApi;
     private AttemptApi attemptApi;
@@ -140,6 +149,8 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         cameraPreview = findViewById(R.id.camera_preview);
         overlayView = findViewById(R.id.overlay_view);
         tvDetectionResult = findViewById(R.id.tv_detection_result);
+        progressHold = findViewById(R.id.progress_hold);
+        tvHoldStatus = findViewById(R.id.tv_hold_status);
 
         levelApi = ApiClient.getAuthClient(this).create(LevelApi.class);
         attemptApi = ApiClient.getAuthClient(this).create(AttemptApi.class);
@@ -149,6 +160,87 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         btnSkipQuestion.setOnClickListener(v -> skipQuestion());
 
         fetchData();
+    }
+
+    // ─── Hold-to-Confirm Logic ───────────────────────────────────────────────
+
+    /**
+     * Dipanggil setiap kali ada prediksi baru. Jika label cocok dengan jawaban benar,
+     * mulai countdown 5 detik. Jika tidak cocok, batalkan countdown.
+     */
+    private void handleSignDetection(String detectedLabel, float confidence) {
+        Question q = questions.get(currentQuestionIndex);
+        String correctAnswer = q.getCorrectAnswer();
+
+        // Update label deteksi
+        tvDetectionResult.setText("Terdeteksi: " + detectedLabel
+                + " (" + String.format("%.1f", confidence) + "%)");
+
+        // Jika tidak ada correctAnswer, tidak bisa auto-submit — fallback ke manual
+        if (correctAnswer == null || correctAnswer.isEmpty()) {
+            selectedAnswer = detectedLabel;
+            return;
+        }
+
+        boolean isMatch = detectedLabel.trim().equalsIgnoreCase(correctAnswer.trim());
+
+        if (isMatch) {
+            selectedAnswer = detectedLabel;
+            if (!isHolding && !autoSubmitted) {
+                startHoldTimer(correctAnswer);
+            }
+        } else {
+            // Reset jika beda huruf
+            cancelHoldTimer();
+        }
+    }
+
+    private void startHoldTimer(String targetLabel) {
+        isHolding = true;
+        progressHold.setVisibility(View.VISIBLE);
+        progressHold.setProgress(0);
+        tvHoldStatus.setVisibility(View.VISIBLE);
+
+        holdTimer = new CountDownTimer(HOLD_DURATION_MS, 50) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long elapsed = HOLD_DURATION_MS - millisUntilFinished;
+                int progress = (int) (elapsed * 100 / HOLD_DURATION_MS);
+                progressHold.setProgress(progress);
+
+                long secondsLeft = (millisUntilFinished / 1000) + 1;
+                tvHoldStatus.setText("✅ Pertahankan isyarat \"" + targetLabel + "\" selama " + secondsLeft + " detik lagi...");
+            }
+
+            @Override
+            public void onFinish() {
+                progressHold.setProgress(100);
+                tvHoldStatus.setText("✅ Berhasil! Mengirim jawaban...");
+                isHolding = false;
+                autoSubmitted = true;
+                submitAnswer();
+            }
+        }.start();
+    }
+
+    private void cancelHoldTimer() {
+        if (holdTimer != null) {
+            holdTimer.cancel();
+            holdTimer = null;
+        }
+        isHolding = false;
+        if (!autoSubmitted) {
+            progressHold.setProgress(0);
+            progressHold.setVisibility(View.GONE);
+            tvHoldStatus.setText("");
+            tvHoldStatus.setVisibility(View.GONE);
+        }
+    }
+
+    private void resetHoldState() {
+        cancelHoldTimer();
+        autoSubmitted = false;
+        isHolding = false;
     }
 
     // ─── Camera / Detection Lifecycle ───────────────────────────────────────
@@ -290,6 +382,9 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     @Override
     public void onResults(HandLandmarkerResult result) {
         runOnUiThread(() -> {
+            // Jika soal ini sudah auto-submit, abaikan frame baru
+            if (autoSubmitted) return;
+
             overlayView.setResults(result, lastImageWidth, lastImageHeight);
 
             float[] leftHand = new float[63];
@@ -297,6 +392,8 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
             List<List<NormalizedLandmark>> allLandmarks = result.landmarks();
             List<List<Category>> allHandedness = result.handednesses();
+
+            boolean handDetected = !allLandmarks.isEmpty();
 
             for (int i = 0; i < allLandmarks.size(); i++) {
                 List<NormalizedLandmark> handLandmarks = allLandmarks.get(i);
@@ -317,15 +414,19 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                 }
             }
 
-            float[] features156 = FeatureExtractor.extractFullFeatures(leftHand, rightHand);
+            if (!handDetected) {
+                // Tidak ada tangan — reset countdown
+                tvDetectionResult.setText("Arahkan kamera ke tangan Anda");
+                cancelHoldTimer();
+                return;
+            }
 
+            float[] features156 = FeatureExtractor.extractFullFeatures(leftHand, rightHand);
             if (onnxHelper != null) {
                 OnnxHelper.PredictionResult prediction = onnxHelper.predict(features156);
                 if (prediction != null) {
                     overlayView.setPrediction(prediction.label, prediction.confidence);
-                    selectedAnswer = prediction.label;
-                    tvDetectionResult.setText("Terdeteksi: " + prediction.label
-                            + " (" + String.format("%.1f", prediction.confidence) + "%)");
+                    handleSignDetection(prediction.label, prediction.confidence);
                 }
             }
         });
@@ -403,6 +504,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
     private void showMaterial() {
         stopCamera();
+        resetHoldState();
         layoutQuiz.setVisibility(View.GONE);
         layoutMaterial.setVisibility(View.VISIBLE);
 
@@ -462,17 +564,20 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         layoutMaterial.setVisibility(View.GONE);
         layoutQuiz.setVisibility(View.VISIBLE);
         selectedAnswer = null;
+        resetHoldState();
 
         // Reset semua section
         layoutOptionsContainer.setVisibility(View.GONE);
         layoutTrueFalse.setVisibility(View.GONE);
         layoutCameraContainer.setVisibility(View.GONE);
+        progressHold.setVisibility(View.GONE);
+        tvHoldStatus.setVisibility(View.GONE);
         layoutOptionsContainer.removeAllViews();
         optionViews.clear();
         btnTrue.setAlpha(1.0f);
         btnFalse.setAlpha(1.0f);
 
-        // Hentikan kamera jika soal sebelumnya SIGN_PRACTICE
+        // Sembunyikan tombol submit untuk SIGN_PRACTICE — auto-submit setelah 5 detik
         stopCamera();
 
         Question q = questions.get(currentQuestionIndex);
@@ -488,6 +593,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
         if ("MULTIPLE_CHOICE".equals(q.getType())) {
             layoutOptionsContainer.setVisibility(View.VISIBLE);
+            btnSubmitAnswer.setVisibility(View.VISIBLE);
             if (q.getOptions() != null) {
                 for (Option opt : q.getOptions()) {
                     View optionView = android.view.LayoutInflater.from(this)
@@ -518,6 +624,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             }
         } else if ("TRUE_FALSE_VISUAL".equals(q.getType())) {
             layoutTrueFalse.setVisibility(View.VISIBLE);
+            btnSubmitAnswer.setVisibility(View.VISIBLE);
             btnTrue.setOnClickListener(v -> {
                 selectedAnswer = "TRUE";
                 btnTrue.setAlpha(1.0f);
@@ -531,6 +638,10 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         } else if ("SIGN_PRACTICE".equals(q.getType())) {
             layoutCameraContainer.setVisibility(View.VISIBLE);
             tvDetectionResult.setText("Arahkan kamera ke tangan Anda");
+            // Sembunyikan tombol submit manual — auto-submit via hold timer
+            btnSubmitAnswer.setVisibility(View.GONE);
+            tvHoldStatus.setVisibility(View.VISIBLE);
+            tvHoldStatus.setText("Tunjukkan isyarat yang diminta selama 5 detik untuk melanjutkan");
             initCameraComponents();
             startCameraForSignPractice();
         }
@@ -541,10 +652,10 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
         if ("SIGN_PRACTICE".equals(q.getType())) {
             if (selectedAnswer == null) {
-                Toast.makeText(this, "Belum ada tangan yang terdeteksi, arahkan tangan ke kamera", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Belum ada tangan yang terdeteksi", Toast.LENGTH_SHORT).show();
                 return;
             }
-        } else if ("MULTIPLE_CHOICE".equals(q.getType()) || "TRUE_FALSE_VISUAL".equals(q.getType())) {
+        } else {
             if (selectedAnswer == null) {
                 Toast.makeText(this, "Pilih jawaban terlebih dahulu", Toast.LENGTH_SHORT).show();
                 return;
@@ -553,19 +664,26 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
         String answer = selectedAnswer;
         setLoadingState(true);
+
         attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
             @Override
             public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {
                 setLoadingState(false);
+                stopCamera();
                 if (response.isSuccessful() && response.body() != null) {
                     AnswerResponse ans = response.body();
                     if (ans.isCorrect()) {
-                        showFeedbackDialog("Benar!", "Kamu mendapat " + ans.getTotalThisAnswer() + " poin.", true);
+                        showFeedbackDialog("Benar! 🎉", "Kamu mendapat " + ans.getTotalThisAnswer() + " poin.", true);
                     } else {
-                        showFeedbackDialog("Salah!", "Jawaban salah. Coba lagi atau lewati soal ini.", false);
+                        showFeedbackDialog("Belum tepat 😅", "Coba lagi di soal berikutnya!", false);
                     }
                 } else {
                     showError("Gagal mengirim jawaban");
+                    // Jika SIGN_PRACTICE, boleh coba lagi
+                    if ("SIGN_PRACTICE".equals(q.getType())) {
+                        autoSubmitted = false;
+                        startCameraForSignPractice();
+                    }
                 }
             }
 
@@ -573,12 +691,17 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             public void onFailure(Call<AnswerResponse> call, Throwable t) {
                 setLoadingState(false);
                 showError("Error: " + t.getMessage());
+                if ("SIGN_PRACTICE".equals(q.getType())) {
+                    autoSubmitted = false;
+                    startCameraForSignPractice();
+                }
             }
         });
     }
 
     private void skipQuestion() {
         Question q = questions.get(currentQuestionIndex);
+        resetHoldState();
         setLoadingState(true);
         attemptApi.skipQuestion(attemptId, new SkipRequest(q.getId())).enqueue(new Callback<Void>() {
             @Override
@@ -605,15 +728,13 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton("Lanjut", (dialog, which) -> {
-                    if (isCorrect) {
-                        nextQuestion();
-                    }
-                })
+                .setPositiveButton("Lanjut", (dialog, which) -> nextQuestion())
                 .show();
     }
 
     private void nextQuestion() {
+        stopCamera();
+        resetHoldState();
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.size()) {
             showQuestion();
@@ -624,6 +745,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
     private void finishAttempt() {
         stopCamera();
+        resetHoldState();
         progressBar.setVisibility(View.VISIBLE);
         layoutQuiz.setVisibility(View.GONE);
 
@@ -633,15 +755,12 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     FinishAttemptResponse res = response.body();
-
                     Intent intent = new Intent(LearnActivity.this, ScoreActivity.class);
                     intent.putExtra("TOTAL_SCORE", res.getTotalScore());
-
                     if (res.getNewAchievements() != null && !res.getNewAchievements().isEmpty()) {
                         String achievementsJson = new com.google.gson.Gson().toJson(res.getNewAchievements());
                         intent.putExtra("NEW_ACHIEVEMENTS", achievementsJson);
                     }
-
                     startActivity(intent);
                     finish();
                 } else {
@@ -665,8 +784,6 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         btnFalse.setEnabled(!isLoading);
         for (View v : optionViews) {
             v.setEnabled(!isLoading);
-            View rb = v.findViewById(R.id.radio_option_indicator);
-            if (rb != null) rb.setEnabled(!isLoading);
         }
     }
 
@@ -677,6 +794,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        resetHoldState();
         stopCamera();
         if (handLandmarkerHelper != null) {
             handLandmarkerHelper.close();
