@@ -1,9 +1,11 @@
 package com.example.neuma;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,15 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.neuma.adapters.MisiAdapter;
-import com.example.neuma.models.Misi;
+import com.example.neuma.models.Achievement;
+import com.example.neuma.network.AchievementApi;
+import com.example.neuma.utils.ApiClient;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MisiFragment extends Fragment {
 
-    private RecyclerView rvMisiHarian;
-    private RecyclerView rvMisiUpcoming;
+    private RecyclerView rvMisiList;
+    private AchievementApi achievementApi;
 
     @Nullable
     @Override
@@ -33,13 +40,12 @@ public class MisiFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rvMisiHarian = view.findViewById(R.id.rv_misi_harian);
-        rvMisiUpcoming = view.findViewById(R.id.rv_misi_upcoming);
+        rvMisiList = view.findViewById(R.id.rv_misi_list);
+        rvMisiList.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        rvMisiHarian.setLayoutManager(new LinearLayoutManager(requireContext()));
-        rvMisiUpcoming.setLayoutManager(new LinearLayoutManager(requireContext()));
+        achievementApi = ApiClient.getAuthClient(requireContext()).create(AchievementApi.class);
 
-        // Tampilkan Data Misi
+        // Tampilkan Data Misi (dari API Achievements)
         loadMisiData();
 
         // Setup Bottom Navigation
@@ -47,19 +53,29 @@ public class MisiFragment extends Fragment {
     }
 
     private void loadMisiData() {
-        // Data Dummy Misi Harian
-        List<Misi> listHarian = new ArrayList<>();
-        listHarian.add(new Misi("Kumpulkan 3 huruf BISINDO", 1, 3, false));
-        listHarian.add(new Misi("Selesaikan 1 Level Kuis", 1, 1, true));
+        achievementApi.getAchievements().enqueue(new Callback<List<Achievement>>() {
+            @Override
+            public void onResponse(Call<List<Achievement>> call, Response<List<Achievement>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Achievement> achievements = response.body();
+                    rvMisiList.setAdapter(new MisiAdapter(achievements));
+                } else {
+                    try {
+                        String errBody = response.errorBody() != null ? response.errorBody().string() : "No Error Body";
+                        Toast.makeText(requireContext(), "Gagal: " + response.code() + " " + errBody, Toast.LENGTH_LONG).show();
+                        Log.e("MisiFragment", "HTTP " + response.code() + " - " + errBody);
+                    } catch (Exception e) {
+                        Toast.makeText(requireContext(), "Gagal memuat: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
 
-        // Data Dummy Misi Akan Datang
-        List<Misi> listUpcoming = new ArrayList<>();
-        listUpcoming.add(new Misi("Pelajari 10 Kata Baru", 0, 10, false));
-        listUpcoming.add(new Misi("Selesaikan 5 Level berturut-turut", 2, 5, false));
-
-        // Set Adapter
-        rvMisiHarian.setAdapter(new MisiAdapter(listHarian));
-        rvMisiUpcoming.setAdapter(new MisiAdapter(listUpcoming));
+            @Override
+            public void onFailure(Call<List<Achievement>> call, Throwable t) {
+                Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("MisiFragment", "Error loading achievements", t);
+            }
+        });
     }
 
     private void setupBottomNavigation(View view) {

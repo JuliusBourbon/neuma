@@ -6,9 +6,11 @@ public class Achievement {
     private String title;
     private String description;
     private boolean isUnlocked;
+    private int progress;
+    private int target;
+    private String rewardAvatarId;
     private String rewardAvatarSeed;
     private String rewardAvatarStyle;
-
 
     public Achievement() {}
 
@@ -25,6 +27,9 @@ public class Achievement {
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public boolean isUnlocked() { return isUnlocked; }
+    public int getProgress() { return progress; }
+    public int getTarget() { return target; }
+    public String getRewardAvatarId() { return rewardAvatarId; }
     public String getRewardAvatarSeed() { return rewardAvatarSeed; }
     public String getRewardAvatarStyle() { return rewardAvatarStyle; }
 }

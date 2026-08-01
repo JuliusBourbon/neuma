@@ -76,44 +76,19 @@
             android:paddingTop="20dp"
             android:paddingBottom="24dp">
 
-            <!-- SECTION 1: MISI HARIAN -->
+            <!-- SECTION 1: MISI PENCAPAIAN -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="MISI HARIAN"
+                android:text="DAFTAR MISI"
                 android:textColor="#333333"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_misi_harian"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_misi" />
-
-            <!-- DIVIDER LINE -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E0E0E0"
-                android:layout_marginVertical="20dp" />
-
-            <!-- SECTION 2: AKAN DATANG -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="AKAN DATANG"
-                android:textColor="#333333"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_misi_upcoming"
+                android:id="@+id/rv_misi_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"

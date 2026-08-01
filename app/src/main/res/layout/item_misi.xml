@@ -51,15 +51,32 @@
             android:textSize="11sp" />
     </FrameLayout>
 
-    <!-- Peti Misi -->
-    <ImageView
-        android:id="@+id/iv_chest"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_chest_active"
-        android:contentDescription="Ikon Peti Harta Karun"
+    <!-- Peti Misi / Reward -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_chest"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_chest_active"
+            android:contentDescription="Ikon Peti Harta Karun" />
+
+        <TextView
+            android:id="@+id/tv_reward_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/poppins"
+            android:text="rewardId"
+            android:textColor="#888888"
+            android:textSize="9sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
