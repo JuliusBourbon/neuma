@@ -31,11 +31,25 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
         holder.tvTitle.setText(a.getTitle());
         holder.tvDescription.setText(a.getDescription());
 
+        if (a.getRewardAvatarId() != null && !a.getRewardAvatarId().isEmpty()) {
+            String style = a.getRewardAvatarStyle() != null ? a.getRewardAvatarStyle() : "adventurer";
+            String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + a.getRewardAvatarSeed();
+            Glide.with(holder.itemView.getContext())
+                .load(avatarUrl)
+                .into(holder.ivBadge);
+        } else {
+            if (a.isUnlocked()) {
+                // If there's no avatar reward, you can just leave it as is or set a default unlocked badge
+                // holder.ivBadge.setImageResource(R.drawable.ic_badge_active);
+            } else {
+                holder.ivBadge.setImageResource(R.drawable.ic_badge_locked);
+            }
+        }
+
         if (a.isUnlocked()) {
             holder.ivBadge.setAlpha(1.0f);
         } else {
             holder.ivBadge.setAlpha(0.35f);
-            holder.ivBadge.setImageResource(R.drawable.ic_badge_locked);
         }
     }
 

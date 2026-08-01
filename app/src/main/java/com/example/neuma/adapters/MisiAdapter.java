@@ -36,22 +36,29 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
         holder.pbMisi.setProgress(misi.getProgress());
         holder.tvProgressText.setText(misi.getProgress() + "/" + misi.getTarget());
 
-        // Mengatur status gambar Chest (terbuka/aktif vs terkunci)
-        if (misi.isUnlocked()) {
-            holder.ivChest.setImageResource(R.drawable.ic_chest_active); // Aset chest aktif
-            holder.ivChest.setAlpha(1.0f);
-        } else {
-            holder.ivChest.setImageResource(R.drawable.ic_chest_locked); // Aset chest terkunci
-            holder.ivChest.setAlpha(0.5f);
-        }
-
-        // Tampilkan reward ID atau "No Reward"
+        // Tampilkan reward avatar dari Dicebear
         if (misi.getRewardAvatarId() != null && !misi.getRewardAvatarId().isEmpty()) {
             holder.tvRewardId.setText("Avatar: " + misi.getRewardAvatarSeed());
             holder.tvRewardId.setVisibility(View.VISIBLE);
+            
+            String style = misi.getRewardAvatarStyle() != null ? misi.getRewardAvatarStyle() : "adventurer";
+            String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + misi.getRewardAvatarSeed();
+            
+            com.bumptech.glide.Glide.with(holder.itemView.getContext())
+                .load(avatarUrl)
+                .into(holder.ivChest);
         } else {
             holder.tvRewardId.setVisibility(View.GONE);
+            // Default chest kalau gak ada reward avatar
+            if (misi.isUnlocked()) {
+                holder.ivChest.setImageResource(R.drawable.ic_chest_active);
+            } else {
+                holder.ivChest.setImageResource(R.drawable.ic_chest_locked);
+            }
         }
+
+        // Atur transparansi (alpha)
+        holder.ivChest.setAlpha(misi.isUnlocked() ? 1.0f : 0.4f);
     }
 
     @Override

@@ -64,7 +64,12 @@ public class PencapaianFragment extends Fragment {
                 if (progressBar != null) progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body() != null) {
-                    AchievementAdapter adapter = new AchievementAdapter(response.body());
+                    List<Achievement> allAchievements = response.body();
+                    List<Achievement> unlockedAchievements = new java.util.ArrayList<>();
+                    for (Achievement a : allAchievements) {
+                        if (a.isUnlocked()) unlockedAchievements.add(a);
+                    }
+                    AchievementAdapter adapter = new AchievementAdapter(unlockedAchievements);
                     rvPencapaian.setAdapter(adapter);
                 } else {
                     // Fallback data dummy jika API kosong
