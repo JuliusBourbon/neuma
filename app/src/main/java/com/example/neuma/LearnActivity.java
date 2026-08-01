@@ -74,17 +74,19 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private int currentQuestionIndex = 0;
 
     private ProgressBar progressBar;
+    private ProgressBar progressBarAttempt;
     private View layoutMaterial, layoutQuiz;
 
     // Material Views
     private TextView tvMaterialType, tvMaterialTitle, tvMaterialContent;
     private ImageView ivMaterialMedia;
-    private Button btnNextMaterial;
+    private Button btnNextMaterial, btnPrevMaterial;
 
     // Quiz Views
     private TextView tvQuizHeader, tvQuestionText;
     private ImageView ivQuestionMedia;
-    private LinearLayout layoutOptionsContainer, layoutTrueFalse;
+    private android.widget.GridLayout layoutOptionsContainer;
+    private LinearLayout layoutTrueFalse;
     private Button btnTrue, btnFalse;
     private Button btnSubmitAnswer, btnSkipQuestion;
 
@@ -123,6 +125,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         levelId = getIntent().getStringExtra("LEVEL_ID");
 
         progressBar = findViewById(R.id.progress_bar_learn);
+        progressBarAttempt = findViewById(R.id.progress_bar_attempt);
         layoutMaterial = findViewById(R.id.layout_material);
         layoutQuiz = findViewById(R.id.layout_quiz);
 
@@ -132,6 +135,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         tvMaterialContent = findViewById(R.id.tv_material_content);
         ivMaterialMedia = findViewById(R.id.iv_material_media);
         btnNextMaterial = findViewById(R.id.btn_next_material);
+        btnPrevMaterial = findViewById(R.id.btn_prev_material);
 
         // Quiz
         tvQuizHeader = findViewById(R.id.tv_quiz_header);
@@ -156,6 +160,9 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         attemptApi = ApiClient.getAuthClient(this).create(AttemptApi.class);
 
         btnNextMaterial.setOnClickListener(v -> handleNextMaterial());
+        if (btnPrevMaterial != null) {
+            btnPrevMaterial.setOnClickListener(v -> handlePrevMaterial());
+        }
         btnSubmitAnswer.setOnClickListener(v -> submitAnswer());
         btnSkipQuestion.setOnClickListener(v -> skipQuestion());
 
@@ -494,6 +501,12 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     }
 
     private void startLearnFlow() {
+        int matSize = materials != null ? materials.size() : 0;
+        int qSize = questions != null ? questions.size() : 0;
+        if (progressBarAttempt != null) {
+            progressBarAttempt.setMax(matSize + qSize);
+        }
+
         if (materials != null && !materials.isEmpty()) {
             currentMaterialIndex = 0;
             showMaterial();
@@ -507,6 +520,10 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         resetHoldState();
         layoutQuiz.setVisibility(View.GONE);
         layoutMaterial.setVisibility(View.VISIBLE);
+        
+        if (progressBarAttempt != null) {
+            progressBarAttempt.setProgress(currentMaterialIndex + 1);
+        }
 
         Material m = materials.get(currentMaterialIndex);
         tvMaterialType.setText(m.getType() != null ? m.getType().replace("_", " ") : "MATERI");
@@ -518,6 +535,17 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             Glide.with(this).load(m.getMediaUrl()).into(ivMaterialMedia);
         } else {
             ivMaterialMedia.setVisibility(View.GONE);
+        }
+
+        if (btnPrevMaterial != null) {
+            btnPrevMaterial.setVisibility(currentMaterialIndex > 0 ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void handlePrevMaterial() {
+        if (currentMaterialIndex > 0) {
+            currentMaterialIndex--;
+            showMaterial();
         }
     }
 
@@ -565,6 +593,11 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         layoutQuiz.setVisibility(View.VISIBLE);
         selectedAnswer = null;
         resetHoldState();
+        
+        if (progressBarAttempt != null) {
+            int base = materials != null ? materials.size() : 0;
+            progressBarAttempt.setProgress(base + currentQuestionIndex + 1);
+        }
 
         // Reset semua section
         layoutOptionsContainer.setVisibility(View.GONE);
@@ -598,11 +631,16 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                 for (Option opt : q.getOptions()) {
                     View optionView = android.view.LayoutInflater.from(this)
                             .inflate(R.layout.item_quiz_option, layoutOptionsContainer, false);
-                    RadioButton radioIndicator = optionView.findViewById(R.id.radio_option_indicator);
                     TextView tvText = optionView.findViewById(R.id.tv_option_text);
                     ImageView ivMedia = optionView.findViewById(R.id.iv_option_media);
 
-                    tvText.setText(opt.getText());
+                    if (opt.getText() != null && !opt.getText().isEmpty()) {
+                        tvText.setText(opt.getText());
+                        tvText.setVisibility(View.VISIBLE);
+                    } else {
+                        tvText.setVisibility(View.GONE);
+                    }
+                    
                     if (opt.getMediaUrl() != null && !opt.getMediaUrl().isEmpty()) {
                         ivMedia.setVisibility(View.VISIBLE);
                         Glide.with(this).load(opt.getMediaUrl()).into(ivMedia);
@@ -610,11 +648,22 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                         ivMedia.setVisibility(View.GONE);
                     }
 
+                    android.widget.GridLayout.LayoutParams params = new android.widget.GridLayout.LayoutParams(
+                            android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f),
+                            android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)
+                    );
+                    params.width = 0;
+                    params.setMargins(12, 12, 12, 12);
+                    optionView.setLayoutParams(params);
+
                     optionView.setOnClickListener(v -> {
                         selectedAnswer = opt.getLabel() != null ? opt.getLabel() : opt.getId();
                         for (View ov : optionViews) {
-                            RadioButton rb = ov.findViewById(R.id.radio_option_indicator);
-                            rb.setChecked(ov == optionView);
+                            if (ov == optionView) {
+                                ov.setBackgroundResource(R.drawable.bg_option_selected);
+                            } else {
+                                ov.setBackgroundResource(R.drawable.bg_option_normal);
+                            }
                         }
                     });
 
@@ -673,9 +722,16 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                 if (response.isSuccessful() && response.body() != null) {
                     AnswerResponse ans = response.body();
                     if (ans.isCorrect()) {
-                        showFeedbackDialog("Benar! 🎉", "Kamu mendapat " + ans.getTotalThisAnswer() + " poin.", true);
+                        showTopSnackbar("Benar! 🎉", "Kamu mendapat " + ans.getTotalThisAnswer() + " poin.", true);
+                        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                            nextQuestion();
+                        }, 2000);
                     } else {
-                        showFeedbackDialog("Belum tepat 😅", "Coba lagi di soal berikutnya!", false);
+                        showTopSnackbar("Belum tepat 😅", "Silakan coba jawaban yang lain!", false);
+                        if ("SIGN_PRACTICE".equals(q.getType())) {
+                            autoSubmitted = false;
+                            startCameraForSignPractice();
+                        }
                     }
                 } else {
                     showError("Gagal mengirim jawaban");
@@ -723,13 +779,33 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         });
     }
 
-    private void showFeedbackDialog(String title, String message, boolean isCorrect) {
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton("Lanjut", (dialog, which) -> nextQuestion())
-                .show();
+    private void showTopSnackbar(String title, String message, boolean isSuccess) {
+        com.google.android.material.snackbar.Snackbar snackbar = com.google.android.material.snackbar.Snackbar.make(
+                findViewById(android.R.id.content), "", com.google.android.material.snackbar.Snackbar.LENGTH_LONG);
+        
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        
+        com.google.android.material.snackbar.Snackbar.SnackbarLayout snackbarLayout = 
+                (com.google.android.material.snackbar.Snackbar.SnackbarLayout) snackbarView;
+        snackbarLayout.removeAllViews();
+        snackbarLayout.setPadding(0, 0, 0, 0);
+
+        View customView = getLayoutInflater().inflate(R.layout.layout_snackbar_neobrutalism, null);
+        customView.setBackgroundResource(isSuccess ? R.drawable.bg_snackbar_success : R.drawable.bg_snackbar_error);
+        
+        TextView tvTitle = customView.findViewById(R.id.tv_snackbar_title);
+        TextView tvMessage = customView.findViewById(R.id.tv_snackbar_message);
+        tvTitle.setText(title);
+        tvMessage.setText(message);
+
+        android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) snackbarView.getLayoutParams();
+        params.gravity = android.view.Gravity.TOP;
+        params.setMargins(32, 64, 32, 0);
+        snackbarView.setLayoutParams(params);
+        
+        snackbarLayout.addView(customView, 0);
+        snackbar.show();
     }
 
     private void nextQuestion() {
