@@ -1,72 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="24dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="@color/divider">
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp"
+    app:cardBackgroundColor="@android:color/transparent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
 
+        <!-- Asset Badge Icon dari Figma -->
         <ImageView
-            android:id="@+id/iv_achievement_avatar"
+            android:id="@+id/ivBadge"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="@drawable/rounded_background"
-            android:backgroundTint="@color/divider"
-            android:scaleType="centerInside"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:contentDescription="Achievement Badge"
+            tools:src="@drawable/ic_badge_active" />
 
-        <TextView
-            android:id="@+id/tv_achievement_title"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginStart="16dp"
-            android:text="Judul Achievement"
-            android:textColor="@color/text_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_achievement_avatar"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_achievement_desc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:text="Deskripsi achievement"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/tv_achievement_title"
-            app:layout_constraintStart_toEndOf="@id/iv_achievement_avatar"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <!-- Judul Achievement -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#1F2937"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Si Paling Rajin" />
 
-        <TextView
-            android:id="@+id/tv_achievement_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="TERKUNCI"
-            android:textColor="@color/text_hint"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:background="@drawable/rounded_background"
-            android:backgroundTint="@color/divider"
-            app:layout_constraintTop_toBottomOf="@id/tv_achievement_desc"
-            app:layout_constraintStart_toEndOf="@id/iv_achievement_avatar" />
+            <!-- Deskripsi Achievement -->
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins"
+                android:textColor="#6B7280"
+                android:textSize="12sp"
+                tools:text="Hebat! Kamu belajar BISINDO 3 hari berturut-turut tanpa bolos." />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>

@@ -9,6 +9,17 @@ public class Achievement {
     private String rewardAvatarSeed;
     private String rewardAvatarStyle;
 
+
+    public Achievement() {}
+
+    public Achievement(String id, String code, String title, String description, boolean isUnlocked) {
+        this.id = id;
+        this.code = code;
+        this.title = title;
+        this.description = description;
+        this.isUnlocked = isUnlocked;
+    }
+
     public String getId() { return id; }
     public String getCode() { return code; }
     public String getTitle() { return title; }

@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,13 +30,11 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(@NonNull LeaderboardViewHolder holder, int position) {
         LeaderboardEntry entry = entries.get(position);
-        holder.tvRank.setText(String.valueOf(position + 1));
+
+        // Peringkat dimulai dari angka 4
+        holder.tvRank.setText(String.valueOf(position + 4));
         holder.tvName.setText(entry.getName());
         holder.tvScore.setText(String.valueOf(entry.getScore()));
-        
-        // Catatan: Karena avatar dari DiceBear memerlukan fetching eksternal yang kompleks,
-        // saat ini kita menggunakan placeholder gambar default (ic_launcher_foreground).
-        // Integrasi image loading library seperti Glide bisa ditambahkan nanti.
     }
 
     @Override

@@ -19,14 +19,14 @@
 
     <fragment
         android:id="@+id/PencapaianFragment"
-        android:name="com.example.neuma.SecondFragment"
+        android:name="com.example.neuma.PencapaianFragment"
         android:label="Pencapaian"
-        tools:layout="@layout/fragment_second" />
+        tools:layout="@layout/activity_achievement" />
 
     <fragment
         android:id="@+id/ProfileFragment"
-        android:name="com.example.neuma.SecondFragment"
+        android:name="com.example.neuma.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_second" />
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

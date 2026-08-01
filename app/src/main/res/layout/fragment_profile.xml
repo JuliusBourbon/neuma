@@ -2,551 +2,342 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/profile_root"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_white">
 
-    <!-- Scrollable Content -->
+    <!-- Scrollable Content Area -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_profile"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/include_bottom_nav">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
 
-            <!-- ======================== -->
-            <!-- HEADER: Avatar + Nama    -->
-            <!-- ======================== -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_profile_header"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:background="@color/primary">
-
-                <!-- Judul Halaman -->
-                <TextView
-                    android:id="@+id/tv_profile_page_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Profil"
-                    android:textColor="@color/text_white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <!-- Avatar (foto profil) -->
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    android:contentDescription="Avatar profil"
-                    app:civ_border_width="3dp"
-                    app:civ_border_color="@color/text_white"
-                    app:layout_constraintTop_toBottomOf="@id/tv_profile_page_title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/tv_profile_name"
-                    android:layout_marginTop="12dp" />
-
-                <!-- Tombol Ubah Avatar -->
-                <ImageView
-                    android:id="@+id/iv_edit_avatar"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:src="@android:drawable/ic_menu_edit"
-                    android:contentDescription="Edit avatar"
-                    android:background="@color/text_white"
-                    app:tint="@color/primary"
-                    android:padding="4dp"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
-                    app:layout_constraintEnd_toEndOf="@id/iv_avatar" />
+                android:layout_height="280dp"
+                android:background="#1E9CB8">
 
                 <!-- Nama Pengguna -->
                 <TextView
                     android:id="@+id/tv_profile_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Nama Pengguna"
-                    android:textColor="@color/text_white"
-                    android:textSize="17sp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Prabowo Widodo"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_setting"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!-- Tombol Setting -->
+                <ImageButton
+                    android:id="@+id/btn_setting"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Pengaturan"
+                    android:src="@drawable/ic_settings"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_profile_name"
+                    app:tint="@color/white" />
+
+                <!-- Gambar Avatar -->
+                <ImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="246dp"
+                    android:layout_height="221dp"
+                    android:contentDescription="Avatar Profil"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/img_avatar_boy"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.496"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+                    app:layout_constraintVertical_bias="0.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- ======================== -->
-            <!-- STATS: Poin & Misi       -->
-            <!-- ======================== -->
-            <LinearLayout
-                android:id="@+id/layout_stats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@color/primary_light"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp">
-
-                <!-- Stat: Total Poin -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/tv_total_poin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="120"
-                        android:textColor="@color/primary"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Poin"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp" />
-
-                </LinearLayout>
-
-                <!-- Divider Vertikal -->
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="40dp"
-                    android:background="@color/divider"
-                    android:layout_gravity="center_vertical" />
-
-                <!-- Stat: Misi Selesai -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/tv_misi_selesai"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="8"
-                        android:textColor="@color/primary"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Misi Selesai"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp" />
-
-                </LinearLayout>
-
-                <!-- Divider Vertikal -->
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="40dp"
-                    android:background="@color/divider"
-                    android:layout_gravity="center_vertical" />
-
-                <!-- Stat: Lencana -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/tv_total_lencana"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3"
-                        android:textColor="@color/primary"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lencana"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:layout_marginTop="2dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- ======================== -->
-            <!-- SECTION: INFO AKUN       -->
-            <!-- ======================== -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
+                android:paddingHorizontal="24dp"
                 android:paddingTop="20dp">
 
+                <!-- SECTION 1: RINGKASAN -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="INFORMASI AKUN"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.1"
-                    android:layout_marginBottom="10dp" />
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="RINGKASAN"
+                    android:textColor="#1F2937"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <!-- Item: Nama -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_info_nama"
+                <!-- Grid Ringkasan -->
+                <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/card_background"
-                    android:layout_marginBottom="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_myplaces"
-                            android:contentDescription="Ikon nama"
-                            app:tint="@color/primary" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Nama"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tv_info_nama"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Nama Lengkap"
-                                android:textColor="@color/text_primary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- Item: Email -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_info_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/card_background"
-                    android:layout_marginBottom="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_dialog_email"
-                            android:contentDescription="Ikon email"
-                            app:tint="@color/primary" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Email"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tv_info_email"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="email@example.com"
-                                android:textColor="@color/text_primary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- Item: Tipe Tuli -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_info_tipe"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/card_background"
-                    android:layout_marginBottom="20dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_info_details"
-                            android:contentDescription="Ikon tipe"
-                            app:tint="@color/primary" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Tipe Pengguna"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tv_info_tipe"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Tuli Total"
-                                android:textColor="@color/text_primary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- ======================== -->
-                <!-- SECTION: MENU LAINNYA    -->
-                <!-- ======================== -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MENU"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.1"
-                    android:layout_marginBottom="10dp" />
-
-                <!-- Menu Item: Kelola Akun -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_menu_kelola_akun"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/card_background"
-                    android:layout_marginBottom="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@android:drawable/ic_menu_edit"
-                            android:contentDescription="Kelola Akun"
-                            app:tint="@color/primary" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Kelola Akun"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:layout_marginStart="12dp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@android:drawable/arrow_up_float"
-                            android:contentDescription="Arrow"
-                            app:tint="@color/text_hint"
-                            android:rotation="90" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- Menu Item: Ganti Avatar -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_menu_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/card_background"
-                    android:layout_marginBottom="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@android:drawable/ic_menu_gallery"
-                            android:contentDescription="Ganti Avatar"
-                            app:tint="@color/primary" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Ganti Avatar"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:layout_marginStart="12dp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@android:drawable/arrow_up_float"
-                            android:contentDescription="Arrow"
-                            app:tint="@color/text_hint"
-                            android:rotation="90" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- Menu Item: Support -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_menu_support"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/card_background"
-                    android:layout_marginBottom="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="14dp">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@android:drawable/ic_menu_help"
-                            android:contentDescription="Support"
-                            app:tint="@color/primary" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Support &amp; Bantuan"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:layout_marginStart="12dp" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@android:drawable/arrow_up_float"
-                            android:contentDescription="Arrow"
-                            app:tint="@color/text_hint"
-                            android:rotation="90" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!-- Tombol Keluar -->
-                <Button
-                    android:id="@+id/btn_keluar"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:text="KELUAR"
-                    android:textColor="@color/primary"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.08"
-                    android:backgroundTint="@color/primary_light"
                     android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    app:cornerRadius="14dp" />
+                    android:columnCount="2"
+                    android:rowCount="2">
+
+                    <!-- Item 1: Streak Hari -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_streak" />
+
+                        <TextView
+                            android:id="@+id/tv_stat_streak"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="3 hari"
+                            android:textColor="#1F2937"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Item 2: Poin -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_points" />
+
+                        <TextView
+                            android:id="@+id/tv_stat_points"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="260 Poin"
+                            android:textColor="#1F2937"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Item 3: Pencapaian -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_medal" />
+
+                        <TextView
+                            android:id="@+id/tv_stat_pencapaian"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="5 Pencapaian"
+                            android:textColor="#1F2937"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Item 4: Level -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_trophy" />
+
+                        <TextView
+                            android:id="@+id/tv_stat_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins"
+                            android:text="1 Level"
+                            android:textColor="#1F2937"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </GridLayout>
+
+                <!-- AKTIVITAS TERAKHIR -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="AKTIVITAS TERAKHIR"
+                    android:textColor="#1F2937"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Aktivitas 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_medal" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Mendapat Medali: 'Detektif Huruf'"
+                            android:textColor="#1F2937"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="12 menit yang lalu"
+                            android:textColor="#9CA3AF"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Aktivitas 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_star_blue" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="Menyelesaikan Kamus A-Z!"
+                            android:textColor="#1F2937"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:text="3 menit yang lalu"
+                            android:textColor="#9CA3AF"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- STATISTIK BELAJAR -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="STATISTIK BELAJAR"
+                    android:textColor="#1F2937"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_stat_huruf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Total Huruf Dikuasai: 15/26 Huruf."
+                    android:textColor="#4B5563"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_stat_akurasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Akurasi Kamera Rata-rata: 85%."
+                    android:textColor="#4B5563"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_stat_waktu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Total Waktu Belajar: 2 Jam 15 Menit."
+                    android:textColor="#4B5563"
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/include_bottom_nav"
+        layout="@layout/layout_custom_bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

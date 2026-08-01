@@ -5,17 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.neuma.models.Achievement;
-
 import java.util.List;
 
 public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.ViewHolder> {
-
     private List<Achievement> list;
 
     public AchievementAdapter(List<Achievement> list) {
@@ -33,22 +29,13 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Achievement a = list.get(position);
         holder.tvTitle.setText(a.getTitle());
-        holder.tvDesc.setText(a.getDescription());
+        holder.tvDescription.setText(a.getDescription());
 
         if (a.isUnlocked()) {
-            holder.tvStatus.setText("TERBUKA");
-            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.primary));
-            holder.ivAvatar.setAlpha(1.0f);
-            
-            if (a.getRewardAvatarSeed() != null && a.getRewardAvatarStyle() != null) {
-                String url = "https://api.dicebear.com/9.x/" + a.getRewardAvatarStyle() + "/png?seed=" + a.getRewardAvatarSeed();
-                Glide.with(holder.itemView.getContext()).load(url).into(holder.ivAvatar);
-            }
+            holder.ivBadge.setAlpha(1.0f);
         } else {
-            holder.tvStatus.setText("TERKUNCI");
-            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.text_hint));
-            holder.ivAvatar.setAlpha(0.3f);
-            holder.ivAvatar.setImageResource(R.drawable.ic_launcher_foreground); // Placeholder
+            holder.ivBadge.setAlpha(0.35f);
+            holder.ivBadge.setImageResource(R.drawable.ic_badge_locked);
         }
     }
 
@@ -58,15 +45,14 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivAvatar;
-        TextView tvTitle, tvDesc, tvStatus;
+        ImageView ivBadge;
+        TextView tvTitle, tvDescription;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivAvatar = itemView.findViewById(R.id.iv_achievement_avatar);
-            tvTitle = itemView.findViewById(R.id.tv_achievement_title);
-            tvDesc = itemView.findViewById(R.id.tv_achievement_desc);
-            tvStatus = itemView.findViewById(R.id.tv_achievement_status);
+            ivBadge = itemView.findViewById(R.id.ivBadge);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvDescription = itemView.findViewById(R.id.tvDescription);
         }
     }
 }

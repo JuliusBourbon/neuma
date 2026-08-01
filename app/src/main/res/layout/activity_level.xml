@@ -1,112 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white">
+    android:background="@color/white"
+    android:padding="16dp">
 
-    <View
-        android:id="@+id/view_header_bg"
-        android:layout_width="0dp"
-        android:layout_height="160dp"
-        android:background="@color/primary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_launcher_foreground"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Kembali"
-        app:tint="@color/text_white"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="12dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+    <!-- Title Level -->
     <TextView
         android:id="@+id/tv_level_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/poppins_bold"
         android:text="Level A"
-        android:textColor="@color/text_white"
-        android:textSize="28sp"
+        android:textColor="@color/black"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_marginTop="56dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_level_desc"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_podium"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mari belajar huruf A!"
-        android:textColor="@color/text_white"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_level_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_level_title">
 
-    <TextView
-        android:id="@+id/tv_leaderboard_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Leaderboard"
-        android:textColor="@color/text_primary"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp"
-        app:layout_constraintTop_toBottomOf="@id/view_header_bg"
-        app:layout_constraintStart_toStartOf="parent" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_rank1_avatar"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:civ_circle_background_color="#7B82EE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_leaderboard"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tv_badge_rank1"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="@drawable/rounded_input_background"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_rank1_avatar"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank1_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank1_avatar"
+            app:layout_constraintTop_toBottomOf="@id/iv_rank1_avatar" />
+
+        <TextView
+            android:id="@+id/tv_rank1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/poppins"
+            android:text="Hasan Sajjad"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank1_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank1_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_badge_rank1" />
+
+        <LinearLayout
+            android:id="@+id/layout_rank1_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank1_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank1_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_rank1_name">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_medal_gold" />
+
+            <TextView
+                android:id="@+id/tv_rank1_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="100 Points"
+                android:textColor="@color/black"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_rank2_avatar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:civ_circle_background_color="#00A896"
+            app:layout_constraintEnd_toStartOf="@id/iv_rank1_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_badge_rank2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/rounded_input_background"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="2"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_rank2_avatar"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank2_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank2_avatar"
+            app:layout_constraintTop_toBottomOf="@id/iv_rank2_avatar" />
+
+        <TextView
+            android:id="@+id/tv_rank2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/poppins"
+            android:text="Masuma"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank2_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank2_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_badge_rank2" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank2_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank2_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_rank2_name">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_medal_silver" />
+
+            <TextView
+                android:id="@+id/tv_rank2_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="100 Points"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_rank3_avatar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:civ_circle_background_color="#D81B60"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_rank1_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_badge_rank3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/rounded_input_background"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="3"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_rank3_avatar"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank3_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank3_avatar"
+            app:layout_constraintTop_toBottomOf="@id/iv_rank3_avatar" />
+
+        <TextView
+            android:id="@+id/tv_rank3_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/poppins"
+            android:text="Tanim"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank3_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank3_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_badge_rank3" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/iv_rank3_avatar"
+            app:layout_constraintStart_toStartOf="@id/iv_rank3_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_rank3_name">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_medal_bronze" />
+
+            <TextView
+                android:id="@+id/tv_rank3_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins"
+                android:text="100 Points"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/container_yellow"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="28dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/tv_leaderboard_title"
+        android:background="@drawable/bg_yellow_container"
+        android:orientation="vertical"
+        android:padding="12dp"
         app:layout_constraintBottom_toTopOf="@id/btn_mulai"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/layout_podium">
 
-    <Button
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_leaderboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_leaderboard" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_mulai"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:text="MULAI BELAJAR"
-        android:textColor="@color/text_white"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button_background"
+        android:backgroundTint="#00FF00"
+        android:fontFamily="@font/poppins_bold"
+        android:text="MULAI"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:backgroundTint="@color/primary"
-        android:layout_marginBottom="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:cornerRadius="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
