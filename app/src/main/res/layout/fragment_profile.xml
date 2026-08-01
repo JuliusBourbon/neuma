@@ -226,120 +226,25 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- Aktivitas 1 -->
+                <!-- Container Aktivitas Dinamis -->
                 <LinearLayout
+                    android:id="@+id/container_recent_activities"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_medal" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp">
+                    
+                    <TextView
+                        android:id="@+id/tv_no_activity"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins"
-                            android:text="Mendapat Medali: 'Detektif Huruf'"
-                            android:textColor="#1F2937"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins"
-                            android:text="12 menit yang lalu"
-                            android:textColor="#9CA3AF"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="Belum ada aktivitas terbaru."
+                        android:textColor="#9CA3AF"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
                 </LinearLayout>
-
-                <!-- Aktivitas 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_star_blue" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins"
-                            android:text="Menyelesaikan Kamus A-Z!"
-                            android:textColor="#1F2937"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins"
-                            android:text="3 menit yang lalu"
-                            android:textColor="#9CA3AF"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- STATISTIK BELAJAR -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="STATISTIK BELAJAR"
-                    android:textColor="#1F2937"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_stat_huruf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/poppins"
-                    android:text="Total Huruf Dikuasai: 15/26 Huruf."
-                    android:textColor="#4B5563"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_stat_akurasi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/poppins"
-                    android:text="Akurasi Kamera Rata-rata: 85%."
-                    android:textColor="#4B5563"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_stat_waktu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/poppins"
-                    android:text="Total Waktu Belajar: 2 Jam 15 Menit."
-                    android:textColor="#4B5563"
-                    android:textSize="13sp" />
 
             </LinearLayout>
 
