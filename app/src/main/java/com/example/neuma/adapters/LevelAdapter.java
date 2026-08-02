@@ -1,29 +1,25 @@
 package com.example.neuma.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
+import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.neuma.R;
 import com.example.neuma.models.Level;
-
 import java.util.List;
 
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> {
-
     private List<Level> levelList;
-    private OnItemClickListener listener; // Menambahkan variabel untuk listener
+    private OnItemClickListener listener;
 
-    // Membuat Interface untuk menangkap aksi klik
     public interface OnItemClickListener {
         void onItemClick(Level level);
     }
 
-    // Constructor sekarang menerima 2 parameter (sesuai dengan yang dikirim AdminActivity)
     public LevelAdapter(List<Level> levelList, OnItemClickListener listener) {
         this.levelList = levelList;
         this.listener = listener;
@@ -39,61 +35,83 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
     @Override
     public void onBindViewHolder(@NonNull LevelViewHolder holder, int position) {
         Level currentLevel = levelList.get(position);
-        boolean isTrophyLevel = (position == 4);
 
+        // Pola Zigzag
         if (position % 2 == 0) {
-            // Jika urutan genap geser sedikit ke kanan
-            holder.itemView.setTranslationX(60f);
+            holder.itemView.setTranslationX(50f);
         } else {
-            // Jika urutan ganjil geser sedikit ke kiri
-            holder.itemView.setTranslationX(-60f);
+            holder.itemView.setTranslationX(-50f);
         }
 
-        // Tooltip START HANYA muncul di item pertama (position 0)
-        if (position == 0) {
-            holder.ivTooltipStart.setVisibility(View.VISIBLE);
-        } else {
-            holder.ivTooltipStart.setVisibility(View.GONE);
-        }
-
-        boolean isActive = "ACTIVE".equalsIgnoreCase(currentLevel.getStatus())
+        // Cek status level dari API/Model
+        boolean isUnlocked = "ACTIVE".equalsIgnoreCase(currentLevel.getStatus())
                 || "UNLOCKED".equalsIgnoreCase(currentLevel.getStatus())
                 || "COMPLETED".equalsIgnoreCase(currentLevel.getStatus());
 
-        // Pengaturan Icon Level / Trophy
-        if (isActive) {
-            if (isTrophyLevel) {
-                holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_active);
-            } else {
-                holder.ivLevelIcon.setImageResource(R.drawable.ic_level_active);
-            }
-        } else {
-            if (isTrophyLevel) {
-                holder.ivLevelIcon.setImageResource(R.drawable.ic_trophy_locked);
-            } else {
-                holder.ivLevelIcon.setImageResource(R.drawable.ic_level_locked);
-            }
-        }
+        // Bind huruf, warna, dan status tombol
+        bindLevelNode(holder.tvLevelLetter, holder.tvBadgeStart, position, isUnlocked, position == 0);
 
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
+        View.OnClickListener clickAction = v -> {
+            if (listener != null && isUnlocked) {
                 listener.onItemClick(currentLevel);
             }
-        });
+        };
+
+        holder.tvLevelLetter.setOnClickListener(clickAction);
+        holder.itemView.setOnClickListener(clickAction);
+    }
+
+    private String getLevelLetter(int position) {
+        return String.valueOf((char) ('A' + (position % 26)));
+    }
+
+    private void bindLevelNode(
+            TextView tvLetter,
+            View tvBadge,
+            int position,
+            boolean isUnlocked,
+            boolean isActive
+    ) {
+        if (tvLetter != null) {
+            tvLetter.setText(getLevelLetter(position));
+
+            if (isUnlocked) {
+                // Pasang selector hijau 3D yang bisa ditekan
+                tvLetter.setBackground(ContextCompat.getDrawable(tvLetter.getContext(), R.drawable.bg_level_active));
+                tvLetter.setTextColor(Color.WHITE);
+                tvLetter.setClickable(true);
+                tvLetter.setFocusable(true);
+
+                if (tvBadge != null) {
+                    tvBadge.setVisibility(isActive ? View.VISIBLE : View.GONE);
+                }
+            } else {
+                // Level Terkunci
+                tvLetter.setBackground(ContextCompat.getDrawable(tvLetter.getContext(), R.drawable.bg_level_locked));
+                tvLetter.setTextColor(Color.parseColor("#9E9E9E"));
+                tvLetter.setClickable(false);
+                tvLetter.setFocusable(false);
+
+                if (tvBadge != null) {
+                    tvBadge.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return levelList.size();
+        return levelList != null ? levelList.size() : 0;
     }
 
     public static class LevelViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivLevelIcon, ivTooltipStart;
+        TextView tvLevelLetter;
+        View tvBadgeStart;
 
         public LevelViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivLevelIcon = itemView.findViewById(R.id.ivLevelIcon);
-            ivTooltipStart = itemView.findViewById(R.id.ivTooltipStart);
+            tvLevelLetter = itemView.findViewById(R.id.ivLevelIcon);
+            tvBadgeStart = itemView.findViewById(R.id.ivTooltipStart);
         }
     }
 }

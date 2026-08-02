@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- TAMPILAN SAAT TEKAN (PRESSED) -->
+    <item android:state_pressed="true">
+        <layer-list>
+            <!-- Lapisan Bayangan Bawah (Mengecil saat ditekan) -->
+            <item android:top="4dp">
+                <shape android:shape="oval">
+                    <solid android:color="#46A302" /> <!-- Warna hijau gelap -->
+                </shape>
+            </item>
+            <!-- Lapisan Tombol Utama (Turun ke bawah) -->
+            <item android:top="4dp" android:bottom="0dp">
+                <shape android:shape="oval">
+                    <solid android:color="#58CC02" /> <!-- Warna hijau terang -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <!-- TAMPILAN NORMAL -->
+    <item>
+        <layer-list>
+            <!-- Lapisan Bayangan Bawah (Tebal 3D) -->
+            <item android:top="10dp">
+                <shape android:shape="oval">
+                    <solid android:color="#46A302" /> <!-- Warna hijau gelap -->
+                </shape>
+            </item>
+            <!-- Lapisan Tombol Utama -->
+            <item android:bottom="10dp">
+                <shape android:shape="oval">
+                    <solid android:color="#58CC02" /> <!-- Warna hijau terang -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</selector>

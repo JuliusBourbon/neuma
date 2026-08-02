@@ -1,33 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="12dp">
+    android:paddingVertical="12dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <!-- Tooltip START -->
-    <ImageView
+    <!-- Badge START -->
+    <TextView
         android:id="@+id/ivTooltipStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:src="@drawable/ic_tooltip_start"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/ivLevelIcon"
-        app:layout_constraintEnd_toEndOf="@id/ivLevelIcon"
-        app:layout_constraintStart_toStartOf="@id/ivLevelIcon" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_badge_start"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:text="START"
+        android:textColor="#25DE1C"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-    <!-- Icon Level -->
-    <ImageView
+    <!-- Lingkaran Huruf A-Z -->
+    <TextView
         android:id="@+id/ivLevelIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_level_locked"
-        app:layout_constraintTop_toBottomOf="@id/ivTooltipStart"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_below="@id/ivTooltipStart"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_level_active"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="A"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        android:textStyle="bold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

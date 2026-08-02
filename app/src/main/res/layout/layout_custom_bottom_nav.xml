@@ -1,113 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
-    android:id="@+id/custom_bottom_nav"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_bottom_nav_container"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="56dp"
+    android:background="#FFFFFF"
+    android:elevation="8dp"
     android:orientation="horizontal"
-    android:background="@color/card_background"
-    android:elevation="16dp">
+    android:weightSum="4">
 
     <!-- Menu 1: Home -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/menu_home"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground">
+        android:focusable="true">
         <ImageView
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:src="@drawable/ic_home_nav"
-            android:contentDescription="Home" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:textSize="11sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginTop="4dp" />
-    </LinearLayout>
+            android:id="@+id/iv_menu_home"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/ic_nav_home" />
+    </FrameLayout>
 
     <!-- Menu 2: Misi -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/menu_misi"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground">
+        android:focusable="true">
         <ImageView
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:src="@drawable/ic_target_nav"
-            android:contentDescription="Misi" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Misi"
-            android:textSize="11sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginTop="4dp" />
-    </LinearLayout>
+            android:id="@+id/iv_menu_misi"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/ic_nav_misi"/>
+    </FrameLayout>
 
     <!-- Menu 3: Pencapaian -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/menu_pencapaian"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground">
+        android:focusable="true">
         <ImageView
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:src="@drawable/ic_medal_nav"
-            android:contentDescription="Pencapaian" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pencapaian"
-            android:textSize="11sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginTop="4dp" />
-    </LinearLayout>
+            android:id="@+id/iv_menu_pencapaian"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/ic_nav_pencapaian" />
+    </FrameLayout>
 
     <!-- Menu 4: Profile -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/menu_profile"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground">
+        android:focusable="true">
         <ImageView
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:src="@drawable/ic_more_nav"
-            android:contentDescription="Profile" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textSize="11sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginTop="4dp" />
-    </LinearLayout>
+            android:id="@+id/iv_menu_profile"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/ic_nav_profile" />
+    </FrameLayout>
 
 </LinearLayout>
