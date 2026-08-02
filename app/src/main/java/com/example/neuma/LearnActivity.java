@@ -470,17 +470,35 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                     levelApi.getQuestions(levelId).enqueue(new Callback<List<Question>>() {
                         @Override
                         public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
-                            progressBar.setVisibility(View.GONE);
                             if (response.isSuccessful()) {
                                 questions = response.body();
-                                startLearnFlow();
+                                attemptApi.startAttempt(new StartAttemptRequest(levelId)).enqueue(new Callback<AttemptResponse>() {
+                                    @Override
+                                    public void onResponse(Call<AttemptResponse> call, Response<AttemptResponse> response) {
+                                        progressBar.setVisibility(View.GONE);
+                                        if (response.isSuccessful() && response.body() != null) {
+                                            attemptId = response.body().getAttemptId();
+                                            startLearnFlow();
+                                        } else {
+                                            showError("Gagal memulai tes");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<AttemptResponse> call, Throwable t) {
+                                        progressBar.setVisibility(View.GONE);
+                                        showError("Error: " + t.getMessage());
+                                    }
+                                });
                             } else {
+                                progressBar.setVisibility(View.GONE);
                                 showError("Gagal memuat soal");
                             }
                         }
 
                         @Override
                         public void onFailure(Call<List<Question>> call, Throwable t) {
+                            progressBar.setVisibility(View.GONE);
                             showError("Error: " + t.getMessage());
                         }
                     });
@@ -509,7 +527,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             currentMaterialIndex = 0;
             showMaterial();
         } else {
-            startAttemptAndShowQuiz();
+            showQuizSection();
         }
     }
 
@@ -552,38 +570,19 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         if (currentMaterialIndex < materials.size()) {
             showMaterial();
         } else {
-            startAttemptAndShowQuiz();
+            showQuizSection();
         }
     }
 
-    private void startAttemptAndShowQuiz() {
-        progressBar.setVisibility(View.VISIBLE);
+    private void showQuizSection() {
         layoutMaterial.setVisibility(View.GONE);
         layoutQuiz.setVisibility(View.GONE);
-
-        attemptApi.startAttempt(new StartAttemptRequest(levelId)).enqueue(new Callback<AttemptResponse>() {
-            @Override
-            public void onResponse(Call<AttemptResponse> call, Response<AttemptResponse> response) {
-                progressBar.setVisibility(View.GONE);
-                if (response.isSuccessful() && response.body() != null) {
-                    attemptId = response.body().getAttemptId();
-                    currentQuestionIndex = 0;
-                    if (questions != null && !questions.isEmpty()) {
-                        showQuestion();
-                    } else {
-                        finishAttempt();
-                    }
-                } else {
-                    showError("Gagal memulai tes");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AttemptResponse> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
-                showError("Error: " + t.getMessage());
-            }
-        });
+        currentQuestionIndex = 0;
+        if (questions != null && !questions.isEmpty()) {
+            showQuestion();
+        } else {
+            finishAttempt();
+        }
     }
 
     private void showQuestion() {
@@ -710,6 +709,35 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         }
 
         String answer = selectedAnswer;
+        boolean isLastQuestion = (currentQuestionIndex == questions.size() - 1);
+
+        // Optimistic Local Validation (hanya jika bukan soal terakhir agar tidak ada race condition saat finish)
+        if (!isLastQuestion && q.getCorrectAnswer() != null && !q.getCorrectAnswer().isEmpty()) {
+            stopCamera();
+            boolean isCorrect = answer.trim().equalsIgnoreCase(q.getCorrectAnswer().trim());
+            
+            if (isCorrect) {
+                showTopSnackbar("Benar! 🎉", "Jawaban kamu tepat!", true);
+                nextQuestion();
+            } else {
+                showTopSnackbar("Belum tepat 😅", "Silakan coba jawaban yang lain!", false);
+                if ("SIGN_PRACTICE".equals(q.getType())) {
+                    autoSubmitted = false;
+                    startCameraForSignPractice();
+                }
+            }
+            
+            // Fire-and-forget background API call
+            attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
+                @Override
+                public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {}
+                @Override
+                public void onFailure(Call<AnswerResponse> call, Throwable t) {}
+            });
+            return;
+        }
+
+        // Fallback or Last Question: Wait for server response
         setLoadingState(true);
 
         attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
@@ -721,9 +749,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                     AnswerResponse ans = response.body();
                     if (ans.isCorrect()) {
                         showTopSnackbar("Benar! 🎉", "Kamu mendapat " + ans.getTotalThisAnswer() + " poin.", true);
-                        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                            nextQuestion();
-                        }, 2000);
+                        nextQuestion();
                     } else {
                         showTopSnackbar("Belum tepat 😅", "Silakan coba jawaban yang lain!", false);
                         if ("SIGN_PRACTICE".equals(q.getType())) {
@@ -733,7 +759,6 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                     }
                 } else {
                     showError("Gagal mengirim jawaban");
-                    // Jika SIGN_PRACTICE, boleh coba lagi
                     if ("SIGN_PRACTICE".equals(q.getType())) {
                         autoSubmitted = false;
                         startCameraForSignPractice();
@@ -784,8 +809,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         
-        com.google.android.material.snackbar.Snackbar.SnackbarLayout snackbarLayout = 
-                (com.google.android.material.snackbar.Snackbar.SnackbarLayout) snackbarView;
+        android.view.ViewGroup snackbarLayout = (android.view.ViewGroup) snackbarView;
         snackbarLayout.removeAllViews();
         snackbarLayout.setPadding(0, 0, 0, 0);
 
