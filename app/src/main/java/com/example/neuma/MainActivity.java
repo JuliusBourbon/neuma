@@ -39,7 +39,11 @@ public class MainActivity extends AppCompatActivity {
                 if (ivHome != null) ivHome.clearColorFilter();
                 if (ivMisi != null) ivMisi.clearColorFilter();
                 if (ivPencapaian != null) ivPencapaian.clearColorFilter();
-                if (ivProfile != null) ivProfile.clearColorFilter();
+                
+                if (ivProfile != null) {
+                    ivProfile.setPadding(0, 0, 0, 0);
+                    ivProfile.setBackground(null);
+                }
 
                 int id = destination.getId();
                 if (id == R.id.FirstFragment && ivHome != null) {
@@ -49,8 +53,31 @@ public class MainActivity extends AppCompatActivity {
                 } else if (id == R.id.PencapaianFragment && ivPencapaian != null) {
                     ivPencapaian.setColorFilter(colorActive);
                 } else if (id == R.id.ProfileFragment && ivProfile != null) {
-                    ivProfile.setColorFilter(colorActive);
+                    // Beri border hijau tipis pada avatar saat aktif, tanpa tint color (agar wajah avatar tetap terlihat)
+                    ivProfile.setPadding(3, 3, 3, 3);
+                    ivProfile.setBackgroundResource(R.drawable.bg_avatar_active_nav);
                 }
+            });
+
+            // Fetch Profile untuk mendapatkan Avatar
+            com.example.neuma.network.UserApi userApi = com.example.neuma.utils.ApiClient.getAuthClient(this).create(com.example.neuma.network.UserApi.class);
+            userApi.getProfile().enqueue(new retrofit2.Callback<com.example.neuma.models.User>() {
+                @Override
+                public void onResponse(retrofit2.Call<com.example.neuma.models.User> call, retrofit2.Response<com.example.neuma.models.User> response) {
+                    if (response.isSuccessful() && response.body() != null && ivProfile != null) {
+                        com.example.neuma.models.User user = response.body();
+                        String style = user.getAvatarStyle() != null ? user.getAvatarStyle() : "adventurer";
+                        String seed = user.getAvatarSeed() != null ? user.getAvatarSeed() : "Felix";
+                        String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+                        
+                        com.bumptech.glide.Glide.with(MainActivity.this)
+                            .load(avatarUrl)
+                            .circleCrop()
+                            .into(ivProfile);
+                    }
+                }
+                @Override
+                public void onFailure(retrofit2.Call<com.example.neuma.models.User> call, Throwable t) {}
             });
         }
     }

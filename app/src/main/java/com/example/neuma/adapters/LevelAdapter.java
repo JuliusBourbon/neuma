@@ -15,6 +15,7 @@ import java.util.List;
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> {
     private List<Level> levelList;
     private OnItemClickListener listener;
+    private int activeLevelIndex = 0;
 
     public interface OnItemClickListener {
         void onItemClick(Level level);
@@ -23,6 +24,29 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
     public LevelAdapter(List<Level> levelList, OnItemClickListener listener) {
         this.levelList = levelList;
         this.listener = listener;
+        calculateActiveLevel();
+    }
+
+    private void calculateActiveLevel() {
+        if (levelList == null || levelList.isEmpty()) return;
+        
+        // Cari level pertama yang UNLOCKED atau ACTIVE
+        for (int i = 0; i < levelList.size(); i++) {
+            String status = levelList.get(i).getStatus();
+            if ("UNLOCKED".equalsIgnoreCase(status) || "ACTIVE".equalsIgnoreCase(status)) {
+                activeLevelIndex = i;
+                return;
+            }
+        }
+        
+        // Jika tidak ada yang UNLOCKED, cari COMPLETED terakhir
+        for (int i = levelList.size() - 1; i >= 0; i--) {
+            String status = levelList.get(i).getStatus();
+            if ("COMPLETED".equalsIgnoreCase(status)) {
+                activeLevelIndex = i;
+                return;
+            }
+        }
     }
 
     @NonNull
@@ -49,7 +73,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
                 || "COMPLETED".equalsIgnoreCase(currentLevel.getStatus());
 
         // Bind huruf, warna, dan status tombol
-        bindLevelNode(holder.tvLevelLetter, holder.tvBadgeStart, position, isUnlocked, position == 0);
+        bindLevelNode(holder.tvLevelLetter, holder.tvBadgeStart, position, isUnlocked, position == activeLevelIndex);
 
         View.OnClickListener clickAction = v -> {
             if (listener != null && isUnlocked) {
