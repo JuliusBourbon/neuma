@@ -50,8 +50,6 @@ public class PencapaianFragment extends Fragment {
         // Load data pencapaian
         fetchAchievements();
 
-        // Setup Bottom Navigation agar tombol dapat diklik
-        setupBottomNavigation(view);
     }
 
     private void fetchAchievements() {
@@ -101,30 +99,5 @@ public class PencapaianFragment extends Fragment {
 
         AchievementAdapter adapter = new AchievementAdapter(list);
         rvPencapaian.setAdapter(adapter);
-    }
-
-    private void setupBottomNavigation(View view) {
-        View bottomNav = view.findViewById(R.id.include_bottom_nav);
-        if (bottomNav != null) {
-            NavController navController = NavHostFragment.findNavController(this);
-
-            View btnHome = bottomNav.findViewById(R.id.menu_home);
-            View btnMisi = bottomNav.findViewById(R.id.menu_misi);
-            View btnPencapaian = bottomNav.findViewById(R.id.menu_pencapaian);
-            View btnProfile = bottomNav.findViewById(R.id.menu_profile);
-
-            if (btnHome != null) {
-                btnHome.setOnClickListener(v -> navController.navigate(R.id.FirstFragment));
-            }
-            if (btnMisi != null) {
-                btnMisi.setOnClickListener(v -> navController.navigate(R.id.MisiFragment));
-            }
-            if (btnPencapaian != null) {
-                // Halaman saat ini
-            }
-            if (btnProfile != null) {
-                btnProfile.setOnClickListener(v -> navController.navigate(R.id.ProfileFragment));
-            }
-        }
     }
 }

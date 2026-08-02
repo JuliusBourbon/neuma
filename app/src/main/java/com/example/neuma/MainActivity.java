@@ -27,6 +27,31 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.menu_misi).setOnClickListener(v -> navController.navigate(R.id.MisiFragment));
             findViewById(R.id.menu_pencapaian).setOnClickListener(v -> navController.navigate(R.id.PencapaianFragment));
             findViewById(R.id.menu_profile).setOnClickListener(v -> navController.navigate(R.id.ProfileFragment));
+
+            android.widget.ImageView ivHome = findViewById(R.id.iv_menu_home);
+            android.widget.ImageView ivMisi = findViewById(R.id.iv_menu_misi);
+            android.widget.ImageView ivPencapaian = findViewById(R.id.iv_menu_pencapaian);
+            android.widget.ImageView ivProfile = findViewById(R.id.iv_menu_profile);
+
+            int colorActive = androidx.core.content.ContextCompat.getColor(this, R.color.green_button);
+
+            navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+                if (ivHome != null) ivHome.clearColorFilter();
+                if (ivMisi != null) ivMisi.clearColorFilter();
+                if (ivPencapaian != null) ivPencapaian.clearColorFilter();
+                if (ivProfile != null) ivProfile.clearColorFilter();
+
+                int id = destination.getId();
+                if (id == R.id.FirstFragment && ivHome != null) {
+                    ivHome.setColorFilter(colorActive);
+                } else if (id == R.id.MisiFragment && ivMisi != null) {
+                    ivMisi.setColorFilter(colorActive);
+                } else if (id == R.id.PencapaianFragment && ivPencapaian != null) {
+                    ivPencapaian.setColorFilter(colorActive);
+                } else if (id == R.id.ProfileFragment && ivProfile != null) {
+                    ivProfile.setColorFilter(colorActive);
+                }
+            });
         }
     }
 }

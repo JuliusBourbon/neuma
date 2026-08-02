@@ -48,8 +48,6 @@ public class MisiFragment extends Fragment {
         // Tampilkan Data Misi (dari API Achievements)
         loadMisiData();
 
-        // Setup Bottom Navigation
-        setupBottomNavigation(view);
     }
 
     private void loadMisiData() {
@@ -77,19 +75,6 @@ public class MisiFragment extends Fragment {
             }
         });
     }
-
-    private void setupBottomNavigation(View view) {
-        View bottomNav = view.findViewById(R.id.include_bottom_nav);
-        if (bottomNav != null) {
-            NavController navController = NavHostFragment.findNavController(this);
-
-            View btnHome = bottomNav.findViewById(R.id.menu_home);
-            View btnPencapaian = bottomNav.findViewById(R.id.menu_pencapaian);
-            View btnProfile = bottomNav.findViewById(R.id.menu_profile);
-
-            if (btnHome != null) btnHome.setOnClickListener(v -> navController.navigate(R.id.FirstFragment));
-            if (btnPencapaian != null) btnPencapaian.setOnClickListener(v -> navController.navigate(R.id.PencapaianFragment));
-            if (btnProfile != null) btnProfile.setOnClickListener(v -> navController.navigate(R.id.ProfileFragment));
-        }
-    }
 }
+
+
