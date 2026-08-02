@@ -7,238 +7,238 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:fillViewport="false"
     android:background="@color/background_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="155dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="#1E9CB8">
+
+            <!-- Nama Pengguna -->
+            <TextView
+                android:id="@+id/tv_profile_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="-"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/btn_admin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Tombol Admin -->
+            <ImageButton
+                android:id="@+id/btn_admin"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Admin Panel"
+                android:src="@android:drawable/ic_menu_manage"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
+                app:layout_constraintEnd_toStartOf="@id/btn_setting"
+                app:layout_constraintTop_toTopOf="@id/tv_profile_name"
+                app:tint="@color/white" />
+
+            <!-- Tombol Setting -->
+            <ImageButton
+                android:id="@+id/btn_setting"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="20dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Pengaturan"
+                android:src="@drawable/ic_settings"
+                app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_profile_name"
+                app:tint="@color/white" />
+
+            <!-- Gambar Avatar -->
+            <ImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="246dp"
+                android:layout_height="221dp"
+                android:contentDescription="Avatar Profil"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="24dp">
+            android:paddingHorizontal="24dp"
+            android:paddingTop="20dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- SECTION 1: RINGKASAN -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="RINGKASAN"
+                android:textColor="#1F2937"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Grid Ringkasan -->
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:background="#1E9CB8">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:columnCount="2"
+                android:rowCount="2">
 
-                <!-- Nama Pengguna -->
-                <TextView
-                    android:id="@+id/tv_profile_name"
+                <!-- Item 1: Streak Hari -->
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="-"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@id/btn_admin"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_columnWeight="1"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <!-- Tombol Admin -->
-                <ImageButton
-                    android:id="@+id/btn_admin"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Admin Panel"
-                    android:src="@android:drawable/ic_menu_manage"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
-                    app:layout_constraintEnd_toStartOf="@id/btn_setting"
-                    app:layout_constraintTop_toTopOf="@id/tv_profile_name"
-                    app:tint="@color/white" />
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_streak" />
 
-                <!-- Tombol Setting -->
-                <ImageButton
-                    android:id="@+id/btn_setting"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Pengaturan"
-                    android:src="@drawable/ic_settings"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_profile_name"
-                    app:tint="@color/white" />
+                    <TextView
+                        android:id="@+id/tv_stat_streak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="3 hari"
+                        android:textColor="#1F2937"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
-                <!-- Gambar Avatar -->
-                <ImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="246dp"
-                    android:layout_height="221dp"
-                    android:contentDescription="Avatar Profil"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.496"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
-                    app:layout_constraintVertical_bias="0.0" />
+                <!-- Item 2: Poin -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_points" />
 
+                    <TextView
+                        android:id="@+id/tv_stat_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="260 Poin"
+                        android:textColor="#1F2937"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- Item 3: Pencapaian -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_medal" />
+
+                    <TextView
+                        android:id="@+id/tv_stat_pencapaian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="5 Pencapaian"
+                        android:textColor="#1F2937"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- Item 4: Level -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_trophy" />
+
+                    <TextView
+                        android:id="@+id/tv_stat_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="1 Level"
+                        android:textColor="#1F2937"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </GridLayout>
+
+            <!-- AKTIVITAS TERAKHIR -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="PENCAPAIAN TERBARU"
+                android:textColor="#1F2937"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Container Aktivitas Dinamis -->
             <LinearLayout
+                android:id="@+id/container_recent_activities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="24dp"
-                android:paddingTop="20dp">
+                android:layout_marginTop="8dp">
 
-                <!-- SECTION 1: RINGKASAN -->
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="RINGKASAN"
-                    android:textColor="#1F2937"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <!-- Grid Ringkasan -->
-                <GridLayout
+                    android:id="@+id/tv_no_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:columnCount="2"
-                    android:rowCount="2">
-
-                    <!-- Item 1: Streak Hari -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_streak" />
-
-                        <TextView
-                            android:id="@+id/tv_stat_streak"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="@font/poppins"
-                            android:text="3 hari"
-                            android:textColor="#1F2937"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <!-- Item 2: Poin -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_points" />
-
-                        <TextView
-                            android:id="@+id/tv_stat_points"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="@font/poppins"
-                            android:text="260 Poin"
-                            android:textColor="#1F2937"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <!-- Item 3: Pencapaian -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_medal" />
-
-                        <TextView
-                            android:id="@+id/tv_stat_pencapaian"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="@font/poppins"
-                            android:text="5 Pencapaian"
-                            android:textColor="#1F2937"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <!-- Item 4: Level -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_trophy" />
-
-                        <TextView
-                            android:id="@+id/tv_stat_level"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:fontFamily="@font/poppins"
-                            android:text="1 Level"
-                            android:textColor="#1F2937"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-                </GridLayout>
-
-                <!-- AKTIVITAS TERAKHIR -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="PENCAPAIAN TERBARU"
-                    android:textColor="#1F2937"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <!-- Container Aktivitas Dinamis -->
-                <LinearLayout
-                    android:id="@+id/container_recent_activities"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="8dp">
-                    
-                    <TextView
-                        android:id="@+id/tv_no_activity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/poppins"
-                        android:text="Belum ada aktivitas terbaru."
-                        android:textColor="#9CA3AF"
-                        android:textSize="13sp"
-                        android:visibility="gone" />
-                </LinearLayout>
-
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Belum ada aktivitas terbaru."
+                    android:textColor="#9CA3AF"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

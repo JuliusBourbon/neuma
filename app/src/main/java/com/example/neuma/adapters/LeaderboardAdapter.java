@@ -37,7 +37,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         
         if (entry.getName().equals("-")) {
             holder.tvScore.setText("-");
-            holder.ivAvatar.setImageResource(R.drawable.ic_launcher_foreground);
+            holder.ivAvatar.setImageDrawable(null);
         } else {
             holder.tvScore.setText(String.valueOf(entry.getScore()));
             String style = entry.getAvatarStyle() != null ? entry.getAvatarStyle() : "adventurer";

@@ -27,8 +27,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
-        android:src="@drawable/ic_launcher_foreground"
-        app:civ_circle_background_color="#2EC4B6" />
+        app:civ_circle_background_color="#FE7236" />
 
     <!-- Nama User -->
     <TextView
