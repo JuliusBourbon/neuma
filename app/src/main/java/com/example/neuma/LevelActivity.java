@@ -33,6 +33,7 @@ public class LevelActivity extends AppCompatActivity {
 
     private RecyclerView rvLeaderboard;
     private ProgressBar progressBar;
+    private androidx.constraintlayout.widget.Group groupContent;
     private Button btnMulai;
     private String levelId;
 
@@ -53,6 +54,7 @@ public class LevelActivity extends AppCompatActivity {
 
         rvLeaderboard = findViewById(R.id.rv_leaderboard);
         progressBar = findViewById(R.id.progress_bar);
+        groupContent = findViewById(R.id.group_content);
         btnMulai = findViewById(R.id.btn_mulai);
 
         rvLeaderboard.setLayoutManager(new LinearLayoutManager(this));
@@ -76,6 +78,7 @@ public class LevelActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LevelDetailResponse> call, Response<LevelDetailResponse> response) {
                 progressBar.setVisibility(View.GONE);
+                groupContent.setVisibility(View.VISIBLE);
 
                 if (response.isSuccessful() && response.body() != null) {
                     LevelDetailResponse data = response.body();
@@ -94,6 +97,7 @@ public class LevelActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LevelDetailResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                groupContent.setVisibility(View.VISIBLE);
                 setupDummyLeaderboard();
             }
         });

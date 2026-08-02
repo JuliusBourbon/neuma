@@ -53,36 +53,20 @@ public class PencapaianFragment extends Fragment {
     }
 
     private void fetchAchievements() {
-        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+        if (progressBar != null) progressBar.setVisibility(View.GONE);
 
-        api.getAchievements().enqueue(new Callback<List<Achievement>>() {
-            @Override
-            public void onResponse(Call<List<Achievement>> call, Response<List<Achievement>> response) {
-                if (!isAdded()) return;
-                if (progressBar != null) progressBar.setVisibility(View.GONE);
-
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Achievement> allAchievements = response.body();
-                    List<Achievement> unlockedAchievements = new java.util.ArrayList<>();
-                    for (Achievement a : allAchievements) {
-                        if (a.isUnlocked()) unlockedAchievements.add(a);
-                    }
-                    AchievementAdapter adapter = new AchievementAdapter(unlockedAchievements);
-                    rvPencapaian.setAdapter(adapter);
-                } else {
-                    // Fallback data dummy jika API kosong
-                    loadDummyAchievements();
-                }
+        List<Achievement> allAchievements = com.example.neuma.utils.DataManager.getInstance().getAchievements();
+        if (allAchievements != null && !allAchievements.isEmpty()) {
+            List<Achievement> unlockedAchievements = new java.util.ArrayList<>();
+            for (Achievement a : allAchievements) {
+                if (a.isUnlocked()) unlockedAchievements.add(a);
             }
-
-            @Override
-            public void onFailure(Call<List<Achievement>> call, Throwable t) {
-                if (!isAdded()) return;
-                if (progressBar != null) progressBar.setVisibility(View.GONE);
-
-                loadDummyAchievements();
-            }
-        });
+            AchievementAdapter adapter = new AchievementAdapter(unlockedAchievements);
+            rvPencapaian.setAdapter(adapter);
+        } else {
+            // Fallback data dummy jika API kosong
+            loadDummyAchievements();
+        }
     }
 
     private void loadDummyAchievements() {

@@ -1,5 +1,7 @@
 package com.example.neuma.adapters;
 
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,17 +40,13 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
 
         // Tampilkan reward avatar dari Dicebear
         if (misi.getRewardAvatarId() != null && !misi.getRewardAvatarId().isEmpty()) {
-            holder.tvRewardId.setText("Avatar: " + misi.getRewardAvatarSeed());
-            holder.tvRewardId.setVisibility(View.VISIBLE);
-            
             String style = misi.getRewardAvatarStyle() != null ? misi.getRewardAvatarStyle() : "adventurer";
             String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + misi.getRewardAvatarSeed();
-            
+
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                 .load(avatarUrl)
                 .into(holder.ivChest);
         } else {
-            holder.tvRewardId.setVisibility(View.GONE);
             // Default chest kalau gak ada reward avatar
             if (misi.isUnlocked()) {
                 holder.ivChest.setImageResource(R.drawable.ic_chest_active);
@@ -57,8 +55,17 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
             }
         }
 
-        // Atur transparansi (alpha)
-        holder.ivChest.setAlpha(misi.isUnlocked() ? 1.0f : 0.4f);
+        // Terapkan grayscale untuk avatar yang belum terbuka,
+        // tampilan warna penuh untuk yang sudah terbuka
+        if (misi.isUnlocked()) {
+            holder.ivChest.setAlpha(1.0f);
+            holder.ivChest.clearColorFilter();
+        } else {
+            holder.ivChest.setAlpha(0.85f);
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0f); // 0 = grayscale penuh
+            holder.ivChest.setColorFilter(new ColorMatrixColorFilter(matrix));
+        }
     }
 
     @Override
@@ -67,7 +74,7 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
     }
 
     static class MisiViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvProgressText, tvRewardId;
+        TextView tvTitle, tvProgressText;
         ProgressBar pbMisi;
         ImageView ivChest;
 
@@ -75,7 +82,6 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_misi_title);
             tvProgressText = itemView.findViewById(R.id.tv_misi_progress_text);
-            tvRewardId = itemView.findViewById(R.id.tv_reward_id);
             pbMisi = itemView.findViewById(R.id.pb_misi);
             ivChest = itemView.findViewById(R.id.iv_chest);
         }

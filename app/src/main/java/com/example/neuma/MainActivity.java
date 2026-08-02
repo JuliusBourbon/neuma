@@ -59,26 +59,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            // Fetch Profile untuk mendapatkan Avatar
-            com.example.neuma.network.UserApi userApi = com.example.neuma.utils.ApiClient.getAuthClient(this).create(com.example.neuma.network.UserApi.class);
-            userApi.getProfile().enqueue(new retrofit2.Callback<com.example.neuma.models.User>() {
-                @Override
-                public void onResponse(retrofit2.Call<com.example.neuma.models.User> call, retrofit2.Response<com.example.neuma.models.User> response) {
-                    if (response.isSuccessful() && response.body() != null && ivProfile != null) {
-                        com.example.neuma.models.User user = response.body();
-                        String style = user.getAvatarStyle() != null ? user.getAvatarStyle() : "adventurer";
-                        String seed = user.getAvatarSeed() != null ? user.getAvatarSeed() : "Felix";
-                        String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
-                        
-                        com.bumptech.glide.Glide.with(MainActivity.this)
-                            .load(avatarUrl)
-                            .circleCrop()
-                            .into(ivProfile);
-                    }
-                }
-                @Override
-                public void onFailure(retrofit2.Call<com.example.neuma.models.User> call, Throwable t) {}
-            });
+            // Load Avatar dari DataManager (Sudah di-prefetch di SplashActivity)
+            com.example.neuma.models.User user = com.example.neuma.utils.DataManager.getInstance().getCurrentUser();
+            if (user != null && ivProfile != null) {
+                String style = user.getAvatarStyle() != null ? user.getAvatarStyle() : "adventurer";
+                String seed = user.getAvatarSeed() != null ? user.getAvatarSeed() : "Felix";
+                String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+                
+                com.bumptech.glide.Glide.with(MainActivity.this)
+                    .load(avatarUrl)
+                    .circleCrop()
+                    .into(ivProfile);
+            }
         }
     }
 }

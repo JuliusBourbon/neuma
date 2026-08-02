@@ -13,7 +13,7 @@
         android:id="@+id/layout_header_misi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#25DE1C"
+        android:background="@color/primary"
         android:paddingHorizontal="24dp"
         android:paddingTop="32dp"
         android:paddingBottom="24dp"
@@ -41,7 +41,7 @@
             android:fontFamily="@font/poppins"
             android:text="Taklukkan misi untuk\nmendapatkan hadiah!"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_header_title"
@@ -83,7 +83,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="DAFTAR MISI"
                 android:textColor="#333333"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />
 

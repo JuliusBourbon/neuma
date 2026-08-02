@@ -50,45 +50,18 @@ public class FirstFragment extends Fragment {
     }
 
     private void loadLevels() {
-        TokenManager tokenManager = new TokenManager(requireContext());
-        String currentToken = tokenManager.getToken();
+        if (progressBar != null) progressBar.setVisibility(View.GONE);
 
-        // Print Token ke Logcat
-        android.util.Log.d("DEBUG_NEUMA", "TOKEN SAAT INI: " + currentToken);
-
-        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
-
-        LevelApi levelApi = ApiClient.getAuthClient(requireContext()).create(LevelApi.class);
-        Call<List<Level>> call = levelApi.getLevels();
-
-        call.enqueue(new Callback<List<Level>>() {
-            @Override
-            public void onResponse(Call<List<Level>> call, Response<List<Level>> response) {
-                if (!isAdded()) return;
-                if (progressBar != null) progressBar.setVisibility(View.GONE);
-
-                // Print Status Code dari Server
-                android.util.Log.d("DEBUG_NEUMA", "RESPONSE CODE: " + response.code());
-
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Level> levels = response.body();
-                    adapter = new LevelAdapter(levels, level -> {
-                        Intent intent = new Intent(requireActivity(), LevelActivity.class);
-                        intent.putExtra("LEVEL_ID", level.getId());
-                        startActivity(intent);
-                    });
-                    rvLevels.setAdapter(adapter);
-                } else {
-                    Toast.makeText(requireContext(), "Gagal memuat level: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Level>> call, Throwable t) {
-                if (!isAdded()) return;
-                if (progressBar != null) progressBar.setVisibility(View.GONE);
-                Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        List<Level> levels = com.example.neuma.utils.DataManager.getInstance().getLevels();
+        if (levels != null && !levels.isEmpty()) {
+            adapter = new LevelAdapter(levels, level -> {
+                Intent intent = new Intent(requireActivity(), LevelActivity.class);
+                intent.putExtra("LEVEL_ID", level.getId());
+                startActivity(intent);
+            });
+            rvLevels.setAdapter(adapter);
+        } else {
+            Toast.makeText(requireContext(), "Data level tidak tersedia. Silakan muat ulang aplikasi.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

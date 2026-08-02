@@ -73,7 +73,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
                 || "COMPLETED".equalsIgnoreCase(currentLevel.getStatus());
 
         // Bind huruf, warna, dan status tombol
-        bindLevelNode(holder.tvLevelLetter, holder.tvBadgeStart, position, isUnlocked, position == activeLevelIndex);
+        bindLevelNode(holder.tvLevelLetter, position, isUnlocked);
 
         View.OnClickListener clickAction = v -> {
             if (listener != null && isUnlocked) {
@@ -91,34 +91,22 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
 
     private void bindLevelNode(
             TextView tvLetter,
-            View tvBadge,
             int position,
-            boolean isUnlocked,
-            boolean isActive
+            boolean isUnlocked
     ) {
         if (tvLetter != null) {
             tvLetter.setText(getLevelLetter(position));
 
             if (isUnlocked) {
-                // Pasang selector hijau 3D yang bisa ditekan
                 tvLetter.setBackground(ContextCompat.getDrawable(tvLetter.getContext(), R.drawable.bg_level_active));
                 tvLetter.setTextColor(Color.WHITE);
                 tvLetter.setClickable(true);
                 tvLetter.setFocusable(true);
-
-                if (tvBadge != null) {
-                    tvBadge.setVisibility(isActive ? View.VISIBLE : View.GONE);
-                }
             } else {
-                // Level Terkunci
                 tvLetter.setBackground(ContextCompat.getDrawable(tvLetter.getContext(), R.drawable.bg_level_locked));
                 tvLetter.setTextColor(Color.parseColor("#9E9E9E"));
                 tvLetter.setClickable(false);
                 tvLetter.setFocusable(false);
-
-                if (tvBadge != null) {
-                    tvBadge.setVisibility(View.GONE);
-                }
             }
         }
     }
@@ -130,12 +118,10 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
 
     public static class LevelViewHolder extends RecyclerView.ViewHolder {
         TextView tvLevelLetter;
-        View tvBadgeStart;
 
         public LevelViewHolder(@NonNull View itemView) {
             super(itemView);
             tvLevelLetter = itemView.findViewById(R.id.ivLevelIcon);
-            tvBadgeStart = itemView.findViewById(R.id.ivTooltipStart);
         }
     }
 }

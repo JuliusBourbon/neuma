@@ -37,7 +37,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Prabowo Widodo"
+                    android:text="-"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -81,7 +81,6 @@
                     android:layout_height="221dp"
                     android:contentDescription="Avatar Profil"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/img_avatar_boy"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.496"
@@ -105,7 +104,7 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="RINGKASAN"
                     android:textColor="#1F2937"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <!-- Grid Ringkasan -->
@@ -138,7 +137,7 @@
                             android:fontFamily="@font/poppins"
                             android:text="3 hari"
                             android:textColor="#1F2937"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <!-- Item 2: Poin -->
@@ -163,7 +162,7 @@
                             android:fontFamily="@font/poppins"
                             android:text="260 Poin"
                             android:textColor="#1F2937"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <!-- Item 3: Pencapaian -->
@@ -187,7 +186,7 @@
                             android:fontFamily="@font/poppins"
                             android:text="5 Pencapaian"
                             android:textColor="#1F2937"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <!-- Item 4: Level -->
@@ -211,7 +210,7 @@
                             android:fontFamily="@font/poppins"
                             android:text="1 Level"
                             android:textColor="#1F2937"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </GridLayout>
 
@@ -221,9 +220,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="AKTIVITAS TERAKHIR"
+                    android:text="PENCAPAIAN TERBARU"
                     android:textColor="#1F2937"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <!-- Container Aktivitas Dinamis -->

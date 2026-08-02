@@ -51,29 +51,12 @@ public class MisiFragment extends Fragment {
     }
 
     private void loadMisiData() {
-        achievementApi.getAchievements().enqueue(new Callback<List<Achievement>>() {
-            @Override
-            public void onResponse(Call<List<Achievement>> call, Response<List<Achievement>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<Achievement> achievements = response.body();
-                    rvMisiList.setAdapter(new MisiAdapter(achievements));
-                } else {
-                    try {
-                        String errBody = response.errorBody() != null ? response.errorBody().string() : "No Error Body";
-                        Toast.makeText(requireContext(), "Gagal: " + response.code() + " " + errBody, Toast.LENGTH_LONG).show();
-                        Log.e("MisiFragment", "HTTP " + response.code() + " - " + errBody);
-                    } catch (Exception e) {
-                        Toast.makeText(requireContext(), "Gagal memuat: " + response.code(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Achievement>> call, Throwable t) {
-                Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("MisiFragment", "Error loading achievements", t);
-            }
-        });
+        List<Achievement> achievements = com.example.neuma.utils.DataManager.getInstance().getAchievements();
+        if (achievements != null && !achievements.isEmpty()) {
+            rvMisiList.setAdapter(new MisiAdapter(achievements));
+        } else {
+            Toast.makeText(requireContext(), "Data misi tidak tersedia. Silakan muat ulang aplikasi.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
