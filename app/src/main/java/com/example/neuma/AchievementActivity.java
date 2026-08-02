@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class AchievementActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
+    private View progressBar;
     private RecyclerView rvAchievements;
     private AchievementApi api;
 

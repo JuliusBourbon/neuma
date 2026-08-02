@@ -16,7 +16,8 @@
         android:layout_marginBottom="16dp"
         android:textColor="@color/black" />
 
-    <ProgressBar
+    <include
+        layout="@layout/layout_loading"
         android:id="@+id/progress_bar_admin_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -155,7 +155,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ProgressBar
+    <include
+        layout="@layout/layout_loading"
         android:id="@+id/progress_bar_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

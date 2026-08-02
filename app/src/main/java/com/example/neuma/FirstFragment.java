@@ -28,7 +28,7 @@ import retrofit2.Response;
 public class FirstFragment extends Fragment {
 
     private RecyclerView rvLevels;
-    private ProgressBar progressBar;
+    private View progressBar;
     private LevelAdapter adapter;
 
     @Override

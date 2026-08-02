@@ -23,7 +23,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
+    <include
+        layout="@layout/layout_loading"
         android:id="@+id/progress_bar_pencapaian"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -41,7 +41,7 @@ public class SettingActivity extends AppCompatActivity {
     private ImageView ivAvatar;
     private LinearLayout btnMenuNama, btnMenuPassword;
     private Button btnLogout;
-    private ProgressBar progressBar;
+    private View progressBar;
 
     private UserApi userApi;
     private AchievementApi achievementApi;

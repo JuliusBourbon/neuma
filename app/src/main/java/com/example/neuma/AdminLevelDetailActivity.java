@@ -34,7 +34,7 @@ public class AdminLevelDetailActivity extends AppCompatActivity {
     private String levelLetter;
 
     private TextView tvTitle;
-    private ProgressBar progressBar;
+    private View progressBar;
     private LinearLayout layoutItems;
 
     private LevelApi levelApi;

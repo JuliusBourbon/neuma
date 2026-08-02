@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class PencapaianFragment extends Fragment {
 
-    private ProgressBar progressBar;
+    private View progressBar;
     private RecyclerView rvPencapaian;
     private AchievementApi api;
 

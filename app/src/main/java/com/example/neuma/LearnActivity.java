@@ -73,7 +73,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private int currentMaterialIndex = 0;
     private int currentQuestionIndex = 0;
 
-    private ProgressBar progressBar;
+    private View progressBar;
     private ProgressBar progressBarAttempt;
     private View layoutMaterial, layoutQuiz;
 

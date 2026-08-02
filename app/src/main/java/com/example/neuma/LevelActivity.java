@@ -32,7 +32,7 @@ public class LevelActivity extends AppCompatActivity {
     private TextView tvRank3Name, tvRank3Score;
 
     private RecyclerView rvLeaderboard;
-    private ProgressBar progressBar;
+    private View progressBar;
     private androidx.constraintlayout.widget.Group groupContent;
     private Button btnMulai;
     private String levelId;

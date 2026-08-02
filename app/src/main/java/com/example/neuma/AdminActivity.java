@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class AdminActivity extends AppCompatActivity {
 
     private RecyclerView rvLevels;
-    private ProgressBar progressBar;
+    private View progressBar;
     private LevelAdapter adapter;
 
     @Override
