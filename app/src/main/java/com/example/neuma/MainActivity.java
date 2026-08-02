@@ -72,5 +72,60 @@ public class MainActivity extends AppCompatActivity {
                     .into(ivProfile);
             }
         }
+
+        com.example.neuma.utils.TokenManager tokenManager = new com.example.neuma.utils.TokenManager(this);
+        if (tokenManager.isFirstTimeTutorial()) {
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                showOnboardingTutorial(tokenManager);
+            }, 1000);
+        }
+    }
+
+    private void showOnboardingTutorial(com.example.neuma.utils.TokenManager tokenManager) {
+        android.graphics.Typeface poppins = androidx.core.content.res.ResourcesCompat.getFont(this, R.font.poppins);
+        int primaryColor = R.color.primary;
+
+        com.getkeepsafe.taptargetview.TapTarget targetHome = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_home), "Menu Utama", "Mulai belajar dengan mengakses berbagai materi dan tantangan di sini.")
+            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+        com.getkeepsafe.taptargetview.TapTarget targetMisi = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_misi), "Menu Misi", "Selesaikan misi harian untuk mendapatkan poin tambahan.")
+            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+        com.getkeepsafe.taptargetview.TapTarget targetPencapaian = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_pencapaian), "Pencapaian", "Kumpulkan berbagai pencapaian keren selama kamu belajar.")
+            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+        com.getkeepsafe.taptargetview.TapTarget targetProfile = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_profile), "Profil", "Atur avatar dan lihat statistik belajarmu di sini.")
+            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+
+        java.util.List<com.getkeepsafe.taptargetview.TapTarget> targets = new java.util.ArrayList<>();
+        targets.add(targetHome);
+        targets.add(targetMisi);
+        targets.add(targetPencapaian);
+        targets.add(targetProfile);
+
+        androidx.recyclerview.widget.RecyclerView rvLevels = findViewById(R.id.rv_levels);
+        if (rvLevels != null && rvLevels.getChildCount() > 0) {
+            android.view.View firstLevel = rvLevels.getChildAt(0);
+            if (firstLevel != null) {
+                com.getkeepsafe.taptargetview.TapTarget targetLevel = com.getkeepsafe.taptargetview.TapTarget.forView(firstLevel, "Ayo Mulai!", "Pilih level pertamamu dan mulailah perjalananmu.")
+                    .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false).transparentTarget(true);
+                targets.add(targetLevel);
+            }
+        }
+
+        new com.getkeepsafe.taptargetview.TapTargetSequence(this)
+            .targets(targets)
+            .listener(new com.getkeepsafe.taptargetview.TapTargetSequence.Listener() {
+                @Override
+                public void onSequenceFinish() {
+                    tokenManager.setFirstTimeTutorial(false);
+                }
+
+                @Override
+                public void onSequenceStep(com.getkeepsafe.taptargetview.TapTarget lastTarget, boolean targetClicked) {
+                }
+
+                @Override
+                public void onSequenceCanceled(com.getkeepsafe.taptargetview.TapTarget lastTarget) {
+                    tokenManager.setFirstTimeTutorial(false);
+                }
+            }).start();
     }
 }

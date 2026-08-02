@@ -56,4 +56,17 @@ public class TokenManager {
         return token != null && !token.trim().isEmpty();
         // (Opsional) Jika perlu, bisa ditambah logic decode JWT untuk cek expiration date (exp)
     }
+
+    public boolean isFirstTimeTutorial() {
+        if (sharedPreferences != null) {
+            return sharedPreferences.getBoolean("first_time_tutorial", false);
+        }
+        return false;
+    }
+
+    public void setFirstTimeTutorial(boolean isFirstTime) {
+        if (sharedPreferences != null) {
+            sharedPreferences.edit().putBoolean("first_time_tutorial", isFirstTime).apply();
+        }
+    }
 }

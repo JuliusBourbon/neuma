@@ -67,4 +67,7 @@ dependencies {
 
     // ONNX Runtime
     implementation("com.microsoft.onnxruntime:onnxruntime-android:1.27.0")
+    
+    // TapTargetView
+    implementation("com.getkeepsafe.taptargetview:taptargetview:1.13.3")
 }

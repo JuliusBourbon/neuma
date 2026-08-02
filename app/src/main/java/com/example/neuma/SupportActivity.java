@@ -16,19 +16,19 @@ public class SupportActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_support);
+//        setContentView(R.layout.activity_support);
+//
+//        btnBack = findViewById(R.id.btn_back_support);
+//        etNama = findViewById(R.id.et_support_nama);
+//        etEmail = findViewById(R.id.et_support_email);
+//        etPesan = findViewById(R.id.et_support_pesan);
+//        btnKirim = findViewById(R.id.btn_kirim_support);
 
-        btnBack = findViewById(R.id.btn_back_support);
-        etNama = findViewById(R.id.et_support_nama);
-        etEmail = findViewById(R.id.et_support_email);
-        etPesan = findViewById(R.id.et_support_pesan);
-        btnKirim = findViewById(R.id.btn_kirim_support);
-
-        // Aksi tombol kembali
-        btnBack.setOnClickListener(v -> finish());
-
-        // Aksi kirim support
-        btnKirim.setOnClickListener(v -> performSubmitSupport());
+//        // Aksi tombol kembali
+//        if(btnBack != null) btnBack.setOnClickListener(v -> finish());
+//
+//        // Aksi kirim support
+//        if(btnKirim != null) btnKirim.setOnClickListener(v -> performSubmitSupport());
     }
 
     private void performSubmitSupport() {

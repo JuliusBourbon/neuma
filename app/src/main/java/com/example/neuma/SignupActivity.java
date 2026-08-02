@@ -91,6 +91,9 @@ public class SignupActivity extends AppCompatActivity {
 
                     Toast.makeText(SignupActivity.this, "Registrasi berhasil!", Toast.LENGTH_SHORT).show();
 
+                    // Tandai bahwa ini pengguna baru untuk onboarding tutorial
+                    tokenManager.setFirstTimeTutorial(true);
+
                     // User baru register -> arahkan ke Onboarding Screen
                     Intent intent = new Intent(SignupActivity.this, OnboardingActivity.class);
                     // Hapus backstack agar tidak bisa back ke login/register
