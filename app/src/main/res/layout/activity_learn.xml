@@ -67,7 +67,7 @@
         <ImageView
             android:id="@+id/iv_material_media"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:layout_marginTop="24dp"
             android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +133,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:padding="24dp">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp">
 
         <TextView
             android:id="@+id/tv_quiz_header"
@@ -175,7 +176,7 @@
             android:id="@+id/layout_options_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="6dp"
             android:columnCount="2"
             app:layout_constraintBottom_toTopOf="@id/btn_submit_answer"
             app:layout_constraintStart_toStartOf="parent"
@@ -282,8 +283,7 @@
             app:cornerRadius="14dp"
             app:layout_constraintBottom_toTopOf="@id/btn_skip_question"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="12dp" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/btn_skip_question"
