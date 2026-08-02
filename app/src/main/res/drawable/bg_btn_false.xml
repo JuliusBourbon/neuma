@@ -4,15 +4,14 @@
     <item android:top="6dp">
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="@color/black" />
+            <solid android:color="@color/neored_dark" />
         </shape>
     </item>
     <!-- Main button body -->
     <item android:bottom="6dp">
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="#F44336" />
-            <stroke android:width="2dp" android:color="@color/black" />
+            <solid android:color="@color/neored" />
         </shape>
     </item>
 </layer-list>

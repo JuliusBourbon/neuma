@@ -7,9 +7,21 @@
     <color name="light_gray">#FFD3D3D3</color>
 
     <!-- Primary - Tosca/Turquoise (warna utama Neumá) -->
-    <color name="primary">#2EC4B6</color>
-    <color name="primary_dark">#21A89B</color>
+    <color name="primary">#25DE1C</color>
+    <color name="primary_dark">#29843A</color>
     <color name="primary_light">#E8FAF9</color>
+
+    <!--  White Neobrutalism  -->
+    <color name="neowhite">#E5E5E5</color>
+    <color name="neowhite_dark">#AFAFAF</color>
+
+    <!--  Red Neobrutalism  -->
+    <color name="neored">#EB4646</color>
+    <color name="neored_dark">#842929</color>
+
+    <!--  Red Neobrutalism  -->
+    <color name="neoyellow">#FFCC00</color>
+    <color name="neoyellow_dark">#9A7C00</color>
 
     <!-- Green (warna tombol aksi) -->
     <color name="green_button">#4CAF50</color>

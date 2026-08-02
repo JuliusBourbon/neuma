@@ -18,8 +18,8 @@ import java.util.List;
 
 public class ScoreActivity extends AppCompatActivity {
 
-    private TextView tvTotalScore, tvAchievementList;
-    private LinearLayout layoutAchievements;
+    private TextView tvTotalScore;
+    private LinearLayout layoutAchievements, layoutAchievementList;
     private Button btnHome;
 
     @Override
@@ -28,7 +28,7 @@ public class ScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_score);
 
         tvTotalScore = findViewById(R.id.tv_total_score);
-        tvAchievementList = findViewById(R.id.tv_achievement_list);
+        layoutAchievementList = findViewById(R.id.layout_achievement_list);
         layoutAchievements = findViewById(R.id.layout_achievements);
         btnHome = findViewById(R.id.btn_home);
 
@@ -43,11 +43,25 @@ public class ScoreActivity extends AppCompatActivity {
                 
                 if (achievements != null && !achievements.isEmpty()) {
                     layoutAchievements.setVisibility(View.VISIBLE);
-                    StringBuilder sb = new StringBuilder();
                     for (FinishAttemptResponse.Achievement a : achievements) {
-                        sb.append("🏆 ").append(a.getTitle()).append("\n");
+                        View itemView = getLayoutInflater().inflate(R.layout.item_score_achievement, layoutAchievementList, false);
+                        
+                        android.widget.TextView tvTitle = itemView.findViewById(R.id.tv_achievement_title);
+                        android.widget.ImageView ivAvatar = itemView.findViewById(R.id.iv_achievement_avatar);
+                        
+                        tvTitle.setText(a.getTitle());
+                        
+                        String style = a.getAvatarRewardStyle() != null ? a.getAvatarRewardStyle() : "adventurer";
+                        String seed = a.getAvatarRewardSeed() != null ? a.getAvatarRewardSeed() : "Felix";
+                        String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+                        
+                        com.bumptech.glide.Glide.with(ScoreActivity.this)
+                            .load(avatarUrl)
+                            .circleCrop()
+                            .into(ivAvatar);
+                            
+                        layoutAchievementList.addView(itemView);
                     }
-                    tvAchievementList.setText(sb.toString().trim());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

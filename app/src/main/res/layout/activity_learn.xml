@@ -151,8 +151,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Pertanyaan..."
+            android:textAlignment="center"
             android:textColor="@color/text_primary"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginTop="12dp"
             app:layout_constraintTop_toBottomOf="@id/tv_quiz_header"
@@ -174,9 +175,9 @@
             android:id="@+id/layout_options_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             android:columnCount="2"
-            app:layout_constraintTop_toBottomOf="@id/iv_question_media"
+            app:layout_constraintBottom_toTopOf="@id/btn_submit_answer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -185,37 +186,33 @@
             android:id="@+id/layout_true_false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal"
             android:weightSum="2"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/iv_question_media"
+            app:layout_constraintBottom_toTopOf="@id/btn_submit_answer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_true"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:text="✅ BENAR"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_white"
+                android:src="@drawable/ic_check_white"
+                android:scaleType="center"
                 android:background="@drawable/bg_btn_true"
                 app:backgroundTint="@null" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn_false"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:text="❌ SALAH"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_white"
+                android:src="@drawable/ic_x_white"
+                android:scaleType="center"
                 android:background="@drawable/bg_btn_false"
                 app:backgroundTint="@null" />
         </LinearLayout>
@@ -228,9 +225,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:visibility="gone"
+            android:background="@drawable/bg_camera_container"
             android:clipToOutline="true"
-            app:layout_constraintTop_toBottomOf="@id/layout_true_false"
-            app:layout_constraintBottom_toTopOf="@id/tv_hold_status"
+            app:layout_constraintTop_toBottomOf="@id/iv_question_media"
+            app:layout_constraintBottom_toTopOf="@id/btn_submit_answer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -249,14 +247,14 @@
                 android:id="@+id/tv_detection_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="12dp"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="12dp"
                 android:background="#CC000000"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
                 android:text="Arahkan kamera ke tangan Anda"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <!-- Hold Progress Bar overlay at bottom of camera -->
@@ -264,31 +262,13 @@
                 android:id="@+id/progress_hold"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_gravity="bottom"
+                android:layout_height="match_parent"
                 android:max="100"
                 android:progress="0"
-                android:progressTint="#4ADE80"
-                android:progressBackgroundTint="#44FFFFFF"
+                android:progressDrawable="@drawable/bg_camera_progress_border"
                 android:visibility="gone" />
 
         </FrameLayout>
-
-        <!-- Hold Status Label -->
-        <TextView
-            android:id="@+id/tv_hold_status"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/layout_camera_container"
-            app:layout_constraintBottom_toTopOf="@id/btn_submit_answer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/btn_submit_answer"

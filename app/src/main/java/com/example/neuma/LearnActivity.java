@@ -87,7 +87,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private ImageView ivQuestionMedia;
     private android.widget.GridLayout layoutOptionsContainer;
     private LinearLayout layoutTrueFalse;
-    private Button btnTrue, btnFalse;
+    private android.widget.ImageButton btnTrue, btnFalse;
     private Button btnSubmitAnswer, btnSkipQuestion;
 
     // Camera / SIGN_PRACTICE Views
@@ -96,7 +96,6 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private OverlayView overlayView;
     private TextView tvDetectionResult;
     private ProgressBar progressHold;
-    private TextView tvHoldStatus;
 
     // Camera / Detection components
     private HandLandmarkerHelper handLandmarkerHelper;
@@ -154,7 +153,6 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         overlayView = findViewById(R.id.overlay_view);
         tvDetectionResult = findViewById(R.id.tv_detection_result);
         progressHold = findViewById(R.id.progress_hold);
-        tvHoldStatus = findViewById(R.id.tv_hold_status);
 
         levelApi = ApiClient.getAuthClient(this).create(LevelApi.class);
         attemptApi = ApiClient.getAuthClient(this).create(AttemptApi.class);
@@ -171,83 +169,83 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
     // ─── Hold-to-Confirm Logic ───────────────────────────────────────────────
 
+    private long lastFrameTime = 0;
+    private float holdProgress = 0f;
+
     /**
      * Dipanggil setiap kali ada prediksi baru. Jika label cocok dengan jawaban benar,
-     * mulai countdown 5 detik. Jika tidak cocok, batalkan countdown.
+     * naikkan progress. Jika tidak cocok, turunkan perlahan.
      */
     private void handleSignDetection(String detectedLabel, float confidence) {
         Question q = questions.get(currentQuestionIndex);
         String correctAnswer = q.getCorrectAnswer();
 
-        // Update label deteksi
-        tvDetectionResult.setText("Terdeteksi: " + detectedLabel
-                + " (" + String.format("%.1f", confidence) + "%)");
-
         // Jika tidak ada correctAnswer, tidak bisa auto-submit — fallback ke manual
         if (correctAnswer == null || correctAnswer.isEmpty()) {
             selectedAnswer = detectedLabel;
+            tvDetectionResult.setText("Terdeteksi: " + detectedLabel
+                + " (" + String.format("%.1f", confidence) + "%)");
             return;
         }
 
         boolean isMatch = detectedLabel.trim().equalsIgnoreCase(correctAnswer.trim());
-
         if (isMatch) {
             selectedAnswer = detectedLabel;
-            if (!isHolding && !autoSubmitted) {
-                startHoldTimer(correctAnswer);
+        } else if (holdProgress <= 0) {
+            // Hanya tampilkan deteksi biasa jika progress sudah 0 dan tidak cocok
+            tvDetectionResult.setText("Terdeteksi: " + detectedLabel
+                + " (" + String.format("%.1f", confidence) + "%)");
+        }
+        
+        updateProgress(isMatch, correctAnswer);
+    }
+
+    private void updateProgress(boolean isCorrect, String targetLabel) {
+        if (autoSubmitted) return;
+
+        long currentTime = System.currentTimeMillis();
+        if (lastFrameTime == 0) lastFrameTime = currentTime;
+        long elapsed = currentTime - lastFrameTime;
+        lastFrameTime = currentTime;
+
+        // Cegah lonjakan waktu jika aplikasi sempat freeze
+        if (elapsed > 1000) elapsed = 30;
+
+        if (isCorrect) {
+            // Naikkan progress. Butuh 5 detik = 5000 ms = 100%
+            holdProgress += ((float) elapsed / 5000f) * 100f;
+            if (holdProgress >= 100f) {
+                holdProgress = 100f;
+                autoSubmitted = true;
+                progressHold.setProgress(100);
+                tvDetectionResult.setText("✅ Berhasil! Mengirim jawaban...");
+                submitAnswer();
+                return;
             }
         } else {
-            // Reset jika beda huruf
-            cancelHoldTimer();
+            // Turunkan progress secara perlahan (misal habis dalam 2 detik = 2000 ms)
+            holdProgress -= ((float) elapsed / 2000f) * 100f;
+            if (holdProgress < 0f) holdProgress = 0f;
         }
-    }
 
-    private void startHoldTimer(String targetLabel) {
-        isHolding = true;
-        progressHold.setVisibility(View.VISIBLE);
-        progressHold.setProgress(0);
-        tvHoldStatus.setVisibility(View.VISIBLE);
+        progressHold.setVisibility(holdProgress > 0 ? View.VISIBLE : View.GONE);
+        progressHold.setProgress((int) holdProgress);
 
-        holdTimer = new CountDownTimer(HOLD_DURATION_MS, 50) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long elapsed = HOLD_DURATION_MS - millisUntilFinished;
-                int progress = (int) (elapsed * 100 / HOLD_DURATION_MS);
-                progressHold.setProgress(progress);
-
-                long secondsLeft = (millisUntilFinished / 1000) + 1;
-                tvHoldStatus.setText("✅ Pertahankan isyarat \"" + targetLabel + "\" selama " + secondsLeft + " detik lagi...");
-            }
-
-            @Override
-            public void onFinish() {
-                progressHold.setProgress(100);
-                tvHoldStatus.setText("✅ Berhasil! Mengirim jawaban...");
-                isHolding = false;
-                autoSubmitted = true;
-                submitAnswer();
-            }
-        }.start();
-    }
-
-    private void cancelHoldTimer() {
-        if (holdTimer != null) {
-            holdTimer.cancel();
-            holdTimer = null;
-        }
-        isHolding = false;
-        if (!autoSubmitted) {
-            progressHold.setProgress(0);
-            progressHold.setVisibility(View.GONE);
-            tvHoldStatus.setText("");
-            tvHoldStatus.setVisibility(View.GONE);
+        if (isCorrect) {
+            int secondsLeft = (int) Math.ceil((100f - holdProgress) * 5000f / 100f / 1000f);
+            tvDetectionResult.setText("✅ Pertahankan isyarat \"" + targetLabel + "\" (" + secondsLeft + "s)");
+        } else if (holdProgress > 0) {
+            tvDetectionResult.setText("⚠️ Posisi salah, progress menurun...");
         }
     }
 
     private void resetHoldState() {
-        cancelHoldTimer();
+        holdProgress = 0f;
+        lastFrameTime = 0;
         autoSubmitted = false;
         isHolding = false;
+        progressHold.setProgress(0);
+        progressHold.setVisibility(View.GONE);
     }
 
     // ─── Camera / Detection Lifecycle ───────────────────────────────────────
@@ -422,9 +420,9 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             }
 
             if (!handDetected) {
-                // Tidak ada tangan — reset countdown
+                // Tidak ada tangan — turunkan progress
                 tvDetectionResult.setText("Arahkan kamera ke tangan Anda");
-                cancelHoldTimer();
+                updateProgress(false, null);
                 return;
             }
 
@@ -604,7 +602,6 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         layoutTrueFalse.setVisibility(View.GONE);
         layoutCameraContainer.setVisibility(View.GONE);
         progressHold.setVisibility(View.GONE);
-        tvHoldStatus.setVisibility(View.GONE);
         layoutOptionsContainer.removeAllViews();
         optionViews.clear();
         btnTrue.setAlpha(1.0f);
@@ -689,8 +686,6 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             tvDetectionResult.setText("Arahkan kamera ke tangan Anda");
             // Sembunyikan tombol submit manual — auto-submit via hold timer
             btnSubmitAnswer.setVisibility(View.GONE);
-            tvHoldStatus.setVisibility(View.VISIBLE);
-            tvHoldStatus.setText("Tunjukkan isyarat yang diminta selama 5 detik untuk melanjutkan");
             initCameraComponents();
             startCameraForSignPractice();
         }
