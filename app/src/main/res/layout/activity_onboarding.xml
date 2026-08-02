@@ -15,27 +15,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins"
         android:text="Neumá"
-        android:textColor="#00E5FF"
+        android:textColor="@color/primary"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageViewMaskot"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="Ilustrasi Maskot Belajar"
-        android:src="@drawable/maskot_burung_hantu"
-        app:layout_constraintBottom_toTopOf="@id/textViewDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+<!--    <ImageView-->
+<!--        android:id="@+id/imageViewMaskot"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="250dp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:layout_marginBottom="24dp"-->
+<!--        android:contentDescription="Ilustrasi Maskot Belajar"-->
+<!--        android:src="@drawable/maskot_burung_hantu"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/textViewDescription"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />-->
 
     <TextView
         android:id="@+id/textViewDescription"
@@ -45,7 +45,7 @@
         android:fontFamily="@font/poppins"
         android:text="Cara seru, interaktif, dan mudah untuk belajar Bahasa Isyarat!"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/primary"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/buttonMulaiPetualangan"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,11 +59,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_button_background"
-        android:elevation="8dp"
-        android:fontFamily="@font/poppins"
+        android:elevation="2dp"
+        android:fontFamily="@font/poppins_bold"
         android:stateListAnimator="@null"
         android:text="MULAI PETUALANGAN"
-        android:textColor="@color/white"
+        android:textColor="@color/primary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

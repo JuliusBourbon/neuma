@@ -6,7 +6,8 @@
     android:id="@+id/splash_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white">
+    android:background="@color/background_white"
+    android:paddingHorizontal="70dp">
 
     <!-- Logo / Nama Aplikasi -->
 
@@ -33,8 +34,9 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins"
         android:letterSpacing="0.05"
-        android:text="Belajar Bahasa Isyarat"
-        android:textColor="@color/text_secondary"
+        android:text="Belajar Bahasa Isyarat Menjadi Mudah dan Menyenangkan"
+        android:textColor="@color/black"
+        android:textAlignment="center"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
