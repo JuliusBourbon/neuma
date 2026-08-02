@@ -17,8 +17,7 @@
         android:textSize="14sp"
         android:layout_marginEnd="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/iv_chest" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Container Progress Bar Kapsul -->
     <FrameLayout
@@ -28,8 +27,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_misi_title"
-        app:layout_constraintEnd_toStartOf="@id/iv_chest">
+        app:layout_constraintTop_toBottomOf="@id/tv_misi_title">
 
         <ProgressBar
             android:id="@+id/pb_misi"
