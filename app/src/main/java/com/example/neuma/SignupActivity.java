@@ -38,9 +38,6 @@ public class SignupActivity extends AppCompatActivity {
         etName = findViewById(R.id.editTextNamaPenggunaDaftar);
         etPassword = findViewById(R.id.editTextPasswordDaftar);
 
-        // Menginisialisasi input tambahan (opsional untuk saat ini)
-        etTanggalLahir = findViewById(R.id.editTextTanggalLahir);
-        etGender = findViewById(R.id.editTextGender);
 
         btnDaftar = findViewById(R.id.buttonDaftar);
         tvLoginLink = findViewById(R.id.textViewSudahPunyaAkun);

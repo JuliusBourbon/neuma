@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_blue"
+    android:background="@color/primary"
     android:padding="24dp"
     tools:context=".LoginActivity">
 
@@ -16,7 +16,7 @@
         android:layout_marginTop="48dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Masuk"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,8 +29,8 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins"
         android:text="Jendela Isyarat siap menantimu kembali!"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nama Pengguna"
+            android:fontFamily="@font/poppins_bold"
             android:textColor="@color/input_label_color"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -62,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins"
             android:background="@drawable/rounded_input_background"
             android:hint="Nama Pengguna"
             android:inputType="textPersonName"
@@ -77,6 +79,7 @@
             android:text="Password"
             android:textColor="@color/input_label_color"
             android:textSize="16sp"
+            android:fontFamily="@font/poppins_bold"
             android:textStyle="bold" />
 
         <EditText
@@ -87,31 +90,13 @@
             android:background="@drawable/rounded_input_background"
             android:hint="Password"
             android:inputType="textPassword"
+            android:fontFamily="@font/poppins"
             android:padding="12dp"
             android:textColor="@color/input_text_color"
             android:textColorHint="@color/hint_text_color"
             android:textSize="14sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/checkBoxIngatSaya"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/input_label_color" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ingat Saya!"
-                android:textColor="@color/input_label_color"
-                android:textSize="12sp" />
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -124,34 +109,48 @@
         android:layout_height="56dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_button_background"
+        android:background="@drawable/bg_snackbar_success"
         android:elevation="10dp"
         android:fontFamily="@font/poppins"
         android:stateListAnimator="@null"
         android:text="Masuk"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/cardViewInput"
         app:layout_constraintEnd_toEndOf="@id/cardViewInput"
         app:layout_constraintStart_toStartOf="@id/cardViewInput"
         app:layout_constraintTop_toBottomOf="@id/cardViewInput" />
 
-    <TextView
-        android:id="@+id/textViewBlmPunyaAkun"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="24dp"
-        android:fontFamily="@font/poppins"
-        android:text="Belum Punya Akun? Daftar Sekarang!"
-        android:textColor="@color/black"
-        android:textSize="14sp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonMasuk"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Belum Punya Akun? "
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textViewBlmPunyaAkun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Daftar Sekarang!"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
