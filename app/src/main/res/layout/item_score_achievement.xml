@@ -5,8 +5,7 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:padding="12dp"
-    android:layout_marginBottom="12dp"
-    android:background="@drawable/bg_achievement_card">
+    android:layout_marginBottom="12dp">
 
     <ImageView
         android:id="@+id/iv_achievement_avatar"
@@ -19,9 +18,10 @@
         android:id="@+id/tv_achievement_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
         android:layout_weight="1"
-        android:layout_marginStart="16dp"
-        android:textColor="@color/black"
+        android:layout_marginStart="22dp"
+        android:textColor="@color/tertiary"
         android:textSize="16sp"
         android:textStyle="bold"
         android:text="Nama Achievement" />
