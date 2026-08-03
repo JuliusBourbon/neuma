@@ -83,16 +83,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void showOnboardingTutorial(com.example.neuma.utils.TokenManager tokenManager) {
         android.graphics.Typeface poppins = androidx.core.content.res.ResourcesCompat.getFont(this, R.font.poppins);
-        int primaryColor = R.color.primary;
+        int secondaryColor = R.color.secondary;
 
-        com.getkeepsafe.taptargetview.TapTarget targetHome = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_home), "Menu Utama", "Mulai belajar dengan mengakses berbagai materi dan tantangan di sini.")
-            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
-        com.getkeepsafe.taptargetview.TapTarget targetMisi = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_misi), "Menu Misi", "Selesaikan misi harian untuk mendapatkan poin tambahan.")
-            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
-        com.getkeepsafe.taptargetview.TapTarget targetPencapaian = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_pencapaian), "Pencapaian", "Kumpulkan berbagai pencapaian keren selama kamu belajar.")
-            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
-        com.getkeepsafe.taptargetview.TapTarget targetProfile = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_profile), "Profil", "Atur avatar dan lihat statistik belajarmu di sini.")
-            .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+        com.getkeepsafe.taptargetview.TapTarget targetHome = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_home), "Menu Utama", "Mulai belajar dengan mengakses berbagai materi dan tantangan di sini!")
+            .outerCircleColor(secondaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+        com.getkeepsafe.taptargetview.TapTarget targetMisi = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_misi), "Menu Misi", "Selesaikan misi untuk mendapatkan Avatar Menarik!")
+            .outerCircleColor(secondaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+        com.getkeepsafe.taptargetview.TapTarget targetPencapaian = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_pencapaian), "Pencapaian", "Lihat daftar Pencapaianmu. Ayo kumpulkan seluruh pencapaiannya!")
+            .outerCircleColor(secondaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
+        com.getkeepsafe.taptargetview.TapTarget targetProfile = com.getkeepsafe.taptargetview.TapTarget.forView(findViewById(R.id.menu_profile), "Profil", "Atur avatar dan lihat statistik belajarmu di sini!")
+            .outerCircleColor(secondaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false);
 
         java.util.List<com.getkeepsafe.taptargetview.TapTarget> targets = new java.util.ArrayList<>();
         targets.add(targetHome);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             android.view.View firstLevel = rvLevels.getChildAt(0);
             if (firstLevel != null) {
                 com.getkeepsafe.taptargetview.TapTarget targetLevel = com.getkeepsafe.taptargetview.TapTarget.forView(firstLevel, "Ayo Mulai!", "Pilih level pertamamu dan mulailah perjalananmu.")
-                    .outerCircleColor(primaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false).transparentTarget(true);
+                    .outerCircleColor(secondaryColor).targetCircleColor(R.color.white).titleTypeface(poppins).descriptionTypeface(poppins).cancelable(false).transparentTarget(true);
                 targets.add(targetLevel);
             }
         }

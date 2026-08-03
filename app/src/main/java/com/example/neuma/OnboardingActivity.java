@@ -21,7 +21,7 @@ public class OnboardingActivity extends AppCompatActivity {
         // Menambahkan aksi ketika tombol diklik
         buttonMulaiPetualangan.setOnClickListener(v -> {
             // Arahkan pengguna ke MainActivity (halaman utama aplikasi)
-            Intent intent = new Intent(OnboardingActivity.this, SplashActivity.class);
+            Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
             // Menghapus riwayat halaman sebelumnya agar pengguna tidak bisa kembali ke onboarding dengan tombol 'Back'
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

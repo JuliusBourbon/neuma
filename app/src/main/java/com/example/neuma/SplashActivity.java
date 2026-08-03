@@ -119,7 +119,12 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void navigateToMain() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        boolean fromSignup = getIntent().getBooleanExtra("FROM_SIGNUP", false);
+        if (fromSignup) {
+            startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));
+        } else {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        }
         finish();
     }
 }

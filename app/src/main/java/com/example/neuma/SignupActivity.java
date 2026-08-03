@@ -94,8 +94,9 @@ public class SignupActivity extends AppCompatActivity {
                     // Tandai bahwa ini pengguna baru untuk onboarding tutorial
                     tokenManager.setFirstTimeTutorial(true);
 
-                    // User baru register -> arahkan ke Onboarding Screen
-                    Intent intent = new Intent(SignupActivity.this, OnboardingActivity.class);
+                    // User baru register -> arahkan ke Splash Screen untuk loading data awal
+                    Intent intent = new Intent(SignupActivity.this, SplashActivity.class);
+                    intent.putExtra("FROM_SIGNUP", true);
                     // Hapus backstack agar tidak bisa back ke login/register
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
