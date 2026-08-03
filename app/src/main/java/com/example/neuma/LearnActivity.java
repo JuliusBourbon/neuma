@@ -713,8 +713,63 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         String answer = selectedAnswer;
         boolean isLastQuestion = (currentQuestionIndex == questions.size() - 1);
 
+        // Optimistic Local Validation (hanya untuk tipe soal selain SIGN_PRACTICE)
+        if (!isLastQuestion && !"SIGN_PRACTICE".equals(q.getType()) && q.getCorrectAnswer() != null && !q.getCorrectAnswer().isEmpty()) {
+            stopCamera();
+            currentQuestionAttempts++;
+            boolean isCorrect = answer.trim().equalsIgnoreCase(q.getCorrectAnswer().trim());
+            
+            if (isCorrect) {
+                consecutiveCorrectAnswers++;
+                String title;
+                if (consecutiveCorrectAnswers >= 3) {
+                    title = "Bagus!!!";
+                } else if (currentQuestionAttempts == 1) {
+                    title = "Benar!!!";
+                } else {
+                    title = "Keren!!!";
+                }
+                int earnedScore = (currentQuestionAttempts == 1) ? 100 : 50;
+                if (consecutiveCorrectAnswers > 1) {
+                    earnedScore += (consecutiveCorrectAnswers - 1) * 10;
+                }
+                if (earnedScore > 750) {
+                    earnedScore = 750;
+                }
+                showTopSnackbar(title, "Score +" + earnedScore, true);
+                nextQuestion();
+            } else {
+                consecutiveCorrectAnswers = 0;
+                showTopSnackbar("Belum tepat", "Coba Lagi!", false);
+            }
+            
+            Log.d(TAG, "Optimistic submitAnswer started for question: " + q.getId());
+            // Fire-and-forget background API call
+            attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
+                @Override
+                public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {
+                    if (!response.isSuccessful()) {
+                        try {
+                            String err = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                            Log.e(TAG, "Optimistic submitAnswer failed: " + response.code() + " - " + err);
+                        } catch (Exception e) {
+                            Log.e(TAG, "Optimistic submitAnswer failed: " + response.code());
+                        }
+                    } else {
+                        Log.d(TAG, "Optimistic submitAnswer success for question: " + q.getId());
+                    }
+                }
+                @Override
+                public void onFailure(Call<AnswerResponse> call, Throwable t) {
+                    Log.e(TAG, "Optimistic submitAnswer network error: " + t.getMessage());
+                }
+            });
+            return;
+        }
+
         // Wait for server response
         setLoadingState(true);
+        Log.d(TAG, "Blocking submitAnswer started for question: " + q.getId());
 
         attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
             @Override
@@ -745,6 +800,12 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                         }
                     }
                 } else {
+                    try {
+                        String err = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                        Log.e(TAG, "Blocking submitAnswer failed: " + response.code() + " - " + err);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Blocking submitAnswer failed: " + response.code());
+                    }
                     showError("Gagal mengirim jawaban");
                     if ("SIGN_PRACTICE".equals(q.getType())) {
                         autoSubmitted = false;
@@ -756,6 +817,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             @Override
             public void onFailure(Call<AnswerResponse> call, Throwable t) {
                 setLoadingState(false);
+                Log.e(TAG, "Blocking submitAnswer network error: " + t.getMessage());
                 showError("Error: " + t.getMessage());
                 if ("SIGN_PRACTICE".equals(q.getType())) {
                     autoSubmitted = false;
@@ -839,12 +901,14 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         resetHoldState();
         progressBar.setVisibility(View.VISIBLE);
         layoutQuiz.setVisibility(View.GONE);
+        Log.d(TAG, "finishAttempt started for attemptId: " + attemptId);
 
         attemptApi.finishAttempt(attemptId).enqueue(new Callback<FinishAttemptResponse>() {
             @Override
             public void onResponse(Call<FinishAttemptResponse> call, Response<FinishAttemptResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "finishAttempt success, totalScore: " + response.body().getTotalScore());
                     FinishAttemptResponse res = response.body();
                     Intent intent = new Intent(LearnActivity.this, ScoreActivity.class);
                     intent.putExtra("TOTAL_SCORE", res.getTotalScore());
@@ -855,6 +919,12 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                     startActivity(intent);
                     finish();
                 } else {
+                    try {
+                        String err = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                        Log.e(TAG, "finishAttempt failed: " + response.code() + " - " + err);
+                    } catch (Exception e) {
+                        Log.e(TAG, "finishAttempt failed: " + response.code());
+                    }
                     showError("Gagal menyelesaikan sesi tes");
                 }
             }
@@ -862,6 +932,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             @Override
             public void onFailure(Call<FinishAttemptResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "finishAttempt network error: " + t.getMessage());
                 showError("Error: " + t.getMessage());
             }
         });
