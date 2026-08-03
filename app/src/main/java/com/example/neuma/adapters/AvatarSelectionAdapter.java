@@ -43,7 +43,7 @@ public class AvatarSelectionAdapter extends RecyclerView.Adapter<AvatarSelection
 
         String style = item.getStyle() != null ? item.getStyle() : "adventurer";
         String seed = item.getSeed() != null ? item.getSeed() : "Felix";
-        String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+        String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
 
         Glide.with(holder.itemView.getContext())
              .load(avatarUrl)

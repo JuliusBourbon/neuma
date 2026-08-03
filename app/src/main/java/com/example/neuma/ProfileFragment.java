@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment {
 
             String style = user.getAvatarStyle() != null ? user.getAvatarStyle() : "adventurer";
             String seed = user.getAvatarSeed() != null ? user.getAvatarSeed() : "Felix";
-            String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+            String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
 
             ImageView ivAvatar = getView().findViewById(R.id.iv_avatar);
             if (ivAvatar != null) {
@@ -136,7 +136,7 @@ public class ProfileFragment extends Fragment {
 
                         if ("achievement".equals(item.getType())) {
                             if (item.getAvatarSeed() != null && item.getAvatarStyle() != null) {
-                                String url = "https://api.dicebear.com/9.x/" + item.getAvatarStyle() + "/png?seed=" + item.getAvatarSeed();
+                                String url = "https://api.dicebear.com/10.x/" + item.getAvatarStyle() + "/png?seed=" + item.getAvatarSeed();
                                 com.bumptech.glide.Glide.with(requireContext()).load(url).into(ivIcon);
                             } else {
                                 ivIcon.setImageResource(R.drawable.ic_medal);

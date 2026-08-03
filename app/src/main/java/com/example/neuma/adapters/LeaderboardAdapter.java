@@ -42,7 +42,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
             holder.tvScore.setText(String.valueOf(entry.getScore()));
             String style = entry.getAvatarStyle() != null ? entry.getAvatarStyle() : "adventurer";
             String seed = entry.getAvatarSeed() != null ? entry.getAvatarSeed() : "Felix";
-            String url = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+            String url = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                 .load(url)
                 .into(holder.ivAvatar);

@@ -33,7 +33,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
 
         if (a.getRewardAvatarId() != null && !a.getRewardAvatarId().isEmpty()) {
             String style = a.getRewardAvatarStyle() != null ? a.getRewardAvatarStyle() : "adventurer";
-            String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + a.getRewardAvatarSeed();
+            String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + a.getRewardAvatarSeed();
             Glide.with(holder.itemView.getContext())
                 .load(avatarUrl)
                 .into(holder.ivBadge);

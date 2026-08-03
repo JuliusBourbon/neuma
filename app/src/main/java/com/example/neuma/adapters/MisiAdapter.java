@@ -42,7 +42,7 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
         // Tampilkan reward avatar dari Dicebear
         if (misi.getRewardAvatarId() != null && !misi.getRewardAvatarId().isEmpty()) {
             String style = misi.getRewardAvatarStyle() != null ? misi.getRewardAvatarStyle() : "adventurer";
-            String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + misi.getRewardAvatarSeed();
+            String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + misi.getRewardAvatarSeed();
 
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                 .load(avatarUrl)

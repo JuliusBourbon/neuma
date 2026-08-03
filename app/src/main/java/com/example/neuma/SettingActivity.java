@@ -94,7 +94,7 @@ public class SettingActivity extends AppCompatActivity {
         if (currentUser == null) return;
         String style = currentUser.getAvatarStyle() != null ? currentUser.getAvatarStyle() : "adventurer";
         String seed = currentUser.getAvatarSeed() != null ? currentUser.getAvatarSeed() : "Felix";
-        String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+        String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
 
         Glide.with(this)
              .load(avatarUrl)

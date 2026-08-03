@@ -99,7 +99,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         String style = user.getAvatarStyle() != null ? user.getAvatarStyle() : "adventurer";
         String seed = user.getAvatarSeed() != null ? user.getAvatarSeed() : "Felix";
-        String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+        String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
 
         ImageView ivAvatar = findViewById(R.id.iv_avatar);
         if (ivAvatar != null) {
@@ -160,7 +160,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                     if ("achievement".equals(item.getType())) {
                         if (item.getAvatarSeed() != null && item.getAvatarStyle() != null) {
-                            String url = "https://api.dicebear.com/9.x/" + item.getAvatarStyle() + "/png?seed=" + item.getAvatarSeed();
+                            String url = "https://api.dicebear.com/10.x/" + item.getAvatarStyle() + "/png?seed=" + item.getAvatarSeed();
                             com.bumptech.glide.Glide.with(this).load(url).into(ivIcon);
                         } else {
                             ivIcon.setImageResource(R.drawable.ic_medal);

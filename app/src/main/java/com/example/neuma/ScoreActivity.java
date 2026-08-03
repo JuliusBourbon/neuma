@@ -65,7 +65,7 @@ public class ScoreActivity extends AppCompatActivity {
                         
                         String style = a.getAvatarRewardStyle() != null ? a.getAvatarRewardStyle() : "adventurer";
                         String seed = a.getAvatarRewardSeed() != null ? a.getAvatarRewardSeed() : "Felix";
-                        String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+                        String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
                         
                         com.bumptech.glide.Glide.with(ScoreActivity.this)
                             .load(avatarUrl)

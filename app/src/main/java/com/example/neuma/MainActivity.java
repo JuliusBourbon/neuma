@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             if (user != null && ivProfile != null) {
                 String style = user.getAvatarStyle() != null ? user.getAvatarStyle() : "adventurer";
                 String seed = user.getAvatarSeed() != null ? user.getAvatarSeed() : "Felix";
-                String avatarUrl = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+                String avatarUrl = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
                 
                 com.bumptech.glide.Glide.with(MainActivity.this)
                     .load(avatarUrl)

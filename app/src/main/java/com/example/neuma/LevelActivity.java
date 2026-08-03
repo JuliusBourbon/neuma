@@ -142,7 +142,7 @@ public class LevelActivity extends AppCompatActivity {
         }
         String style = entry.getAvatarStyle() != null ? entry.getAvatarStyle() : "adventurer";
         String seed = entry.getAvatarSeed() != null ? entry.getAvatarSeed() : "Felix";
-        String url = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
+        String url = "https://api.dicebear.com/10.x/" + style + "/png?seed=" + seed;
         com.bumptech.glide.Glide.with(this).load(url).into(imageView);
 
         imageView.setOnClickListener(v -> {
