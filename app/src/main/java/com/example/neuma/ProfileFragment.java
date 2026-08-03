@@ -135,7 +135,12 @@ public class ProfileFragment extends Fragment {
                         }
 
                         if ("achievement".equals(item.getType())) {
-                            ivIcon.setImageResource(R.drawable.ic_medal);
+                            if (item.getAvatarSeed() != null && item.getAvatarStyle() != null) {
+                                String url = "https://api.dicebear.com/9.x/" + item.getAvatarStyle() + "/png?seed=" + item.getAvatarSeed();
+                                com.bumptech.glide.Glide.with(requireContext()).load(url).into(ivIcon);
+                            } else {
+                                ivIcon.setImageResource(R.drawable.ic_medal);
+                            }
                         } else {
                             ivIcon.setImageResource(R.drawable.ic_star_blue);
                         }

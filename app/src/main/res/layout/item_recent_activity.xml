@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Aktivitas"
-            android:textColor="@color/black"
+            android:textColor="@color/tertiary"
             android:textSize="18sp" />
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Baru saja"
-            android:textColor="#9CA3AF"
+            android:textColor="@color/secondary_dark"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

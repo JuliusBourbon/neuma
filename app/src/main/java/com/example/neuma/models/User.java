@@ -25,9 +25,13 @@ public class User {
         private String title;
         private String timestamp;
         private String type;
+        private String avatarStyle;
+        private String avatarSeed;
 
         public String getTitle() { return title; }
         public String getTimestamp() { return timestamp; }
         public String getType() { return type; }
+        public String getAvatarStyle() { return avatarStyle; }
+        public String getAvatarSeed() { return avatarSeed; }
     }
 }
