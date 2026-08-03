@@ -19,6 +19,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_misi_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="12dp"
+        android:fontFamily="@font/poppins"
+        android:text="Deskripsi misi akan muncul di sini"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_misi_title" />
+
     <!-- Container Progress Bar Kapsul -->
     <FrameLayout
         android:id="@+id/progress_container"
@@ -27,7 +40,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_misi_title">
+        app:layout_constraintTop_toBottomOf="@id/tv_misi_description">
 
         <ProgressBar
             android:id="@+id/pb_misi"

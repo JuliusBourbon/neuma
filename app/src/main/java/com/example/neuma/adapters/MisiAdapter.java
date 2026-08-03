@@ -34,6 +34,7 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
         Achievement misi = misiList.get(position);
 
         holder.tvTitle.setText(misi.getTitle());
+        holder.tvDescription.setText(misi.getDescription() != null ? misi.getDescription() : "");
         holder.pbMisi.setMax(misi.getTarget() > 0 ? misi.getTarget() : 1);
         holder.pbMisi.setProgress(misi.getProgress());
         holder.tvProgressText.setText(misi.getProgress() + "/" + misi.getTarget());
@@ -74,13 +75,14 @@ public class MisiAdapter extends RecyclerView.Adapter<MisiAdapter.MisiViewHolder
     }
 
     static class MisiViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvProgressText;
+        TextView tvTitle, tvDescription, tvProgressText;
         ProgressBar pbMisi;
         ImageView ivChest;
 
         public MisiViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_misi_title);
+            tvDescription = itemView.findViewById(R.id.tv_misi_description);
             tvProgressText = itemView.findViewById(R.id.tv_misi_progress_text);
             pbMisi = itemView.findViewById(R.id.pb_misi);
             ivChest = itemView.findViewById(R.id.iv_chest);
