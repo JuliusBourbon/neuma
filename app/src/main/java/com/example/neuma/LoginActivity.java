@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnMasuk;
     private TextView tvRegisterLink;
     private TokenManager tokenManager;
+    private com.example.neuma.utils.ButtonLoadingHelper buttonLoadingHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         tvRegisterLink = findViewById(R.id.textViewBlmPunyaAkun);
 
         // Aksi tombol login
+        buttonLoadingHelper = new com.example.neuma.utils.ButtonLoadingHelper(btnMasuk);
         btnMasuk.setOnClickListener(v -> performLogin());
 
         // Aksi klik teks daftar
@@ -61,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        btnMasuk.setEnabled(false);
-        btnMasuk.setText("Memproses...");
+        buttonLoadingHelper.startLoading();
 
         AuthApi authApi = ApiClient.getClient().create(AuthApi.class);
         Call<AuthResponse> call = authApi.login(new LoginRequest(name, password));
@@ -70,8 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                btnMasuk.setEnabled(true);
-                btnMasuk.setText("Masuk");
+                buttonLoadingHelper.stopLoading();
 
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse authResponse = response.body();
@@ -94,8 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                btnMasuk.setEnabled(true);
-                btnMasuk.setText("Masuk");
+                buttonLoadingHelper.stopLoading();
                 Toast.makeText(LoginActivity.this, "Error koneksi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

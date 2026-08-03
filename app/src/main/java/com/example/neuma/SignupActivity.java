@@ -26,6 +26,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnDaftar;
     private TextView tvLoginLink;
     private TokenManager tokenManager;
+    private com.example.neuma.utils.ButtonLoadingHelper buttonLoadingHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class SignupActivity extends AppCompatActivity {
         tvLoginLink.setOnClickListener(v -> finish()); // Kembali ke halaman Login
 
         // Aksi ketika tombol "Daftar" diklik
+        buttonLoadingHelper = new com.example.neuma.utils.ButtonLoadingHelper(btnDaftar);
         btnDaftar.setOnClickListener(v -> performRegister());
     }
 
@@ -68,8 +70,7 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        btnDaftar.setEnabled(false);
-        btnDaftar.setText("Memproses...");
+        buttonLoadingHelper.startLoading();
 
         AuthApi authApi = ApiClient.getClient().create(AuthApi.class);
 
@@ -79,8 +80,7 @@ public class SignupActivity extends AppCompatActivity {
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                btnDaftar.setEnabled(true);
-                btnDaftar.setText("Daftar"); // Disesuaikan dengan kapitalisasi di desain (Daftar, bukan DAFTAR)
+                buttonLoadingHelper.stopLoading();
 
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse authResponse = response.body();
@@ -108,8 +108,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                btnDaftar.setEnabled(true);
-                btnDaftar.setText("Daftar");
+                buttonLoadingHelper.stopLoading();
                 Toast.makeText(SignupActivity.this, "Error koneksi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
