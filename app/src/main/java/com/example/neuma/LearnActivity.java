@@ -713,51 +713,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         String answer = selectedAnswer;
         boolean isLastQuestion = (currentQuestionIndex == questions.size() - 1);
 
-        // Optimistic Local Validation (hanya jika bukan soal terakhir agar tidak ada race condition saat finish)
-        if (!isLastQuestion && q.getCorrectAnswer() != null && !q.getCorrectAnswer().isEmpty()) {
-            stopCamera();
-            currentQuestionAttempts++;
-            boolean isCorrect = answer.trim().equalsIgnoreCase(q.getCorrectAnswer().trim());
-            
-            if (isCorrect) {
-                consecutiveCorrectAnswers++;
-                String title;
-                if (consecutiveCorrectAnswers >= 3) {
-                    title = "Bagus!!!";
-                } else if (currentQuestionAttempts == 1) {
-                    title = "Benar!!!";
-                } else {
-                    title = "Keren!!!";
-                }
-                int earnedScore = (currentQuestionAttempts == 1) ? 100 : 50;
-                if (consecutiveCorrectAnswers > 1) {
-                    earnedScore += (consecutiveCorrectAnswers - 1) * 10;
-                }
-                if (earnedScore > 750) {
-                    earnedScore = 750;
-                }
-                showTopSnackbar(title, "Score +" + earnedScore, true);
-                nextQuestion();
-            } else {
-                consecutiveCorrectAnswers = 0;
-                showTopSnackbar("Belum tepat", "Coba Lagi!", false);
-                if ("SIGN_PRACTICE".equals(q.getType())) {
-                    autoSubmitted = false;
-                    startCameraForSignPractice();
-                }
-            }
-            
-            // Fire-and-forget background API call
-            attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
-                @Override
-                public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {}
-                @Override
-                public void onFailure(Call<AnswerResponse> call, Throwable t) {}
-            });
-            return;
-        }
-
-        // Fallback or Last Question: Wait for server response
+        // Wait for server response
         setLoadingState(true);
 
         attemptApi.submitAnswer(attemptId, new AnswerRequest(q.getId(), answer)).enqueue(new Callback<AnswerResponse>() {
