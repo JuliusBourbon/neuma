@@ -4,14 +4,14 @@
     <item android:top="6dp">
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="@color/primary_dark" />
+            <solid android:color="@color/secondary_dark" />
         </shape>
     </item>
     <!-- Main button body -->
     <item android:bottom="6dp">
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="@color/primary" />
+            <solid android:color="@color/secondary" />
         </shape>
     </item>
 </layer-list>

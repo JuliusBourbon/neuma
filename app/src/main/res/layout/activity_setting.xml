@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/primary">
 
     <!-- Header Top Bar -->
     <ImageButton
@@ -144,8 +144,8 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_input_background"
-        android:backgroundTint="@color/primary"
-        android:fontFamily="@font/poppins_bold"
+        android:backgroundTint="@color/secondary"
+        android:fontFamily="@font/poppins"
         android:text="Keluar"
         android:textAllCaps="false"
         android:textColor="@color/white"

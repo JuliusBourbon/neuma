@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/secondary"
     android:padding="24dp"
     tools:context=".SignupActivity">
 
@@ -41,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:background="@drawable/card_view"
+        android:background="@drawable/card_view_signup"
         android:elevation="8dp"
         android:orientation="vertical"
         android:padding="24dp"

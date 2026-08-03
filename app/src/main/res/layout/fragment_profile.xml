@@ -8,18 +8,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="false"
-    android:background="@color/background_white">
+    android:background="@color/primary">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="155dp">
+        android:paddingBottom="155dp"
+        android:background="@color/primary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="280dp"
-            android:background="#1E9CB8">
+            android:background="@color/secondary">
 
             <!-- Nama Pengguna -->
             <TextView
@@ -31,7 +32,7 @@
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="-"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/btn_admin"
@@ -65,7 +66,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/tv_profile_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_profile_name"
-                app:tint="@color/white" />
+                app:tint="@color/black" />
 
             <!-- Gambar Avatar -->
             <ImageView

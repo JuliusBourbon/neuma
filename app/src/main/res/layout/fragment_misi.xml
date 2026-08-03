@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/primary">
 
     <!-- GREEN HEADER AREA (Warna Hijau #25DE1C) -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
             android:text="Misi"
-            android:textColor="@color/white"
+            android:textColor="@color/secondary"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Taklukkan misi untuk\nmendapatkan hadiah!"
-            android:textColor="@color/white"
+            android:textColor="@color/secondary"
             android:textSize="16sp"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:paddingBottom="73dp"
+        android:paddingBottom="68dp"
         app:layout_constraintTop_toBottomOf="@id/layout_header_misi"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -75,7 +75,8 @@
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingTop="20dp"
-            android:paddingBottom="24dp">
+            android:paddingBottom="24dp"
+            android:background="@color/primary">
 
             <!-- SECTION 1: MISI PENCAPAIAN -->
             <TextView
@@ -83,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
                 android:text="DAFTAR MISI"
-                android:textColor="#333333"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />

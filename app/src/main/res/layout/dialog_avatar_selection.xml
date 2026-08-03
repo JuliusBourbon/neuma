@@ -29,6 +29,6 @@
         android:layout_height="wrap_content"
         android:text="Tutup"
         android:fontFamily="@font/poppins"
-        android:backgroundTint="#DDDDDD"
-        android:textColor="@color/black"/>
+        android:backgroundTint="@color/secondary"
+        android:textColor="@color/white"/>
 </LinearLayout>

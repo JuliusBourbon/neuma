@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:backgroundTint="#1DEE12"
+            android:backgroundTint="@color/secondary"
             android:fontFamily="@font/poppins_bold"
             android:text="Simpan"
             android:textColor="@color/white"

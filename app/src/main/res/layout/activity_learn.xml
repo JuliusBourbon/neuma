@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white"
+    android:background="@color/primary"
     android:fitsSystemWindows="true">
 
     <!-- Loading Indicator -->
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TIPE MATERI"
-            android:textColor="@color/primary"
+            android:textColor="@color/secondary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -106,10 +106,10 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:text="KEMBALI"
-                android:textColor="@color/primary"
+                android:textColor="@color/secondary"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:strokeColor="@color/primary"
+                app:strokeColor="@color/secondary"
                 app:strokeWidth="2dp"
                 app:cornerRadius="14dp"
                 android:visibility="gone" />
@@ -123,7 +123,7 @@
                 android:textColor="@color/text_white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:backgroundTint="@color/primary"
+                android:backgroundTint="@color/secondary"
                 app:cornerRadius="14dp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -142,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="UJI KEMAMPUANMU"
-            android:textColor="@color/primary"
+            android:textColor="@color/secondary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -226,7 +226,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
-            android:visibility="gone"
+
             android:background="@drawable/bg_camera_container"
             android:clipToOutline="true"
             app:layout_constraintTop_toBottomOf="@id/iv_question_media"
@@ -280,7 +280,7 @@
             android:textColor="@color/text_white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="@color/secondary"
             app:cornerRadius="14dp"
             app:layout_constraintBottom_toTopOf="@id/btn_skip_question"
             app:layout_constraintStart_toStartOf="parent"

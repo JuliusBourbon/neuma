@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/rounded_input_background"
+    android:background="@drawable/rounded_leaderboard"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingHorizontal="16dp"
@@ -18,7 +18,7 @@
         android:fontFamily="@font/poppins"
         android:gravity="center"
         android:text="4"
-        android:textColor="@color/black"
+        android:textColor="@color/secondary"
         android:textSize="15sp" />
 
     <!-- Avatar User -->
@@ -27,7 +27,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
-        app:civ_circle_background_color="#FE7236" />
+        app:civ_circle_background_color="#FFFFFF" />
 
     <!-- Nama User -->
     <TextView
@@ -39,7 +39,7 @@
         android:fontFamily="@font/poppins"
         android:singleLine="true"
         android:text="Nama User"
-        android:textColor="@color/black"
+        android:textColor="@color/secondary"
         android:textSize="14sp" />
 
     <!-- Poin / Skor -->
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins"
         android:text="100"
-        android:textColor="@color/black"
+        android:textColor="@color/secondary"
         android:textSize="14sp" />
 
 </LinearLayout>

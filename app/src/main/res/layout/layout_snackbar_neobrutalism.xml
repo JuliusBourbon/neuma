@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@drawable/bg_snackbar_success">
+    android:background="@drawable/bg_snackbar_notif_learn">
 
     <TextView
         android:id="@+id/tv_snackbar_title"
