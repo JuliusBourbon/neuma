@@ -86,6 +86,11 @@
             android:name=".SupportActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".OtherProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Neuma" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

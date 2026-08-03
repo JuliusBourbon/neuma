@@ -144,6 +144,12 @@ public class LevelActivity extends AppCompatActivity {
         String seed = entry.getAvatarSeed() != null ? entry.getAvatarSeed() : "Felix";
         String url = "https://api.dicebear.com/9.x/" + style + "/png?seed=" + seed;
         com.bumptech.glide.Glide.with(this).load(url).into(imageView);
+
+        imageView.setOnClickListener(v -> {
+            Intent intent = new Intent(LevelActivity.this, OtherProfileActivity.class);
+            intent.putExtra("USER_ID", entry.getUserId());
+            startActivity(intent);
+        });
     }
 
     private void setupDummyLeaderboard() {

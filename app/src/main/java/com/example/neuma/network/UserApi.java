@@ -13,6 +13,9 @@ public interface UserApi {
     @GET("users/me")
     Call<User> getProfile();
 
+    @GET("users/{id}/profile")
+    Call<User> getUserProfile(@retrofit2.http.Path("id") String userId);
+
     @retrofit2.http.PATCH("users/me")
     Call<User> updateProfile(@Body UpdateProfileRequest request);
 

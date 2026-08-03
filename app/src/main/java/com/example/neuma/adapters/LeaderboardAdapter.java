@@ -46,6 +46,12 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                 .load(url)
                 .into(holder.ivAvatar);
+
+            holder.ivAvatar.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(holder.itemView.getContext(), com.example.neuma.OtherProfileActivity.class);
+                intent.putExtra("USER_ID", entry.getUserId());
+                holder.itemView.getContext().startActivity(intent);
+            });
         }
     }
 
