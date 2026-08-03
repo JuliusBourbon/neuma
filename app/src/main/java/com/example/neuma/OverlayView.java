@@ -66,12 +66,11 @@ public class OverlayView extends View {
     // private static final float CARD_BORDER_W     = 5f;
 
     // Primary brand green
-    private static final int COLOR_PRIMARY     = 0xFF25DE1C;
-    private static final int COLOR_CARD_BG     = 0xEE0D0D0D;
+//    private static final int COLOR_CARD_BG     = 0xEE0D0D0D;
     // private static final int COLOR_CARD_BORDER = 0xFF25DE1C;
-    private static final int COLOR_WHITE       = 0xFFFFFFFF;
-    private static final int COLOR_GREY        = 0xFF888888;
-    private static final int COLOR_PROGRESS_BG = 0xFF2A2A2A;
+//    private static final int COLOR_WHITE       = 0xFFFFFFFF;
+    private static final int COLOR_GREY        = 0xFFFFFFFF;
+//    private static final int COLOR_PROGRESS_BG = 0xFF2A2A2A;
 
     // ─── Constructor ────────────────────────────────────────────────────────
     public OverlayView(Context context, AttributeSet attrs) {
@@ -85,20 +84,24 @@ public class OverlayView extends View {
     }
 
     private void init() {
+        int colorPrimary = androidx.core.content.ContextCompat.getColor(getContext(), R.color.primary);
+        int colorSecondary = androidx.core.content.ContextCompat.getColor(getContext(), R.color.secondary);
+        int colorTertiary = androidx.core.content.ContextCompat.getColor(getContext(), R.color.tertiary);
+
         // Skeleton line
-        skeletonLinePaint.setColor(COLOR_PRIMARY);
+        skeletonLinePaint.setColor(colorSecondary);
         skeletonLinePaint.setStrokeWidth(6f);
         skeletonLinePaint.setStyle(Paint.Style.STROKE);
         skeletonLinePaint.setAntiAlias(true);
         skeletonLinePaint.setAlpha(200);
 
         // Skeleton joint dots
-        skeletonJointPaint.setColor(COLOR_WHITE);
+        skeletonJointPaint.setColor(colorPrimary);
         skeletonJointPaint.setStyle(Paint.Style.FILL);
         skeletonJointPaint.setAntiAlias(true);
 
         // Card background
-        cardPaint.setColor(COLOR_CARD_BG);
+        cardPaint.setColor(colorTertiary);
         cardPaint.setStyle(Paint.Style.FILL);
         cardPaint.setAntiAlias(true);
 
@@ -115,29 +118,29 @@ public class OverlayView extends View {
         labelSmallPaint.setFakeBoldText(true);
 
         // Target letter (large)
-        targetTextPaint.setColor(COLOR_PRIMARY);
+        targetTextPaint.setColor(colorSecondary);
         targetTextPaint.setTextSize(140f);
         targetTextPaint.setAntiAlias(true);
         targetTextPaint.setFakeBoldText(true);
 
         // Detected label + confidence
-        detectedTextPaint.setColor(COLOR_WHITE);
+        detectedTextPaint.setColor(colorPrimary);
         detectedTextPaint.setTextSize(100f);
         detectedTextPaint.setAntiAlias(true);
         detectedTextPaint.setFakeBoldText(true);
 
-        // "Tahan 5 detik" label
-        holdLabelPaint.setColor(0xFFAAAAAA);
+        // "Tahan 4 detik" label
+        holdLabelPaint.setColor(colorPrimary);
         holdLabelPaint.setTextSize(52f);
         holdLabelPaint.setAntiAlias(true);
 
         // Progress bar background
-        progressBgPaint.setColor(COLOR_PROGRESS_BG);
+        progressBgPaint.setColor(COLOR_GREY);
         progressBgPaint.setStyle(Paint.Style.FILL);
         progressBgPaint.setAntiAlias(true);
 
         // Progress bar fill
-        progressFillPaint.setColor(COLOR_PRIMARY);
+        progressFillPaint.setColor(colorSecondary);
         progressFillPaint.setStyle(Paint.Style.FILL);
         progressFillPaint.setAntiAlias(true);
     }

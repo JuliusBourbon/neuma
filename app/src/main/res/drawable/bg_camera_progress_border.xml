@@ -15,7 +15,7 @@
             android:clipOrientation="vertical"
             android:gravity="bottom">
             <shape android:shape="rectangle">
-                <stroke android:width="6dp" android:color="@color/primary" />
+                <stroke android:width="6dp" android:color="@color/secondary" />
                 <solid android:color="@android:color/transparent" />
                 <corners android:radius="14dp" />
             </shape>
