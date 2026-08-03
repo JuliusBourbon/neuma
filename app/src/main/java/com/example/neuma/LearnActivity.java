@@ -72,6 +72,8 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private List<Question> questions;
     private int currentMaterialIndex = 0;
     private int currentQuestionIndex = 0;
+    private int currentQuestionAttempts = 0;
+    private int consecutiveCorrectAnswers = 0;
 
     private View progressBar;
     private ProgressBar progressBarAttempt;
@@ -714,13 +716,31 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         // Optimistic Local Validation (hanya jika bukan soal terakhir agar tidak ada race condition saat finish)
         if (!isLastQuestion && q.getCorrectAnswer() != null && !q.getCorrectAnswer().isEmpty()) {
             stopCamera();
+            currentQuestionAttempts++;
             boolean isCorrect = answer.trim().equalsIgnoreCase(q.getCorrectAnswer().trim());
             
             if (isCorrect) {
-                showTopSnackbar("Benar! 🎉", "Jawaban kamu tepat!", true);
+                consecutiveCorrectAnswers++;
+                String title;
+                if (consecutiveCorrectAnswers >= 3) {
+                    title = "Bagus!!!";
+                } else if (currentQuestionAttempts == 1) {
+                    title = "Benar!!!";
+                } else {
+                    title = "Keren!!!";
+                }
+                int earnedScore = (currentQuestionAttempts == 1) ? 100 : 50;
+                if (consecutiveCorrectAnswers > 1) {
+                    earnedScore += (consecutiveCorrectAnswers - 1) * 10;
+                }
+                if (earnedScore > 750) {
+                    earnedScore = 750;
+                }
+                showTopSnackbar(title, "Score +" + earnedScore, true);
                 nextQuestion();
             } else {
-                showTopSnackbar("Belum tepat 😅", "Silakan coba jawaban yang lain!", false);
+                consecutiveCorrectAnswers = 0;
+                showTopSnackbar("Belum tepat", "Coba Lagi!", false);
                 if ("SIGN_PRACTICE".equals(q.getType())) {
                     autoSubmitted = false;
                     startCameraForSignPractice();
@@ -745,13 +765,24 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             public void onResponse(Call<AnswerResponse> call, Response<AnswerResponse> response) {
                 setLoadingState(false);
                 stopCamera();
+                currentQuestionAttempts++;
                 if (response.isSuccessful() && response.body() != null) {
                     AnswerResponse ans = response.body();
                     if (ans.isCorrect()) {
-                        showTopSnackbar("Benar! 🎉", "Kamu mendapat " + ans.getTotalThisAnswer() + " poin.", true);
+                        consecutiveCorrectAnswers++;
+                        String title;
+                        if (consecutiveCorrectAnswers >= 3) {
+                            title = "Bagus!!!";
+                        } else if (currentQuestionAttempts == 1) {
+                            title = "Benar!!!";
+                        } else {
+                            title = "Keren!!!";
+                        }
+                        showTopSnackbar(title, "Score +" + ans.getTotalThisAnswer(), true);
                         nextQuestion();
                     } else {
-                        showTopSnackbar("Belum tepat 😅", "Silakan coba jawaban yang lain!", false);
+                        consecutiveCorrectAnswers = 0;
+                        showTopSnackbar("Belum tepat", "Coba Lagi!", false);
                         if ("SIGN_PRACTICE".equals(q.getType())) {
                             autoSubmitted = false;
                             startCameraForSignPractice();
@@ -821,6 +852,11 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         tvTitle.setText(title);
         tvMessage.setText(message);
 
+        // Atur warna teks sesuai kondisi
+        int textColor = androidx.core.content.ContextCompat.getColor(this, isSuccess ? R.color.secondary : R.color.primary);
+        tvTitle.setTextColor(textColor);
+        tvMessage.setTextColor(textColor);
+
         android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) snackbarView.getLayoutParams();
         params.gravity = android.view.Gravity.TOP;
         params.setMargins(32, 64, 32, 0);
@@ -833,6 +869,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
     private void nextQuestion() {
         stopCamera();
         resetHoldState();
+        currentQuestionAttempts = 0;
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.size()) {
             showQuestion();

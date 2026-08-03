@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             android.widget.ImageView ivPencapaian = findViewById(R.id.iv_menu_pencapaian);
             android.widget.ImageView ivProfile = findViewById(R.id.iv_menu_profile);
 
-            int colorActive = androidx.core.content.ContextCompat.getColor(this, R.color.green_button);
+            int colorActive = androidx.core.content.ContextCompat.getColor(this, R.color.secondary);
 
             navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
                 if (ivHome != null) ivHome.clearColorFilter();

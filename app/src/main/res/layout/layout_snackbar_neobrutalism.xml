@@ -4,22 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/bg_snackbar_notif_learn">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp"
+    android:background="@drawable/bg_snackbar_notif_learn"
+    android:fitsSystemWindows="true">
 
     <TextView
         android:id="@+id/tv_snackbar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="24sp"
+        android:fontFamily="@font/poppins_bold" />
 
     <TextView
         android:id="@+id/tv_snackbar_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
+        android:fontFamily="@font/poppins"
+        android:textAlignment="center"
+        android:textSize="16sp" />
 </LinearLayout>
