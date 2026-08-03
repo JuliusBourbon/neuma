@@ -4,15 +4,15 @@
     <item android:top="4dp">
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="@color/primary" />
+            <solid android:color="@color/secondary" />
         </shape>
     </item>
     <!-- Main button body -->
     <item android:bottom="4dp">
         <shape android:shape="rectangle">
             <corners android:radius="16dp" />
-            <solid android:color="@color/primary_light" />
-            <stroke android:width="2dp" android:color="@color/primary" />
+            <solid android:color="#FFD9C8" />
+            <stroke android:width="2dp" android:color="@color/secondary" />
         </shape>
     </item>
 </layer-list>
