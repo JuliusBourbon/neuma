@@ -117,6 +117,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
 
     private String selectedAnswer = null;
     private java.util.List<View> optionViews = new java.util.ArrayList<>();
+    private boolean isSubmitting = false; // guard flag to prevent double-submit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -591,6 +592,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         layoutMaterial.setVisibility(View.GONE);
         layoutQuiz.setVisibility(View.VISIBLE);
         selectedAnswer = null;
+        isSubmitting = false; // reset guard setiap soal baru
         resetHoldState();
         
         if (progressBarAttempt != null) {
@@ -713,6 +715,13 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
         String answer = selectedAnswer;
         boolean isLastQuestion = (currentQuestionIndex == questions.size() - 1);
 
+        // Guard: cegah double-submit
+        if (isSubmitting) {
+            Log.w(TAG, "submitAnswer ignored: already submitting");
+            return;
+        }
+        isSubmitting = true;
+
         // Optimistic Local Validation (hanya untuk tipe soal selain SIGN_PRACTICE)
         if (!isLastQuestion && !"SIGN_PRACTICE".equals(q.getType()) && q.getCorrectAnswer() != null && !q.getCorrectAnswer().isEmpty()) {
             stopCamera();
@@ -737,9 +746,14 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                     earnedScore = 750;
                 }
                 showTopSnackbar(title, "Score +" + earnedScore, true);
-                nextQuestion();
+                // Tunda nextQuestion agar snackbar sempat terlihat
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    isSubmitting = false;
+                    nextQuestion();
+                }, 800);
             } else {
                 consecutiveCorrectAnswers = 0;
+                isSubmitting = false;
                 showTopSnackbar("Belum tepat", "Coba Lagi!", false);
             }
             
@@ -790,9 +804,14 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                             title = "Keren!!!";
                         }
                         showTopSnackbar(title, "Score +" + ans.getTotalThisAnswer(), true);
-                        nextQuestion();
+                        // Tunda nextQuestion agar snackbar sempat terlihat
+                        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                            isSubmitting = false;
+                            nextQuestion();
+                        }, 800);
                     } else {
                         consecutiveCorrectAnswers = 0;
+                        isSubmitting = false;
                         showTopSnackbar("Belum tepat", "Coba Lagi!", false);
                         if ("SIGN_PRACTICE".equals(q.getType())) {
                             autoSubmitted = false;
@@ -806,6 +825,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
                     } catch (Exception e) {
                         Log.e(TAG, "Blocking submitAnswer failed: " + response.code());
                     }
+                    isSubmitting = false;
                     showError("Gagal mengirim jawaban");
                     if ("SIGN_PRACTICE".equals(q.getType())) {
                         autoSubmitted = false;
@@ -817,6 +837,7 @@ public class LearnActivity extends AppCompatActivity implements HandLandmarkerHe
             @Override
             public void onFailure(Call<AnswerResponse> call, Throwable t) {
                 setLoadingState(false);
+                isSubmitting = false;
                 Log.e(TAG, "Blocking submitAnswer network error: " + t.getMessage());
                 showError("Error: " + t.getMessage());
                 if ("SIGN_PRACTICE".equals(q.getType())) {
